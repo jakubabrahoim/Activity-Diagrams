@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-//declare var $:JQueryStatic;
-import * as jQuery from 'jquery';
 import * as _ from 'lodash';
-import * as backbone from 'backbone';
-import * as joint from 'jointjs';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +9,8 @@ import * as joint from 'jointjs';
 export class AppComponent {
 
   public ngOnInit(): void {
+    
+    /*
     let namespace = joint.shapes;
 
     let graph = new joint.dia.Graph({}, {cellNamespace: namespace});
@@ -40,5 +38,7 @@ export class AppComponent {
     });
 
     graph.addCells([rect, rect2, link]);
+
+    */
   }
 }

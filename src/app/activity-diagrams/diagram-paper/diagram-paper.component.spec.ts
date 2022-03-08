@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TestComponent } from './test.component';
+import { DiagramPaperComponent } from './diagram-paper.component';
 
-describe('TestComponent', () => {
-  let component: TestComponent;
-  let fixture: ComponentFixture<TestComponent>;
+describe('DiagramPaperComponent', () => {
+  let component: DiagramPaperComponent;
+  let fixture: ComponentFixture<DiagramPaperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TestComponent ]
+      declarations: [ DiagramPaperComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(DiagramPaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
