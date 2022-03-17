@@ -13,8 +13,9 @@ export class Paper {
       model: graph,
       width: width,
       height: height,
-      gridSize: 10,
+      gridSize: 20,
       drawGrid: { name: 'mesh', args: { color: 'black' } },
+      background: { color: 'white'},
       cellViewNamespace: nameSpace,
       interactive: true, // povoluje interakciu medzi elementami
       linkPinning: false, // zakaze pouzivatelovi pinnut link na papier

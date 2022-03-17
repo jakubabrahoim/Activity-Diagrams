@@ -22,8 +22,8 @@ export class DiagramPaperComponent implements OnInit {
     // pomocne veci
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
-    const paperHeight: number = 900;
-    const paperWidth: number = 900;
+    const paperHeight: number = 700;
+    const paperWidth: number = 1200;
 
     // nastavenie html elementu pre papier
     paperElement.id = 'paper';
@@ -36,6 +36,7 @@ export class DiagramPaperComponent implements OnInit {
     // vytvorenie grafu
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
     this.paper = paper.createNewPaper(paperElement, this.graph, paperWidth, paperHeight, namespace);
+    this.paper.drawGrid();
   }
 
   ngOnInit(): void {

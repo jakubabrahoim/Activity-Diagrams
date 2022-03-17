@@ -6,7 +6,7 @@ export class EndElement {
 
     public createEndElement() : joint.shapes.uml.EndState {
         var endElement = new joint.shapes.uml.EndState({
-            position: { x: 100, y: 100 },
+            position: { x: 150, y: 100 },
             size: { width: 30, height: 30 },
             attrs: {
                 'circle.outer': {
