@@ -7,6 +7,13 @@ import { DiamondElement } from '../other-classes/diamond';
 import { StartElement } from '../other-classes/start-element';
 import { EndElement } from '../other-classes/end-element';
 
+
+/*
+- pridanie portov, spajanie elementov/utvarov
+- upravenie textu v elemente/utvare
+- toolbox na utvary
+*/
+
 @Component({
   selector: 'app-diagram-paper',
   templateUrl: './diagram-paper.component.html',
@@ -17,6 +24,10 @@ export class DiagramPaperComponent implements OnInit {
 
   graph: joint.dia.Graph;
   paper: joint.dia.Paper;
+  action: ActionElement;
+  diamond: DiamondElement;
+  start: StartElement;
+  end: EndElement;
 
   constructor(paper: Paper) {
     // pomocne veci
@@ -33,26 +44,44 @@ export class DiagramPaperComponent implements OnInit {
     paperElement.style.overflow = 'auto';
     document.body.appendChild(paperElement);
 
-    // vytvorenie grafu
+    // vytvorenie grafu a papiera
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
     this.paper = paper.createNewPaper(paperElement, this.graph, paperWidth, paperHeight, namespace);
     this.paper.drawGrid();
+
+    this.action = new ActionElement();
+    this.diamond = new DiamondElement();
+    this.start = new StartElement();
+    this.end = new EndElement();
   }
 
   ngOnInit(): void {
-    var action : ActionElement = new ActionElement();
-    var diamond : DiamondElement = new DiamondElement();
-    var start : StartElement = new StartElement();
-    var end : EndElement = new EndElement();
-
-    var el1 = action.createActionElement();
-    var el2 = diamond.createDiamondElement();
-    var el3 = start.createStartElement();
-    var el4 = end.createEndElement();
-
-    el1.addTo(this.graph);
-    el2.addTo(this.graph);
-    el3.addTo(this.graph);
-    el4.addTo(this.graph);
+    
   }
+
+  addActionToGraph(): void {
+    let element = this.action.createActionElement();
+    element.addTo(this.graph);
+  }
+
+  addDiamondToGraph(): void {
+    let element = this.diamond.createDiamondElement();
+    element.addTo(this.graph);
+  }
+
+  addStartToGraph(): void {
+    let element = this.start.createStartElement();
+    element.addTo(this.graph);
+  }
+
+  addEndToGraph(): void {
+    let element = this.end.createEndElement();
+    element.addTo(this.graph);
+  }
+
+  saveDiagram(): void {
+    let json = this.graph.toJSON();
+    console.log(json);
+  }
+
 }
