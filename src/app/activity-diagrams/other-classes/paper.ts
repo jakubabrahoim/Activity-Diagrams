@@ -13,7 +13,7 @@ export class Paper {
       model: graph,
       width: width,
       height: height,
-      gridSize: 20,
+      gridSize: 1,
       drawGrid: { name: 'mesh', args: { color: 'black' } },
       background: { color: 'white'},
       cellViewNamespace: nameSpace,
@@ -25,7 +25,18 @@ export class Paper {
       defaultConnectionPoint: { name: 'boundary' },
       defaultAnchor: { name: 'perpendicular', args: { padding: 10 } },
       defaultLinkAnchor: { name: 'perpendicular', args: { padding: 10 } },
-      defaultRouter: { name: 'normal' }
+      defaultRouter: { name: 'normal' },
+      validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+        // zakaz spojenie so samym sebou
+        if(cellViewS === cellViewT) {
+          return false; 
+        }
+        //if(cellViewT.model.attributes['type'] === 'standard.Rectangle') return false;
+        //return (magnetS !== magnetT);
+
+
+        return true;
+      }
     });
 
     return newPaper;

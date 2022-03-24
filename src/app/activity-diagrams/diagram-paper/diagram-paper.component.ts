@@ -56,7 +56,13 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+		// Pridanie link eventov
+		this.paper.on('link:mouseenter', (linkView) => {
+      this.showLinkTools(linkView);
+  	});
+		this.paper.on('link:mouseleave', (linkView) => {
+			linkView.removeTools();
+		});
   }
 
   addActionToGraph(): void {
@@ -83,5 +89,39 @@ export class DiagramPaperComponent implements OnInit {
     let json = this.graph.toJSON();
     console.log(json);
   }
+
+
+	// na toto pozriet este nejaku alternativu
+  showLinkTools(linkView: any) {
+    var tools = new joint.dia.ToolsView({
+			tools: [
+				new joint.linkTools.Remove({
+					distance: '50%',
+					markup: [{
+						tagName: 'circle',
+						selector: 'button',
+						attributes: {
+							'r': 7,
+							'fill': '#f6f6f6',
+							'stroke': '#ff5148',
+							'stroke-width': 2,
+							'cursor': 'pointer'
+						}
+					}, {
+						tagName: 'path',
+						selector: 'icon',
+						attributes: {
+							'd': 'M -3 -3 3 3 M -3 3 3 -3',
+							'fill': 'none',
+							'stroke': '#ff5148',
+							'stroke-width': 2,
+							'pointer-events': 'none'
+						}
+					}]
+				})
+			]
+    });
+    linkView.addTools(tools);
+}
 
 }

@@ -7,10 +7,10 @@ export class StartElement {
     public createStartElement() : joint.shapes.uml.StartState {
         var startElement = new joint.shapes.uml.StartState({
             position: { x: 100, y: 100 },
-            size: { width: 30, height: 30 },
+            size: { width: 40, height: 40 },
             attrs: {
                 'circle': {
-                    fill: '#4b4a67',
+                    fill: 'black',
                     stroke: 'none'
                 }
             }
