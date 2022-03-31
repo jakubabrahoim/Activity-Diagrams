@@ -9,16 +9,17 @@ export class ActionElement {
         var actionElement = new joint.shapes.standard.Rectangle({
             position: { x: 200, y: 100 },
             size: { width: 200, height: 100 },
+            name: 'action',
             attrs: { text: { text:  'test action' }, body: {rx: 10, ry: 10} } 
         });
 
-        var elementPort = new ElementPort();
+        //var elementPort = new ElementPort();
 
         // -8, -8 - left port
-        var port = elementPort.createPort(-8, -8);
-        actionElement.addPort(port);
+        //var port = elementPort.createPort(-8, -8);
+        //actionElement.addPort(port);
         //
-        port = elementPort.createPort(8, -8);
+        //port = elementPort.createPort(8, -8);
 
         return actionElement;
     }

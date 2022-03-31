@@ -8,6 +8,7 @@ export class StartElement {
         var startElement = new joint.shapes.uml.StartState({
             position: { x: 100, y: 100 },
             size: { width: 40, height: 40 },
+            name: 'start',
             attrs: {
                 'circle': {
                     fill: 'black',

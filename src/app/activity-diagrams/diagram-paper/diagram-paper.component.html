@@ -1,24 +1,29 @@
 <h4>Activity Diagrams</h4>
 <div id="toolbox">
-    <button id="addAction" (click)="addActionToGraph()" class="buttonMargin">Add Action Element</button>
+    <button id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Add Action Element</button>
     <button id="addDiamond" (click)="addDiamondToGraph()" class="buttonMargin">Add Diamond Element</button>
     <button id="addStart" (click)="addStartToGraph()" class="buttonMargin">Add Start Element</button>
     <button id="addEnd" (click)="addEndToGraph()" class="buttonMargin">Add End Element</button>
     <button id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
+
+    <label class="switch">
+        <input type="checkbox" (change)="changeDrawingMode()">
+        <span class="slider round"></span>
+    </label>
 </div>
 <br>
 
 <!-- Toto bude male menu, ktore sa zobrazi pri pravom kliku na element -->
 <div id="element-contextmenu">
     <ul class="menu-options">
-        <li class="menu-option-properties" (click)="onShowElementPropertiesClicked()">Show element properties</li>
+        <li class="menu-option" (click)="onShowElementPropertiesClicked()">Show element properties</li>
         <li class="menu-option-delete" (click)="onDeleteElementClicked()">Delete element</li>-->
     </ul>
 </div>
 
-<!-- Totot bude male menu, ktore sa zobrazi pri pravom kliku na prepojenie -->
+<!-- Toto bude male menu, ktore sa zobrazi pri pravom kliku na prepojenie -->
 <div id="link-context-menu">
     <ul class="menu-options">
-        <li class="menu-option-properties" (click)="onShowLinkPropertiesClicked()">Show link properties</li>
+        <li class="menu-option" (click)="onShowLinkPropertiesClicked()">Show link properties</li>
     </ul>
 </div>

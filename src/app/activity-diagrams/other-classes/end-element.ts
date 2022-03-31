@@ -8,6 +8,7 @@ export class EndElement {
         var endElement = new joint.shapes.uml.EndState({
             position: { x: 150, y: 100 },
             size: { width: 40, height: 40 },
+            name: 'end',
             attrs: {
                 'circle.outer': {
                     stroke: 'black',

@@ -9,6 +9,7 @@ export class DiamondElement {
         var diamondElement = new joint.shapes.standard.Polygon({
             position: { x: 100, y: 200 },
             size: { width: 100, height: 100 },
+            name: 'diamond',
             attrs: { text: { text:  'test diamond' }, body: { transform: 'rotate(45, 50, 50)' }},
             
         });

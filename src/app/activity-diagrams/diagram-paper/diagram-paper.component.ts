@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as joint from 'jointjs';
 import { Paper } from '../other-classes/paper';
 
@@ -6,8 +6,6 @@ import { ActionElement } from '../other-classes/action';
 import { DiamondElement } from '../other-classes/diamond';
 import { StartElement } from '../other-classes/start-element';
 import { EndElement } from '../other-classes/end-element';
-import { link } from 'fs';
-
 
 /*
 - pridanie portov, spajanie elementov/utvarov
@@ -31,9 +29,17 @@ export class DiagramPaperComponent implements OnInit {
   start: StartElement;
   end: EndElement;
 
+  // V activePaper<> je vzdy elemenet, na ktory klikol uzivatel
   activePaperElement: any = null;
   activePaperLink: any = null;
   toolsView:any;
+
+  // Event emitters
+  @Output() currentElementName: EventEmitter<String> = new EventEmitter<String>();
+
+  elementIds: Array<number> = [1000];
+
+  drawingMode: boolean = false;
 
   constructor(paper: Paper) {
     // pomocne veci
@@ -66,6 +72,8 @@ export class DiagramPaperComponent implements OnInit {
     let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
     this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
+
+    this.elementIds.fill(0);
   }
 
   ngOnInit(): void {
@@ -130,23 +138,42 @@ export class DiagramPaperComponent implements OnInit {
     });
   }
 
-  onShowElementPropertiesClicked(){
 
+  // Context menu click actions/functions
+  onShowElementPropertiesClicked(){
+    let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+    elementContextMenu.style.display = 'none';
+    this.currentElementName.emit(this.activePaperElement.attributes.name);
   }
 
   onDeleteElementClicked(){
+    let id: number = this.activePaperElement.id; // .uniqueid
+    this.elementIds[id] = 0;
+    this.activePaperElement.remove();
+    this.activePaperElement = null;
 
+    let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+    elementContextMenu.style.display = 'none';
   }
 
   onShowLinkPropertiesClicked() {
-
+    let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
+    linkContextMenu.style.display = 'none';
+    //this.currentEquation.emit(this.activePaperLink.attributes.equation);
+    //this.currentTransitionOutputs.emit(this.activePaperLink.attributes.outputs);
   }
 
 
   // ADD ELEMENT FUNCTIONS BELOW
-
-  addActionToGraph(): void {
+  addActionToGraph(drawingMode: boolean): void {
     let element = this.action.createActionElement();
+
+    if (drawingMode) {
+      element.prop('attrs/body/magnet', true);
+    } else {
+      element.prop('attr/body/magnet', 'passive');
+    }
+
     element.addTo(this.graph);
   }
 
@@ -165,43 +192,19 @@ export class DiagramPaperComponent implements OnInit {
     element.addTo(this.graph);
   }
 
+
+  // SAVE DIAGRAM
   saveDiagram(): void {
     let json = this.graph.toJSON();
     console.log(json);
   }
 
 
-	// na toto pozriet este nejaku alternativu
-  showLinkTools(linkView: any) {
-    var tools = new joint.dia.ToolsView({
-			tools: [
-				new joint.linkTools.Remove({
-					distance: '50%',
-					markup: [{
-						tagName: 'circle',
-						selector: 'button',
-						attributes: {
-							'r': 7,
-							'fill': '#f6f6f6',
-							'stroke': '#ff5148',
-							'stroke-width': 2,
-							'cursor': 'pointer'
-						}
-					}, {
-						tagName: 'path',
-						selector: 'icon',
-						attributes: {
-							'd': 'M -3 -3 3 3 M -3 3 3 -3',
-							'fill': 'none',
-							'stroke': '#ff5148',
-							'stroke-width': 2,
-							'pointer-events': 'none'
-						}
-					}]
-				})
-			]
-    });
-    linkView.addTools(tools);
+	changeDrawingMode(): void {
+    if(this.drawingMode) {
+      this.drawingMode = false;
+    } else {
+      this.drawingMode = true;
+    }
   }
-
 }
