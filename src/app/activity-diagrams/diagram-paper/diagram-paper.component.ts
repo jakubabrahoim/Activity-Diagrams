@@ -6,6 +6,7 @@ import { ActionElement } from '../other-classes/action';
 import { DiamondElement } from '../other-classes/diamond';
 import { StartElement } from '../other-classes/start-element';
 import { EndElement } from '../other-classes/end-element';
+import { link } from 'fs';
 
 
 /*
@@ -22,12 +23,17 @@ import { EndElement } from '../other-classes/end-element';
 })
 export class DiagramPaperComponent implements OnInit {
 
+  // Graph, paper and element variables
   graph: joint.dia.Graph;
   paper: joint.dia.Paper;
   action: ActionElement;
   diamond: DiamondElement;
   start: StartElement;
   end: EndElement;
+
+  activePaperElement: any = null;
+  activePaperLink: any = null;
+  toolsView:any;
 
   constructor(paper: Paper) {
     // pomocne veci
@@ -53,17 +59,91 @@ export class DiagramPaperComponent implements OnInit {
     this.diamond = new DiamondElement();
     this.start = new StartElement();
     this.end = new EndElement();
+
+    // vytvorenie tools view
+    // vertices - na zmenu tvaru spojenia, boundary - ohranicenie prepojenia, remove - odstranenie prepojenia
+    let verticesTool: joint.linkTools.Vertices = new joint.linkTools.Vertices();
+    let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
+    let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
+    this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
   }
 
   ngOnInit(): void {
-		// Pridanie link eventov
-		this.paper.on('link:mouseenter', (linkView) => {
-      this.showLinkTools(linkView);
-  	});
-		this.paper.on('link:mouseleave', (linkView) => {
-			linkView.removeTools();
-		});
+    this.addActionListeners();
   }
+
+  ngOnDestroy(): void {
+    this.paper.remove();
+    this.graph.clear();
+  }
+
+  addActionListeners(): void {
+    // Zobrazenie context menu pre element
+    this.paper.on('element:element-contextmenu', (elementView, _evt, x, y) => {
+      let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+      let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
+
+      this.activePaperElement = elementView.model;
+      elementContextMenu.style.left = x + 70 + 'px';
+      elementContextMenu.style.top = y + 75 + 'px';
+      elementContextMenu.style.display = 'block';
+      
+      linkContextMenu.style.display = 'none';
+    });
+
+    // Zobrazenie context menu pre prepojenie
+    this.paper.on('element:link-contextmenu', (linkView, _evt, x, y) => {
+      let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+      let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
+
+      this.activePaperLink = linkView.model;
+      linkContextMenu.style.left = x + 70 + 'px';
+      linkContextMenu.style.top = y + 75 + 'px';
+      linkContextMenu.style.display = 'block';
+
+      elementContextMenu.style.display = 'none';
+    });
+
+    // Schovanie obidvoch context menu
+    this.paper.on('blank:pointerclick', () => {
+      let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+      let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
+
+      elementContextMenu.style.display = 'none';
+      linkContextMenu.style.display = 'none';
+    });
+
+    // Zobrazenie nasho custom toolsView pre linky
+    this.paper.on('link:mouseenter', (linkView) => {
+      linkView.removeTools();
+      linkView.addTools(this.toolsView);
+      linkView.showTools(this.toolsView);
+    });
+
+    // Schovanie nasho custom toolsView pre linky
+    this.paper.on('link:mouseleave', (linkView) => {
+      linkView.hideTools(this.toolsView);
+    });
+
+    this.paper.on('link: connect', (linkView) => {
+
+    });
+  }
+
+  onShowElementPropertiesClicked(){
+
+  }
+
+  onDeleteElementClicked(){
+
+  }
+
+  onShowLinkPropertiesClicked() {
+
+  }
+
+
+  // ADD ELEMENT FUNCTIONS BELOW
 
   addActionToGraph(): void {
     let element = this.action.createActionElement();
@@ -122,6 +202,6 @@ export class DiagramPaperComponent implements OnInit {
 			]
     });
     linkView.addTools(tools);
-}
+  }
 
 }
