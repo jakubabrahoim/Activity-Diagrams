@@ -7,7 +7,7 @@
     <button id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">Add End Element</button>
     <button id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
 
-    <mat-slide-toggle id="paper-mode" (change)="changeDrawingMode()" color="primary">{{toggleCaption}}</mat-slide-toggle>
+    <mat-slide-toggle id="paper-mode" #toggle [checked]="isChecked()" (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
 </div>
 <br>
 

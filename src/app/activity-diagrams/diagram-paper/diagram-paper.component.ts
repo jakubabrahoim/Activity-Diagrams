@@ -32,7 +32,8 @@ export class DiagramPaperComponent implements OnInit {
   // V activePaper<> je vzdy elemenet, na ktory klikol uzivatel
   activePaperElement: any = null;
   activePaperLink: any = null;
-  toolsView:any;
+  toolsView: any;
+  elementToolsView: any;
 
   // Event emitters
   @Output() currentElementName: EventEmitter<String> = new EventEmitter<String>();
@@ -73,6 +74,7 @@ export class DiagramPaperComponent implements OnInit {
     let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
     this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
+    this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool, removeTool]});
 
     this.elementIds.fill(0);
 
@@ -89,6 +91,16 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   addActionListeners(): void {
+    this.paper.on('element:mouseenter', (elementView: any) => {
+      elementView.removeTools();
+      elementView.addTools(this.elementToolsView);
+      elementView.showTools(this.elementToolsView);
+    });
+
+    this.paper.on('element:mouseleave', (elementView: any) => {
+      elementView.hideTools();
+    });
+    
     // Zobrazenie context menu pre element
     this.paper.on('element:element-contextmenu', (elementView, _evt, x, y) => {
       let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
@@ -170,24 +182,33 @@ export class DiagramPaperComponent implements OnInit {
   // ADD ELEMENT FUNCTIONS BELOW
   addActionToGraph(drawingMode: boolean): void {
     let element = this.action.createActionElement();
-
+    
+    /*
     if (drawingMode) {
       element.prop('attrs/body/magnet', true);
     } else {
-      element.prop('attr/body/magnet', 'passive');
-    }
+      //element.prop('attr/body/magnet', false);
+    }*/
+    //console.log(element);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
     element.addTo(this.graph);
+    //this.modeChanged(drawingMode);
   }
 
   addDiamondIfToGraph(drawingMode: boolean): void {
     let element = this.diamond.createDiamondElement('if');
 
+    /*
     if (drawingMode) {
       element.prop('attrs/body/magnet', true);
     } else {
-      element.prop('attr/body/magnet', 'passive');
-    }
+      //element.prop('attr/body/magnet', false);
+    }*/
+    //console.log(element);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
     element.addTo(this.graph);
   }
@@ -195,11 +216,15 @@ export class DiagramPaperComponent implements OnInit {
   addDiamondCaseToGraph(drawingMode: boolean): void {
     let element = this.diamond.createDiamondElement('case');
 
+    /*
     if (drawingMode) {
       element.prop('attrs/body/magnet', true);
     } else {
-      element.prop('attr/body/magnet', 'passive');
-    }
+      //element.prop('attr/body/magnet', false);
+    }*/
+    //console.log(element);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
     element.addTo(this.graph);
   }
@@ -207,11 +232,15 @@ export class DiagramPaperComponent implements OnInit {
   addStartToGraph(drawingMode: boolean): void {
     let element = this.start.createStartElement();
 
+    /*
     if (drawingMode) {
       element.prop('attrs/body/magnet', true);
     } else {
-      element.prop('attr/body/magnet', 'passive');
-    }
+      //element.prop('attr/body/magnet', false);
+    }*/
+    //console.log(element);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
     element.addTo(this.graph);
   }
@@ -219,11 +248,15 @@ export class DiagramPaperComponent implements OnInit {
   addEndToGraph(drawingMode: boolean): void {
     let element = this.end.createEndElement();
 
+    /*
     if (drawingMode) {
       element.prop('attrs/body/magnet', true);
     } else {
-      element.prop('attr/body/magnet', 'passive');
-    }
+      //element.prop('attr/body/magnet', false);
+    }*/
+    //console.log(element);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
     element.addTo(this.graph);
   }
@@ -236,15 +269,17 @@ export class DiagramPaperComponent implements OnInit {
   }
 
 
-	changeDrawingMode(): void {
+	changeDrawingMode(e : any): void {
     if(this.drawingMode) { // vypnem drawing mode, zapne sa moving mode
       this.drawingMode = false;
       this.modeChanged(this.drawingMode);
       this.toggleCaption = 'Moving mode';
+      e.checked = true;
     } else { // zapnem drawing mode, vypne sa moving mode
       this.drawingMode = true;
       this.modeChanged(this.drawingMode);
       this.toggleCaption = 'Drawing mode';
+      e.checked = false;
     }
   }
 
@@ -260,6 +295,11 @@ export class DiagramPaperComponent implements OnInit {
       });
       this.paper.options.interactive = true;
     }
+  }
+
+  isChecked(): boolean {
+    //console.log('dasda');
+    return false;
   }
 
 }
