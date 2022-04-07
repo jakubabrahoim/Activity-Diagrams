@@ -5,11 +5,11 @@ import * as joint from 'jointjs';
 export class DiamondElement {
 
     // rectangle atributes ? ->
-    public createDiamondElement() : joint.shapes.standard.Polygon {
+    public createDiamondElement(name: string) : joint.shapes.standard.Polygon {
         var diamondElement = new joint.shapes.standard.Polygon({
             position: { x: 100, y: 200 },
             size: { width: 100, height: 100 },
-            name: 'diamond',
+            name: name,
             attrs: { text: { text:  'test diamond' }, body: { transform: 'rotate(45, 50, 50)' }},
             
         });

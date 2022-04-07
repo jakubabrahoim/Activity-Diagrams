@@ -13,7 +13,7 @@ export class Paper {
       model: graph,
       width: width,
       height: height,
-      gridSize: 1,
+      gridSize: 10,
       drawGrid: { name: 'mesh', args: { color: 'black' } },
       background: { color: 'white'},
       cellViewNamespace: nameSpace,
@@ -33,8 +33,6 @@ export class Paper {
         }
         //if(cellViewT.model.attributes['type'] === 'standard.Rectangle') return false;
         //return (magnetS !== magnetT);
-
-
         return true;
       }
     });

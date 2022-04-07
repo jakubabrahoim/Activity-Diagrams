@@ -1,20 +1,18 @@
 <h4>Activity Diagrams</h4>
 <div id="toolbox">
     <button id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Add Action Element</button>
-    <button id="addDiamond" (click)="addDiamondToGraph()" class="buttonMargin">Add Diamond Element</button>
-    <button id="addStart" (click)="addStartToGraph()" class="buttonMargin">Add Start Element</button>
-    <button id="addEnd" (click)="addEndToGraph()" class="buttonMargin">Add End Element</button>
+    <button id="addDiamondIf" (click)="addDiamondIfToGraph(drawingMode)" class="buttonMargin">Add If Element</button>
+    <button id="addDiamondIf" (click)="addDiamondCaseToGraph(drawingMode)" class="buttonMargin">Add Case Element</button>
+    <button id="addStart" (click)="addStartToGraph(drawingMode)" class="buttonMargin">Add Start Element</button>
+    <button id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">Add End Element</button>
     <button id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
 
-    <label class="switch">
-        <input type="checkbox" (change)="changeDrawingMode()">
-        <span class="slider round"></span>
-    </label>
+    <mat-slide-toggle id="paper-mode" (change)="changeDrawingMode()" color="primary">{{toggleCaption}}</mat-slide-toggle>
 </div>
 <br>
 
 <!-- Toto bude male menu, ktore sa zobrazi pri pravom kliku na element -->
-<div id="element-contextmenu">
+<div id="element-context-menu">
     <ul class="menu-options">
         <li class="menu-option" (click)="onShowElementPropertiesClicked()">Show element properties</li>
         <li class="menu-option-delete" (click)="onDeleteElementClicked()">Delete element</li>-->

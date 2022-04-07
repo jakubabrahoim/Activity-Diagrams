@@ -17,7 +17,7 @@ import { EndElement } from '../other-classes/end-element';
   selector: 'app-diagram-paper',
   templateUrl: './diagram-paper.component.html',
   styleUrls: ['./diagram-paper.component.css'],
-  providers: [Paper, ActionElement],
+  providers: [Paper], // tu daval aj provider na svoj element 
 })
 export class DiagramPaperComponent implements OnInit {
 
@@ -40,6 +40,7 @@ export class DiagramPaperComponent implements OnInit {
   elementIds: Array<number> = [1000];
 
   drawingMode: boolean = false;
+  toggleCaption: string;
 
   constructor(paper: Paper) {
     // pomocne veci
@@ -74,6 +75,8 @@ export class DiagramPaperComponent implements OnInit {
     this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
 
     this.elementIds.fill(0);
+
+    this.toggleCaption = 'Moving mode';
   }
 
   ngOnInit(): void {
@@ -134,7 +137,7 @@ export class DiagramPaperComponent implements OnInit {
     });
 
     this.paper.on('link: connect', (linkView) => {
-
+      console.log('pripojenie');
     });
   }
 
@@ -177,18 +180,51 @@ export class DiagramPaperComponent implements OnInit {
     element.addTo(this.graph);
   }
 
-  addDiamondToGraph(): void {
-    let element = this.diamond.createDiamondElement();
+  addDiamondIfToGraph(drawingMode: boolean): void {
+    let element = this.diamond.createDiamondElement('if');
+
+    if (drawingMode) {
+      element.prop('attrs/body/magnet', true);
+    } else {
+      element.prop('attr/body/magnet', 'passive');
+    }
+
     element.addTo(this.graph);
   }
 
-  addStartToGraph(): void {
+  addDiamondCaseToGraph(drawingMode: boolean): void {
+    let element = this.diamond.createDiamondElement('case');
+
+    if (drawingMode) {
+      element.prop('attrs/body/magnet', true);
+    } else {
+      element.prop('attr/body/magnet', 'passive');
+    }
+
+    element.addTo(this.graph);
+  }
+
+  addStartToGraph(drawingMode: boolean): void {
     let element = this.start.createStartElement();
+
+    if (drawingMode) {
+      element.prop('attrs/body/magnet', true);
+    } else {
+      element.prop('attr/body/magnet', 'passive');
+    }
+
     element.addTo(this.graph);
   }
 
-  addEndToGraph(): void {
+  addEndToGraph(drawingMode: boolean): void {
     let element = this.end.createEndElement();
+
+    if (drawingMode) {
+      element.prop('attrs/body/magnet', true);
+    } else {
+      element.prop('attr/body/magnet', 'passive');
+    }
+
     element.addTo(this.graph);
   }
 
@@ -201,10 +237,29 @@ export class DiagramPaperComponent implements OnInit {
 
 
 	changeDrawingMode(): void {
-    if(this.drawingMode) {
+    if(this.drawingMode) { // vypnem drawing mode, zapne sa moving mode
       this.drawingMode = false;
-    } else {
+      this.modeChanged(this.drawingMode);
+      this.toggleCaption = 'Moving mode';
+    } else { // zapnem drawing mode, vypne sa moving mode
       this.drawingMode = true;
+      this.modeChanged(this.drawingMode);
+      this.toggleCaption = 'Drawing mode';
     }
   }
+
+  modeChanged(mode: boolean): void {
+    if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
+      this.graph.getElements().forEach(element => {
+        element.prop('attrs/body/magnet', true);
+      });
+      this.paper.options.interactive = false;
+    } else { // vypnem drawing mode (zapne sa moving mode) -> viem hybat elementy, neviem spajat elementy
+      this.graph.getElements().forEach(element => {
+        element.prop('attrs/body/magnet', 'passive');
+      });
+      this.paper.options.interactive = true;
+    }
+  }
+
 }
