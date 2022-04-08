@@ -1,13 +1,13 @@
 <h4>Activity Diagrams</h4>
 <div id="toolbox">
-    <button id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Add Action Element</button>
-    <button id="addDiamondIf" (click)="addDiamondIfToGraph(drawingMode)" class="buttonMargin">Add If Element</button>
-    <button id="addDiamondIf" (click)="addDiamondCaseToGraph(drawingMode)" class="buttonMargin">Add Case Element</button>
-    <button id="addStart" (click)="addStartToGraph(drawingMode)" class="buttonMargin">Add Start Element</button>
-    <button id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">Add End Element</button>
-    <button id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
+    <button mat-stroked-button color="primary" id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Add Action Element</button>
+    <button mat-stroked-button color="primary" id="addDiamondIf" (click)="addDiamondIfToGraph(drawingMode)" class="buttonMargin">Add If Element</button>
+    <button mat-stroked-button color="primary" id="addDiamondCase" (click)="addDiamondCaseToGraph(drawingMode)" class="buttonMargin">Add Case Element</button>
+    <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph(drawingMode)" class="buttonMargin">Add Start Element</button>
+    <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">Add End Element</button>
+    <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
 
-    <mat-slide-toggle id="paper-mode" #toggle [checked]="isChecked()" (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
+    <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
 </div>
 <br>
 
@@ -15,7 +15,7 @@
 <div id="element-context-menu">
     <ul class="menu-options">
         <li class="menu-option" (click)="onShowElementPropertiesClicked()">Show element properties</li>
-        <li class="menu-option-delete" (click)="onDeleteElementClicked()">Delete element</li>-->
+        <li class="menu-option-delete" (click)="onDeleteElementClicked()">Delete element</li>
     </ul>
 </div>
 

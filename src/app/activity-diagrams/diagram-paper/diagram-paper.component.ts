@@ -74,7 +74,7 @@ export class DiagramPaperComponent implements OnInit {
     let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
     this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
-    this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool, removeTool]});
+    this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool]});
 
     this.elementIds.fill(0);
 
@@ -102,20 +102,24 @@ export class DiagramPaperComponent implements OnInit {
     });
     
     // Zobrazenie context menu pre element
-    this.paper.on('element:element-contextmenu', (elementView, _evt, x, y) => {
+    this.paper.on('element:contextmenu', (elementView, _evt, x, y) => {
       let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
       this.activePaperElement = elementView.model;
-      elementContextMenu.style.left = x + 70 + 'px';
-      elementContextMenu.style.top = y + 75 + 'px';
+      elementContextMenu.style.left = (x + 70).toString() + 'px';
+      elementContextMenu.style.top = (y + 75).toString() + 'px';
       elementContextMenu.style.display = 'block';
       
       linkContextMenu.style.display = 'none';
     });
 
     // Zobrazenie context menu pre prepojenie
-    this.paper.on('element:link-contextmenu', (linkView, _evt, x, y) => {
+    this.paper.on('link:contextmenu', (linkView, _evt, x, y) => {
+      
+      let sourceElement = this.graph.getCell(linkView.model.attributes.source.id);
+      if(sourceElement.attributes['name'] != 'if' && sourceElement.attributes['name'] != 'case') return;
+
       let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
@@ -296,10 +300,4 @@ export class DiagramPaperComponent implements OnInit {
       this.paper.options.interactive = true;
     }
   }
-
-  isChecked(): boolean {
-    //console.log('dasda');
-    return false;
-  }
-
 }
