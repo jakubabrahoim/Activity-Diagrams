@@ -47,14 +47,15 @@ export class DiagramPaperComponent implements OnInit {
     // pomocne veci
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
-    const paperHeight: number = 700;
-    const paperWidth: number = 1200;
+    const paperHeight: number = 750;
+    const paperWidth: any = '99%';
 
     // nastavenie html elementu pre papier
     paperElement.id = 'paper';
+    paperElement.style.width = '100%';
     paperElement.style.margin = 'auto';
     paperElement.style.borderStyle = 'solid';
-    paperElement.style.borderWidth = '2px';
+    paperElement.style.borderWidth = '1px';
     paperElement.style.overflow = 'auto';
     document.body.appendChild(paperElement);
 
@@ -62,6 +63,7 @@ export class DiagramPaperComponent implements OnInit {
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
     this.paper = paper.createNewPaper(paperElement, this.graph, paperWidth, paperHeight, namespace);
     this.paper.drawGrid();
+    this.paper.scale(0.8);
 
     this.action = new ActionElement();
     this.diamond = new DiamondElement();
@@ -90,6 +92,7 @@ export class DiagramPaperComponent implements OnInit {
     this.graph.clear();
   }
 
+  // Function that adds listeners to elements
   addActionListeners(): void {
     this.paper.on('element:mouseenter', (elementView: any) => {
       elementView.removeTools();
@@ -183,7 +186,7 @@ export class DiagramPaperComponent implements OnInit {
   }
 
 
-  // ADD ELEMENT FUNCTIONS BELOW
+  // Functions that add elements to the paper
   addActionToGraph(drawingMode: boolean): void {
     let element = this.action.createActionElement();
     
@@ -266,13 +269,47 @@ export class DiagramPaperComponent implements OnInit {
   }
 
 
-  // SAVE DIAGRAM
+  // Save diagram
   saveDiagram(): void {
     let json = this.graph.toJSON();
     console.log(json);
+
+    let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+    let exportFileDefaultName = 'diagram.json';
+
+    let linkElement = document.createElement('a');
+    linkElement?.setAttribute('href', jsonUri);
+    linkElement?.setAttribute('download', exportFileDefaultName);
+    linkElement?.click();
+  }
+
+  // Load diagram
+  loadDiagram(): void {
+    let inputFile: any = document.getElementById('jsonUpload')!;
+    let fileReader = new FileReader();
+
+    try {
+      let file: File = inputFile.files[0];
+
+      if(file == undefined || file == null) {
+        console.log('No file selected!');
+        return;
+      }
+
+      fileReader.readAsText(file);
+      //this.graph.fromJSON(file);
+    } catch (error) {
+      console.log(error);
+    }
+
+    fileReader.onload = () => {
+      let json = JSON.parse(fileReader.result as string);
+      this.graph.fromJSON(json);
+    }
   }
 
 
+  // Functions that change the drawing/moving mode
 	changeDrawingMode(e : any): void {
     if(this.drawingMode) { // vypnem drawing mode, zapne sa moving mode
       this.drawingMode = false;
@@ -299,5 +336,11 @@ export class DiagramPaperComponent implements OnInit {
       });
       this.paper.options.interactive = true;
     }
+  }
+
+  // Functions for modal windows
+  closeModal(): void {
+    let actionModal: HTMLElement = document.getElementById('modalAction')!;
+    actionModal.style.display = 'none';
   }
 }

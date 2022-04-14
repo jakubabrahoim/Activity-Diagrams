@@ -1,4 +1,6 @@
 <h4>Activity Diagrams</h4>
+
+<!-- Main tool bar-->
 <div id="toolbox">
     <button mat-stroked-button color="primary" id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Add Action Element</button>
     <button mat-stroked-button color="primary" id="addDiamondIf" (click)="addDiamondIfToGraph(drawingMode)" class="buttonMargin">Add If Element</button>
@@ -6,12 +8,14 @@
     <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph(drawingMode)" class="buttonMargin">Add Start Element</button>
     <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">Add End Element</button>
     <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
+    <button mat-stroked-button color="primary" id="load" (click)="loadDiagram()" class="buttonMargin">Load Diagram</button>
+    <input type="file" id="jsonUpload" value="Load Diagram">
 
     <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
 </div>
 <br>
 
-<!-- Toto bude male menu, ktore sa zobrazi pri pravom kliku na element -->
+<!-- Context menu for elements -->
 <div id="element-context-menu">
     <ul class="menu-options">
         <li class="menu-option" (click)="onShowElementPropertiesClicked()">Show element properties</li>
@@ -19,9 +23,22 @@
     </ul>
 </div>
 
-<!-- Toto bude male menu, ktore sa zobrazi pri pravom kliku na prepojenie -->
+<!-- Context menu for links -->
 <div id="link-context-menu">
     <ul class="menu-options">
         <li class="menu-option" (click)="onShowLinkPropertiesClicked()">Show link properties</li>
     </ul>
+</div>
+
+<!-- Modal windows -->
+<div id="modalAction" class="modal">
+    <div class="modal-content">
+        <form>
+            <label for="actionCaption">Action caption:</label><br>
+            <input #actionCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption...">
+            <br>
+            <input class="saveButton" type="button" value="Add action">
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
 </div>
