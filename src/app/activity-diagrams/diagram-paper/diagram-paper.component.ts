@@ -204,13 +204,13 @@ export class DiagramPaperComponent implements OnInit {
   // Functions that add elements to the paper
   addActionToGraph(caption: any): void {
     let element = this.action.createActionElement();
+    // this prevents highlighting element caption -> when in drawing mode it was highlighting the text
+    // when connecting elements
     element.attr(
       "label/style",
       "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
     );
     element.attr('label/text', caption);
-
-    //console.log(element.attributes.attrs?.label?.text);
     
     this.drawingMode = true;
     this.changeDrawingMode(event);
@@ -236,20 +236,20 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
-  addDiamondCaseToGraph(drawingMode: boolean): void {
+  addDiamondCaseToGraph(caption: any): void {
     let element = this.diamond.createDiamondElement('case');
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
+    element.attr('label/text', caption);
 
-    /*
-    if (drawingMode) {
-      element.prop('attrs/body/magnet', true);
-    } else {
-      //element.prop('attr/body/magnet', false);
-    }*/
-    //console.log(element);
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
     element.addTo(this.graph);
+
+    this.closeModal();
   }
 
   addStartToGraph(drawingMode: boolean): void {
@@ -355,20 +355,34 @@ export class DiagramPaperComponent implements OnInit {
 
   // Functions for modal windows
 
-  showActionModal(): void {
-    let modal: HTMLElement = document.getElementById('modalAction')!;
-    modal.style.display = 'block';
-  }
+  showModal(type: string) {
+    let modal: HTMLElement;
 
-  showIfModal(): void {
-    let modal: HTMLElement = document.getElementById('modalIf')!;
-    modal.style.display = 'block';
+    switch(type) {
+      case 'action':
+        modal = document.getElementById('modalAction')!;
+        modal.style.display = 'block';
+        break;
+      case 'if':
+        modal = document.getElementById('modalIf')!;
+        modal.style.display = 'block';
+        break;
+      case 'case':
+        modal = document.getElementById('modalCase')!;
+        modal.style.display = 'block';
+        break;
+      default:
+        console.log('Unknown modal type!');
+        break;
+    }
   }
 
   closeModal(): void {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
     let ifModal: HTMLElement = document.getElementById('modalIf')!;
+    let caseModal: HTMLElement = document.getElementById('modalCase')!;
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
+    caseModal.style.display = 'none';
   }
 }
