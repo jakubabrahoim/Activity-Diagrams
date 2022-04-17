@@ -4,15 +4,19 @@ import * as joint from 'jointjs';
 @Injectable()
 export class StartElement {
 
-    public createStartElement() : joint.shapes.uml.StartState {
-        var startElement = new joint.shapes.uml.StartState({
+    public createStartElement() : joint.shapes.standard.Ellipse {
+        var startElement = new joint.shapes.standard.Ellipse({
             position: { x: 100, y: 100 },
-            size: { width: 40, height: 40 },
+            size: { width: 70, height: 70 },
             name: 'start',
             attrs: {
-                'circle': {
+                body: {
                     fill: 'black',
-                    stroke: 'none'
+                    magnet: 'passive'
+                },
+                label: {
+                    text: 'Start',
+                    fill: 'white'
                 }
             }
         });

@@ -4,19 +4,19 @@ import * as joint from 'jointjs';
 @Injectable()
 export class EndElement {
 
-    public createEndElement() : joint.shapes.uml.EndState {
-        var endElement = new joint.shapes.uml.EndState({
+    public createEndElement() : joint.shapes.standard.Ellipse {
+        var endElement = new joint.shapes.standard.Ellipse({
             position: { x: 150, y: 100 },
-            size: { width: 40, height: 40 },
+            size: { width: 70, height: 70 },
             name: 'end',
             attrs: {
-                'circle.outer': {
-                    stroke: 'black',
-                    "stroke-width": 2
-                },
-                'circle.inner': {
+                body: {
                     fill: 'black',
-                    stroke: 'none'
+                    magnet: 'passive'
+                },
+                label: {
+                    text: 'End',
+                    fill: 'white'
                 }
             }
         });

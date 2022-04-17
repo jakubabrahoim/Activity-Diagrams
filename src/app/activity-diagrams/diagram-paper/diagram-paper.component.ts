@@ -106,8 +106,15 @@ export class DiagramPaperComponent implements OnInit {
     
     // Zobrazenie context menu pre element
     this.paper.on('element:contextmenu', (elementView, _evt, x, y) => {
-      let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+      let clickedELementType: any = elementView.model.attributes['name'];
+      let elementContextMenu: HTMLElement;
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
+
+      if(clickedELementType == 'start' || clickedELementType == 'end') {
+        elementContextMenu = document.getElementById('delete-context-menu')!;
+      } else {
+        elementContextMenu = document.getElementById('element-context-menu')!;
+      }
 
       this.activePaperElement = elementView.model;
       elementContextMenu.style.left = (x + 70).toString() + 'px';
@@ -137,9 +144,11 @@ export class DiagramPaperComponent implements OnInit {
     // Schovanie obidvoch context menu
     this.paper.on('blank:pointerclick', () => {
       let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+      let deleteContextMenu: HTMLElement = document.getElementById('delete-context-menu')!;
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
       elementContextMenu.style.display = 'none';
+      deleteContextMenu.style.display = 'none';
       linkContextMenu.style.display = 'none';
     });
 
@@ -175,7 +184,9 @@ export class DiagramPaperComponent implements OnInit {
     this.activePaperElement = null;
 
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
+    let deleteContextMenu: HTMLElement = document.getElementById('delete-context-menu')!;
     elementContextMenu.style.display = 'none';
+    deleteContextMenu.style.display = 'none';
   }
 
   onShowLinkPropertiesClicked() {
@@ -295,9 +306,8 @@ export class DiagramPaperComponent implements OnInit {
         console.log('No file selected!');
         return;
       }
-
+      
       fileReader.readAsText(file);
-      //this.graph.fromJSON(file);
     } catch (error) {
       console.log(error);
     }
