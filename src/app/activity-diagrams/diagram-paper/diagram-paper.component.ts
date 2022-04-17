@@ -95,7 +95,7 @@ export class DiagramPaperComponent implements OnInit {
     this.graph.clear();
   }
 
-  // Function that adds listeners to elements
+  /** Function that adds event listeners to paper elements and links */
   addActionListeners(): void {
     this.paper.on('element:mouseenter', (elementView: any) => {
       elementView.removeTools();
@@ -172,13 +172,14 @@ export class DiagramPaperComponent implements OnInit {
     });
   }
 
-  // Context menu click actions/functions
+  /** Shows element properties modal window */
   onShowElementPropertiesClicked(){
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
     this.currentElementName.emit(this.activePaperElement.attributes.name);
   }
 
+  /** Deletes element from paper */
   onDeleteElementClicked(){
     let id: number = this.activePaperElement.id; // .uniqueid
     this.elementIds[id] = 0;
@@ -191,6 +192,7 @@ export class DiagramPaperComponent implements OnInit {
     deleteContextMenu.style.display = 'none';
   }
 
+  /** Shows link properties modal window */
   onShowLinkPropertiesClicked() {
     let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
     linkContextMenu.style.display = 'none';
@@ -218,20 +220,20 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
-  addDiamondIfToGraph(drawingMode: boolean): void {
+  addDiamondIfToGraph(caption: any ): void {
     let element = this.diamond.createDiamondElement('if');
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
+    element.attr('label/text', caption);
 
-    /*
-    if (drawingMode) {
-      element.prop('attrs/body/magnet', true);
-    } else {
-      //element.prop('attr/body/magnet', false);
-    }*/
-    //console.log(element);
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
     element.addTo(this.graph);
+
+    this.closeModal();
   }
 
   addDiamondCaseToGraph(drawingMode: boolean): void {
@@ -283,7 +285,7 @@ export class DiagramPaperComponent implements OnInit {
   }
 
 
-  // Save diagram
+  /** Saves diagram to JSON file and downloads it */
   saveDiagram(): void {
     let json = this.graph.toJSON();
     console.log(json);
@@ -297,7 +299,7 @@ export class DiagramPaperComponent implements OnInit {
     linkElement?.click();
   }
 
-  // Load diagram
+  /** Load diagram from uploaded JSON file and displays it on paper */
   loadDiagram(): void {
     let inputFile: any = document.getElementById('jsonUpload')!;
     let fileReader = new FileReader();
@@ -321,15 +323,14 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
-
-  // Functions that change the drawing/moving mode
+  /** Changes current paper mode (drawing/moving) */
 	changeDrawingMode(e : any): void {
-    if(this.drawingMode) { // vypnem drawing mode, zapne sa moving mode
+    if(this.drawingMode) { // disable drawing mode, activate moving mode
       this.drawingMode = false;
       this.modeChanged(this.drawingMode);
       this.toggleCaption = 'Moving mode';
       e.checked = true;
-    } else { // zapnem drawing mode, vypne sa moving mode
+    } else { // activate drawing mode, disable moving mode
       this.drawingMode = true;
       this.modeChanged(this.drawingMode);
       this.toggleCaption = 'Drawing mode';
@@ -337,6 +338,7 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
+  /** Adds removes magnets from all elements on the paper */
   modeChanged(mode: boolean): void {
     if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
       this.graph.getElements().forEach(element => {
@@ -358,8 +360,15 @@ export class DiagramPaperComponent implements OnInit {
     modal.style.display = 'block';
   }
 
+  showIfModal(): void {
+    let modal: HTMLElement = document.getElementById('modalIf')!;
+    modal.style.display = 'block';
+  }
+
   closeModal(): void {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
+    let ifModal: HTMLElement = document.getElementById('modalIf')!;
     actionModal.style.display = 'none';
+    ifModal.style.display = 'none';
   }
 }
