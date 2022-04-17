@@ -31,7 +31,10 @@ export class DiagramPaperComponent implements OnInit {
 
   // Currently selected elements
   activePaperElement: any = null;
+  activePaperElementCaption: string = '';
   activePaperLink: any = null;
+  activePaperLinkCaption: string = '';
+  elementEditing: boolean = false;
 
   // Element hover view variables
   toolsView: any;
@@ -176,7 +179,11 @@ export class DiagramPaperComponent implements OnInit {
   onShowElementPropertiesClicked(){
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
-    this.currentElementName.emit(this.activePaperElement.attributes.name);
+
+    let elementType = this.activePaperElement.attributes['name'];
+    this.activePaperElementCaption = this.activePaperElement.attributes.attrs?.label?.text;
+    this.elementEditing = true;
+    this.showModal(elementType);
   }
 
   /** Deletes element from paper */
@@ -221,7 +228,7 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   addDiamondIfToGraph(caption: any ): void {
-    let element = this.diamond.createDiamondElement('if');
+    let element = this.diamond.createDiamondElement('if', 'black');
     element.attr(
       "label/style",
       "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
@@ -237,7 +244,7 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   addDiamondCaseToGraph(caption: any): void {
-    let element = this.diamond.createDiamondElement('case');
+    let element = this.diamond.createDiamondElement('case', 'blue');
     element.attr(
       "label/style",
       "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
@@ -252,7 +259,16 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
-  addStartToGraph(drawingMode: boolean): void {
+  addDiamondJoinToGraph(): void {
+    let element = this.diamond.createDiamondElement('join', 'red');
+
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
+
+    element.addTo(this.graph);
+  }
+
+  addStartToGraph(): void {
     let element = this.start.createStartElement();
 
     /*
@@ -268,7 +284,7 @@ export class DiagramPaperComponent implements OnInit {
     element.addTo(this.graph);
   }
 
-  addEndToGraph(drawingMode: boolean): void {
+  addEndToGraph(): void {
     let element = this.end.createEndElement();
 
     /*
@@ -284,6 +300,11 @@ export class DiagramPaperComponent implements OnInit {
     element.addTo(this.graph);
   }
 
+  updateElementCaption(newCaption: any): void {
+    this.activePaperElement.attr('label/text', newCaption);
+    this.elementEditing = false;
+    this.closeModal();
+  }
 
   /** Saves diagram to JSON file and downloads it */
   saveDiagram(): void {
@@ -384,5 +405,10 @@ export class DiagramPaperComponent implements OnInit {
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
     caseModal.style.display = 'none';
+
+    this.activePaperElement = null;
+    this.activePaperElementCaption = '';
+    this.activePaperLink = null;
+    this.activePaperLinkCaption = '';
   }
 }

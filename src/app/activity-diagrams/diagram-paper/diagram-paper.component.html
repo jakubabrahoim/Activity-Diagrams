@@ -6,9 +6,9 @@
     <button mat-stroked-button color="primary" id="addAction" (click)="showModal('action')" class="buttonMargin">Action</button>
     <button mat-stroked-button color="primary" id="addDiamondIf" (click)="showModal('if')" class="buttonMargin">If</button>
     <button mat-stroked-button color="primary" id="addDiamondCase" (click)="showModal('case')" class="buttonMargin">Case</button>
-    <button mat-stroked-button color="primary" id="addJoin" class="buttonMargin">Join</button>
-    <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph(drawingMode)" class="buttonMargin">Start</button>
-    <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph(drawingMode)" class="buttonMargin">End</button>
+    <button mat-stroked-button color="primary" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
+    <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph()" class="buttonMargin">Start</button>
+    <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph()" class="buttonMargin">End</button>
     <button mat-stroked-button color="primary" id="addLoop" class="buttonMargin">Loop</button>
 
 </div>
@@ -47,12 +47,13 @@
 <!-- Modal windows -->
 <div id="modalAction" class="modal">
     <div class="modal-content">
-        <p *ngIf="this.activePaperElement != null">Current caption: {{this.activePaperElement.attributes.attrs?.label?.text}}</p>
         <form>
             <label for="actionCaption">Action caption:</label><br>
-            <input #actionCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption...">
+            <input #actionCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption..." value="{{this.activePaperElementCaption}}">
             <br>
-            <input class="saveButton" type="button" value="Add action" (click)="addActionToGraph(actionCaption.value)">
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? updateElementCaption(actionCaption.value) : addActionToGraph(actionCaption.value)"
+            >
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>
     </div>
@@ -60,12 +61,13 @@
 
 <div id="modalIf" class="modal">
     <div class="modal-content">
-        <p *ngIf="this.activePaperElement != null">Current caption: {{this.activePaperElement.attributes.attrs?.label?.text}}</p>
         <form>
             <label for="ifCaption">If caption:</label><br>
-            <input #ifCaption type="text" id="ifCaption" name="ifCaption" placeholder="If caption...">
+            <input #ifCaption type="text" id="ifCaption" name="ifCaption" placeholder="If caption..." value="{{this.activePaperElementCaption}}">
             <br>
-            <input class="saveButton" type="button" value="Add if" (click)="addDiamondIfToGraph(ifCaption.value)">
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? updateElementCaption(ifCaption.value) : addDiamondIfToGraph(ifCaption.value)"
+            >
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>
     </div>
@@ -73,12 +75,13 @@
 
 <div id="modalCase" class="modal">
     <div class="modal-content">
-        <p *ngIf="this.activePaperElement != null">Current caption: {{this.activePaperElement.attributes.attrs?.label?.text}}</p>
         <form>
             <label for="caseCaption">Case caption:</label><br>
-            <input #caseCaption type="text" id="caseCaption" name="caseCaption" placeholder="Case caption...">
+            <input #caseCaption type="text" id="caseCaption" name="caseCaption" placeholder="Case caption..." value="{{this.activePaperElementCaption}}">
             <br>
-            <input class="saveButton" type="button" value="Add case" (click)="addDiamondCaseToGraph(caseCaption.value)">
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? updateElementCaption(caseCaption.value) : addDiamondCaseToGraph(caseCaption.value)"
+            >
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>
     </div>
