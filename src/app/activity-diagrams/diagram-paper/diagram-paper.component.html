@@ -1,7 +1,7 @@
 <h4>Activity Diagrams</h4>
 
 <!-- Main tool bar-->
-<div id="toolbox">
+<div id="toolbox" class="toolbox">
     <button mat-stroked-button color="primary" id="module" class="buttonMargin">Module</button>
     <button mat-stroked-button color="primary" id="addAction" (click)="showModal('action')" class="buttonMargin">Action</button>
     <button mat-stroked-button color="primary" id="addDiamondIf" (click)="showModal('if')" class="buttonMargin">If</button>
@@ -13,9 +13,10 @@
 
 </div>
 <br>
-<div id="toolbox2">
-    <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
-    <button mat-stroked-button color="primary" id="load" (click)="loadDiagram()" class="buttonMargin">Load Diagram</button>
+<div id="toolbox2" class="toolbox">
+    <button mat-stroked-button color="primary" id="generate" class="buttonMargin">Generate code</button>
+    <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save diagram</button>
+    <button mat-stroked-button color="primary" id="load" (click)="loadDiagram()" class="buttonMargin">Load diagram</button>
     <input type="file" id="jsonUpload" value="Load Diagram">
     <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
 </div>

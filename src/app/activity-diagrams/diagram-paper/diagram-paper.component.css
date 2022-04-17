@@ -1,8 +1,5 @@
-#paper {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+.toolbox {
+    margin-left: 6px;
 }
 
 .buttonMargin {

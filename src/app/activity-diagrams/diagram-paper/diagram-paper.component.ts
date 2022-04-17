@@ -300,6 +300,7 @@ export class DiagramPaperComponent implements OnInit {
     element.addTo(this.graph);
   }
 
+  /** Updates the caption of current selected element */
   updateElementCaption(newCaption: any): void {
     this.activePaperElement.attr('label/text', newCaption);
     this.elementEditing = false;
