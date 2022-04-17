@@ -1,6 +1,19 @@
+#paper {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .buttonMargin {
     margin-right: 10px;
     border: 1px solid black;
+}
+
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
 }
 
 /* Context menu css */
@@ -73,4 +86,65 @@
     padding: 20px;
     border: 1px solid #888;
     width: 42%;
+}
+
+textarea {
+    margin-top: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=text]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=button] {
+    width: 100%;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=button]:disabled {
+    background:rgb(255, 255, 255);
+    cursor: default;
+}
+
+.saveButton {
+    background-color: #129216;
+}
+
+.insert-button {
+    background-color: #5fbae9;
+}
+.cancelButton {
+    background-color: red;
+}
+
+.radio-inline {
+    padding-right: 8px;
+}
+
+.label-inline {
+    padding-right: 8px;
 }

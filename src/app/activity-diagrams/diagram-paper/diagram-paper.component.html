@@ -3,7 +3,7 @@
 <!-- Main tool bar-->
 <div id="toolbox">
     <button mat-stroked-button color="primary" id="module" class="buttonMargin">Module</button>
-    <button mat-stroked-button color="primary" id="addAction" (click)="addActionToGraph(drawingMode)" class="buttonMargin">Action</button>
+    <button mat-stroked-button color="primary" id="addAction" (click)="showActionModal()" class="buttonMargin">Action</button>
     <button mat-stroked-button color="primary" id="addDiamondIf" (click)="addDiamondIfToGraph(drawingMode)" class="buttonMargin">If</button>
     <button mat-stroked-button color="primary" id="addDiamondCase" (click)="addDiamondCaseToGraph(drawingMode)" class="buttonMargin">Case</button>
     <button mat-stroked-button color="primary" id="addJoin" class="buttonMargin">Join</button>
@@ -12,9 +12,7 @@
     <button mat-stroked-button color="primary" id="addLoop" class="buttonMargin">Loop</button>
 
 </div>
-
 <br>
-
 <div id="toolbox2">
     <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save Diagram</button>
     <button mat-stroked-button color="primary" id="load" (click)="loadDiagram()" class="buttonMargin">Load Diagram</button>
@@ -49,11 +47,25 @@
 <!-- Modal windows -->
 <div id="modalAction" class="modal">
     <div class="modal-content">
+        <p *ngIf="this.activePaperElement != null">Current caption: {{this.activePaperElement.attributes.attrs?.label?.text}}</p>
         <form>
             <label for="actionCaption">Action caption:</label><br>
             <input #actionCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption...">
             <br>
-            <input class="saveButton" type="button" value="Add action">
+            <input class="saveButton" type="button" value="Add action" (click)="addActionToGraph(actionCaption.value)">
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
+</div>
+
+<div id="modalIf" class="modal">
+    <div class="modal-content">
+        <p *ngIf="this.activePaperElement != null">Current caption: {{this.activePaperElement.attributes.attrs?.label?.text}}</p>
+        <form>
+            <label for="actionCaption">if caption:</label><br>
+            <input #ifCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption...">
+            <br>
+            <input class="saveButton" type="button" value="Add action" (click)="addActionToGraph(actionCaption.value)">
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>
     </div>

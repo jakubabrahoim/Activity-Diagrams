@@ -29,9 +29,11 @@ export class DiagramPaperComponent implements OnInit {
   start: StartElement;
   end: EndElement;
 
-  // V activePaper<> je vzdy elemenet, na ktory klikol uzivatel
+  // Currently selected elements
   activePaperElement: any = null;
   activePaperLink: any = null;
+
+  // Element hover view variables
   toolsView: any;
   elementToolsView: any;
 
@@ -40,6 +42,7 @@ export class DiagramPaperComponent implements OnInit {
 
   elementIds: Array<number> = [1000];
 
+  // Mode toggle variables
   drawingMode: boolean = false;
   toggleCaption: string;
 
@@ -169,7 +172,6 @@ export class DiagramPaperComponent implements OnInit {
     });
   }
 
-
   // Context menu click actions/functions
   onShowElementPropertiesClicked(){
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
@@ -198,21 +200,22 @@ export class DiagramPaperComponent implements OnInit {
 
 
   // Functions that add elements to the paper
-  addActionToGraph(drawingMode: boolean): void {
+  addActionToGraph(caption: any): void {
     let element = this.action.createActionElement();
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
+    element.attr('label/text', caption);
+
+    //console.log(element.attributes.attrs?.label?.text);
     
-    /*
-    if (drawingMode) {
-      element.prop('attrs/body/magnet', true);
-    } else {
-      //element.prop('attr/body/magnet', false);
-    }*/
-    //console.log(element);
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
     element.addTo(this.graph);
-    //this.modeChanged(drawingMode);
+
+    this.closeModal();
   }
 
   addDiamondIfToGraph(drawingMode: boolean): void {
@@ -349,6 +352,12 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   // Functions for modal windows
+
+  showActionModal(): void {
+    let modal: HTMLElement = document.getElementById('modalAction')!;
+    modal.style.display = 'block';
+  }
+
   closeModal(): void {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
     actionModal.style.display = 'none';
