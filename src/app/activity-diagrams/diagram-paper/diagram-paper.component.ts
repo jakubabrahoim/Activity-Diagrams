@@ -445,5 +445,14 @@ export class DiagramPaperComponent implements OnInit {
     this.activePaperLink = null;
     this.activePaperLinkCaption = '';
     this.elementEditing = false;
+
+    // reset values of all forms
+    let actionForm: any = document.getElementById('actionForm')!;
+    let ifForm: any = document.getElementById('ifForm')!;
+    let caseForm: any = document.getElementById('caseForm')!;
+
+    actionForm.reset();
+    ifForm.reset();
+    caseForm.reset();
   }
 }

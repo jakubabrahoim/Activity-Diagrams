@@ -48,7 +48,7 @@
 <!-- Modal windows -->
 <div id="modalAction" class="modal">
     <div class="modal-content">
-        <form>
+        <form id = "actionForm">
             <label for="actionCaption">Action caption:</label><br>
             <input #actionCaption type="text" id="actionCaption" name="actionCaption" placeholder="Action caption..." value="{{this.activePaperElementCaption}}">
             <br>
@@ -62,7 +62,7 @@
 
 <div id="modalIf" class="modal">
     <div class="modal-content">
-        <form>
+        <form id="ifForm"> 
             <label for="ifCaption">If caption:</label><br>
             <input #ifCaption type="text" id="ifCaption" name="ifCaption" placeholder="If caption..." value="{{this.activePaperElementCaption}}">
             <br>
@@ -76,7 +76,7 @@
 
 <div id="modalCase" class="modal">
     <div class="modal-content">
-        <form>
+        <form id="caseForm">
             <label for="caseCaption">Case caption:</label><br>
             <input #caseCaption type="text" id="caseCaption" name="caseCaption" placeholder="Case caption..." value="{{this.activePaperElementCaption}}">
             <br>
