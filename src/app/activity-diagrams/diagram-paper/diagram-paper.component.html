@@ -101,3 +101,17 @@
         </form>
     </div>
 </div>
+
+<div id="modalCaseLink" class="modal">
+    <div class="modal-content">
+        <form>
+            <label for="caseLinkCaption">Case link caption:</label><br>
+            <input #caseLinkCaption type="text" id="caseLinkCaption" name="caseLinkCaption" placeholder="Case link caption..." value="{{this.activePaperLinkCaption}}">
+            <br>
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? updateLinkCaption(caseLinkCaption.value, 'caseLink') : null"
+            >
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
+</div>

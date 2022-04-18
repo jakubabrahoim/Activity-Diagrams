@@ -209,7 +209,6 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
-
   // Functions that add elements to the paper
   addActionToGraph(caption: any): void {
     let element = this.action.createActionElement();
@@ -273,13 +272,6 @@ export class DiagramPaperComponent implements OnInit {
   addStartToGraph(): void {
     let element = this.start.createStartElement();
 
-    /*
-    if (drawingMode) {
-      element.prop('attrs/body/magnet', true);
-    } else {
-      //element.prop('attr/body/magnet', false);
-    }*/
-    //console.log(element);
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
@@ -289,13 +281,6 @@ export class DiagramPaperComponent implements OnInit {
   addEndToGraph(): void {
     let element = this.end.createEndElement();
 
-    /*
-    if (drawingMode) {
-      element.prop('attrs/body/magnet', true);
-    } else {
-      //element.prop('attr/body/magnet', false);
-    }*/
-    //console.log(element);
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
@@ -402,6 +387,7 @@ export class DiagramPaperComponent implements OnInit {
 
   // Functions for modal windows
 
+  /** Shows specific modal window according to type */
   showModal(type: string) {
     let modal: HTMLElement;
     console.log(this.activePaperElementCaption)
@@ -423,22 +409,29 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('modalIfLink')!;
         modal.style.display = 'block';
         break;
+      case 'caseLink':
+        modal = document.getElementById('modalCaseLink')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
     }
   }
 
+  /** Closes all modal windows */
   closeModal(): void {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
     let ifModal: HTMLElement = document.getElementById('modalIf')!;
     let caseModal: HTMLElement = document.getElementById('modalCase')!;
     let ifLinkModal: HTMLElement = document.getElementById('modalIfLink')!;
+    let caseLinkModal: HTMLElement = document.getElementById('modalCaseLink')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
     caseModal.style.display = 'none';
     ifLinkModal.style.display = 'none';
+    caseLinkModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
