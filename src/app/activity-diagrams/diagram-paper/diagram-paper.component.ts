@@ -7,12 +7,6 @@ import { DiamondElement } from '../other-classes/diamond';
 import { StartElement } from '../other-classes/start-element';
 import { EndElement } from '../other-classes/end-element';
 
-/*
-- pridanie portov, spajanie elementov/utvarov
-- upravenie textu v elemente/utvare
-- toolbox na utvary
-*/
-
 @Component({
   selector: 'app-diagram-paper',
   templateUrl: './diagram-paper.component.html',
@@ -50,13 +44,13 @@ export class DiagramPaperComponent implements OnInit {
   toggleCaption: string;
 
   constructor(paper: Paper) {
-    // pomocne veci
+    // Helper variables
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
     const paperHeight: number = 750;
     const paperWidth: any = '99%';
 
-    // nastavenie html elementu pre papier
+    // Setup for HTML element that will contain the paper
     paperElement.id = 'paper';
     paperElement.style.width = '100%';
     paperElement.style.margin = 'auto';
@@ -65,7 +59,7 @@ export class DiagramPaperComponent implements OnInit {
     paperElement.style.overflow = 'auto';
     document.body.appendChild(paperElement);
 
-    // vytvorenie grafu a papiera
+    // Graph setup
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
     this.paper = paper.createNewPaper(paperElement, this.graph, paperWidth, paperHeight, namespace);
     this.paper.drawGrid();
@@ -76,8 +70,8 @@ export class DiagramPaperComponent implements OnInit {
     this.start = new StartElement();
     this.end = new EndElement();
 
-    // vytvorenie tools view
-    // vertices - na zmenu tvaru spojenia, boundary - ohranicenie prepojenia, remove - odstranenie prepojenia
+    // Tools view setup for elements and links
+    // Vertices - add vertices to links, boundary - to see a dotted boundary around element, remove - to remove element
     let verticesTool: joint.linkTools.Vertices = new joint.linkTools.Vertices();
     let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
