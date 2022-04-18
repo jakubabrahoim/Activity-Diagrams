@@ -197,8 +197,16 @@ export class DiagramPaperComponent implements OnInit {
   onShowLinkPropertiesClicked() {
     let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
     linkContextMenu.style.display = 'none';
-    //this.currentEquation.emit(this.activePaperLink.attributes.equation);
-    //this.currentTransitionOutputs.emit(this.activePaperLink.attributes.outputs);
+
+    let sourceElement = this.graph.getCell(this.activePaperLink.attributes.source.id);
+    let sourceElementType = sourceElement.attributes['name'];
+    this.elementEditing = true;
+
+    if(sourceElementType == 'if') {
+      this.showModal('ifLink');
+    } else if (sourceElementType == 'case') {
+      this.showModal('caseLink');
+    }
   }
 
 
@@ -301,6 +309,29 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
+  /** Updates the equation of current selected link */
+  updateLinkCaption(newCaption: any, linkType: any): void {
+    if((linkType == 'ifLink') && (newCaption != 'true') && (newCaption != 'false')) {
+      alert('If link caption can only be true/false');
+      return;
+    } 
+
+    // Removes old label
+    this.activePaperLink.removeLabel(0);
+
+    // Adds new label
+    this.activePaperLink.appendLabel({
+      attrs: {
+          text: {
+              text: newCaption,
+          }
+      }
+    });
+  
+    this.elementEditing = false;
+    this.closeModal();
+  }
+
   /** Saves diagram to JSON file and downloads it */
   saveDiagram(): void {
     let json = this.graph.toJSON();
@@ -373,6 +404,7 @@ export class DiagramPaperComponent implements OnInit {
 
   showModal(type: string) {
     let modal: HTMLElement;
+    console.log(this.activePaperElementCaption)
 
     switch(type) {
       case 'action':
@@ -387,6 +419,10 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('modalCase')!;
         modal.style.display = 'block';
         break;
+      case 'ifLink':
+        modal = document.getElementById('modalIfLink')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
@@ -397,13 +433,17 @@ export class DiagramPaperComponent implements OnInit {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
     let ifModal: HTMLElement = document.getElementById('modalIf')!;
     let caseModal: HTMLElement = document.getElementById('modalCase')!;
+    let ifLinkModal: HTMLElement = document.getElementById('modalIfLink')!;
+    
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
     caseModal.style.display = 'none';
+    ifLinkModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
     this.activePaperLink = null;
     this.activePaperLinkCaption = '';
+    this.elementEditing = false;
   }
 }

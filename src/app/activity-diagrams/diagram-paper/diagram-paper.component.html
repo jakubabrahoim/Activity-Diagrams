@@ -87,3 +87,17 @@
         </form>
     </div>
 </div>
+
+<div id="modalIfLink" class="modal">
+    <div class="modal-content">
+        <form>
+            <label for="ifLinkCaption">If link caption (true or false):</label><br>
+            <input #ifLinkCaption type="text" id="ifLinkCaption" name="ifLinkCaption" placeholder="If link caption..." value="{{this.activePaperLinkCaption}}">
+            <br>
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? updateLinkCaption(ifLinkCaption.value, 'ifLink') : null"
+            >
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
+</div>
