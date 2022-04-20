@@ -120,10 +120,10 @@
     <div class="modal-content">
         <form id="loopForm">
             <label for="loopContent">Loop content:</label><br>
-            <textarea #loopContent name="loopContent" rows="10" placeholder="Loop content..."></textarea>
+            <textarea #loopContent id="loopContent" name="loopContent" rows="10" placeholder="Loop content..."></textarea>
             <br>
             <input class="saveButton" type="button" value="Confirm" 
-                (click)="this.elementEditing ? null : addLoopToGraph('Loop', loopContent.value)"
+                (click)="this.elementEditing ? updateLoopContent(loopContent.value) : addLoopToGraph('Loop', loopContent.value)"
             >
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>

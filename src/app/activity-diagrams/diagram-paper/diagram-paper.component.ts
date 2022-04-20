@@ -28,6 +28,7 @@ export class DiagramPaperComponent implements OnInit {
   activePaperElementCaption: string = '';
   activePaperLink: any = null;
   activePaperLinkCaption: string = '';
+  currentLoop: any = null;
   elementEditing: boolean = false;
 
   // Element hover view variables
@@ -86,6 +87,14 @@ export class DiagramPaperComponent implements OnInit {
 
   ngOnInit(): void {
     this.addActionListeners();
+
+    let loopTextArea = document.querySelector('textarea')!;
+    loopTextArea.addEventListener('keydown', (event: any) => {
+      if(event.keyCode == 9) {
+        event.preventDefault();
+        loopTextArea.setRangeText('\t', loopTextArea.selectionStart, loopTextArea.selectionEnd, 'end');
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -175,7 +184,20 @@ export class DiagramPaperComponent implements OnInit {
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
 
-    // if loop clicked, show modal for current loop
+    // Specific behaviour for loops
+    if(this.activePaperElement.attributes.attrs.label.text == 'Loop') {
+      let loopId: string = this.activePaperElement.attributes.id;
+      this.currentLoop = this.loops.find(loop => loop.loopId == loopId);
+
+      this.elementEditing = true;
+
+      let loopContentTextArea: any = document.getElementById('loopContent')!;
+      loopContentTextArea.value = this.currentLoop.loopContent;
+
+      this.showModal('loop');
+      
+      return;
+    }
 
     let elementType = this.activePaperElement.attributes['name'];
     this.activePaperElementCaption = this.activePaperElement.attributes.attrs?.label?.text;
@@ -310,7 +332,7 @@ export class DiagramPaperComponent implements OnInit {
     this.changeDrawingMode(event);
 
     this.loops.push({loopId: element.id, loopContent: content});
-    console.log(this.loops);
+    console.log('Adding to graph loop', this.loops);
 
     element.addTo(this.graph);
 
@@ -343,6 +365,12 @@ export class DiagramPaperComponent implements OnInit {
       }
     });
   
+    this.elementEditing = false;
+    this.closeModal();
+  }
+
+  updateLoopContent(newContent: any): void {
+    this.currentLoop.loopContent = newContent;
     this.elementEditing = false;
     this.closeModal();
   }
@@ -472,6 +500,7 @@ export class DiagramPaperComponent implements OnInit {
     this.activePaperElementCaption = '';
     this.activePaperLink = null;
     this.activePaperLinkCaption = '';
+    this.currentLoop = null;
     this.elementEditing = false;
 
     // reset values of all forms
