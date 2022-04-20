@@ -88,6 +88,7 @@ export class DiagramPaperComponent implements OnInit {
   ngOnInit(): void {
     this.addActionListeners();
 
+    // Add tab indent support for text areas
     let loopTextArea = document.querySelector('textarea')!;
     loopTextArea.addEventListener('keydown', (event: any) => {
       if(event.keyCode == 9) {
