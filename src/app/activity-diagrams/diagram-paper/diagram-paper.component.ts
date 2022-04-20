@@ -34,8 +34,9 @@ export class DiagramPaperComponent implements OnInit {
   toolsView: any;
   elementToolsView: any;
 
-  // Event emitters
-  @Output() currentElementName: EventEmitter<String> = new EventEmitter<String>();
+  // Loop and module variables
+  loops: any[] = [];
+  module: Object = {};
 
   elementIds: Array<number> = [1000];
 
@@ -271,6 +272,10 @@ export class DiagramPaperComponent implements OnInit {
 
   addStartToGraph(): void {
     let element = this.start.createStartElement();
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
 
     this.drawingMode = true;
     this.changeDrawingMode(event);
@@ -280,11 +285,33 @@ export class DiagramPaperComponent implements OnInit {
 
   addEndToGraph(): void {
     let element = this.end.createEndElement();
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
 
     this.drawingMode = true;
     this.changeDrawingMode(event);
 
     element.addTo(this.graph);
+  }
+
+  addLoopToGraph(caption: any, content: any): void {
+    let element = this.action.createActionElement();
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
+    element.attr('label/text', caption);
+
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
+
+    this.loops.push({loopId: element.id, loopContent: content});
+
+    element.addTo(this.graph);
+
+    this.closeModal();
   }
 
   /** Updates the caption of current selected element */
