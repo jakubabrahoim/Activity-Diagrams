@@ -115,3 +115,17 @@
         </form>
     </div>
 </div>
+
+<div id="modalLoop" class="modal">
+    <div class="modal-content">
+        <form>
+            <label for="loopContent">Loop content:</label><br>
+            <textarea #loopContent name="loopContent" placeholder="Loop content..."></textarea>
+            <br>
+            <input class="saveButton" type="button" value="Confirm" 
+                (click)="this.elementEditing ? null : addLoopToGraph('Loop', loopContent.value)"
+            >
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
+</div>
