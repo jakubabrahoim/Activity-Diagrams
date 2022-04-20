@@ -9,7 +9,7 @@
     <button mat-stroked-button color="primary" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
     <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph()" class="buttonMargin">Start</button>
     <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph()" class="buttonMargin">End</button>
-    <button mat-stroked-button color="primary" id="addLoop" class="buttonMargin">Loop</button>
+    <button mat-stroked-button color="primary" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
 
 </div>
 <br>
@@ -118,9 +118,9 @@
 
 <div id="modalLoop" class="modal">
     <div class="modal-content">
-        <form>
+        <form id="loopForm">
             <label for="loopContent">Loop content:</label><br>
-            <textarea #loopContent name="loopContent" placeholder="Loop content..."></textarea>
+            <textarea #loopContent name="loopContent" rows="10" placeholder="Loop content..."></textarea>
             <br>
             <input class="saveButton" type="button" value="Confirm" 
                 (click)="this.elementEditing ? null : addLoopToGraph('Loop', loopContent.value)"

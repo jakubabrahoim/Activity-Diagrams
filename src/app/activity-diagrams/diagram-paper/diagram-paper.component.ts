@@ -175,6 +175,8 @@ export class DiagramPaperComponent implements OnInit {
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
 
+    // if loop clicked, show modal for current loop
+
     let elementType = this.activePaperElement.attributes['name'];
     this.activePaperElementCaption = this.activePaperElement.attributes.attrs?.label?.text;
     this.elementEditing = true;
@@ -308,6 +310,7 @@ export class DiagramPaperComponent implements OnInit {
     this.changeDrawingMode(event);
 
     this.loops.push({loopId: element.id, loopContent: content});
+    console.log(this.loops);
 
     element.addTo(this.graph);
 
@@ -417,7 +420,6 @@ export class DiagramPaperComponent implements OnInit {
   /** Shows specific modal window according to type */
   showModal(type: string) {
     let modal: HTMLElement;
-    console.log(this.activePaperElementCaption)
 
     switch(type) {
       case 'action':
@@ -440,6 +442,10 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('modalCaseLink')!;
         modal.style.display = 'block';
         break;
+      case 'loop':
+        modal = document.getElementById('modalLoop')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
@@ -453,12 +459,14 @@ export class DiagramPaperComponent implements OnInit {
     let caseModal: HTMLElement = document.getElementById('modalCase')!;
     let ifLinkModal: HTMLElement = document.getElementById('modalIfLink')!;
     let caseLinkModal: HTMLElement = document.getElementById('modalCaseLink')!;
+    let loopModal: HTMLElement = document.getElementById('modalLoop')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
     caseModal.style.display = 'none';
     ifLinkModal.style.display = 'none';
     caseLinkModal.style.display = 'none';
+    loopModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -470,9 +478,11 @@ export class DiagramPaperComponent implements OnInit {
     let actionForm: any = document.getElementById('actionForm')!;
     let ifForm: any = document.getElementById('ifForm')!;
     let caseForm: any = document.getElementById('caseForm')!;
+    let loopForm: any = document.getElementById('loopForm')!;
 
     actionForm.reset();
     ifForm.reset();
     caseForm.reset();
+    loopForm.reset();
   }
 }
