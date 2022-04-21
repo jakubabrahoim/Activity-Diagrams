@@ -60,8 +60,6 @@
     color: white;
 }
 
-/* ----- */
-
 /* Modals css */
 .modal {
     display: none;
@@ -144,4 +142,19 @@ input[type=button]:disabled {
 
 .label-inline {
     padding-right: 8px;
+}
+
+/* Table css */
+h1 {
+    text-align: center;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 750px;
 }

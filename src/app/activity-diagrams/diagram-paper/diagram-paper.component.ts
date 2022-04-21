@@ -498,6 +498,7 @@ export class DiagramPaperComponent implements OnInit {
     let caseLinkModal: HTMLElement = document.getElementById('modalCaseLink')!;
     let loopModal: HTMLElement = document.getElementById('modalLoop')!;
     let inputModal: HTMLElement = document.getElementById('inputTable')!;
+    let outputModal: HTMLElement = document.getElementById('outputTable')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
@@ -506,6 +507,7 @@ export class DiagramPaperComponent implements OnInit {
     caseLinkModal.style.display = 'none';
     loopModal.style.display = 'none';
     inputModal.style.display = 'none';
+    outputModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -529,12 +531,13 @@ export class DiagramPaperComponent implements OnInit {
   // Functions for module table
 
   addInput(): void {
-    this.moduleInputs.data.push({name: 'test', bits: '1'});
+    this.moduleInputs.data.push({name: 'input_name', bits: '1'});
     this.moduleInputs._updateChangeSubscription();
   }
 
   addOutput(): void {
-
+    this.moduleOutputs.data.push({name: 'output_name', bits: '1'});
+    this.moduleOutputs._updateChangeSubscription();
   }
 
   /** Deletes module input from table */

@@ -171,12 +171,12 @@
 <div id="outputTable" class="modal">
     <div class="modal-content">
         <h3>Outputs</h3>
-        <mat-table [dataSource]="moduleInputs">
+        <mat-table [dataSource]="moduleOutputs">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Output name</mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     <mat-form-field floatLabel="never">
-                        <input matInput placeholder="Input name..." [value]="element.name" [(ngModel)]="element.name">
+                        <input matInput placeholder="Output name..." [value]="element.name" [(ngModel)]="element.name">
                     </mat-form-field>
                 </mat-cell>
             </ng-container>
@@ -200,5 +200,7 @@
             <mat-header-row *matHeaderRowDef="['name', 'bits', 'formActions']"></mat-header-row>
             <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
         </mat-table>
+        <input class="insertButton" type="button" value="Add new output" (click)="addOutput()">
+        <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
     </div>
 </div>
