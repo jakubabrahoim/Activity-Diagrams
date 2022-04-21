@@ -1,24 +1,25 @@
-<h4>Activity Diagrams</h4>
+<h4 class="toolbox">Activity Diagrams</h4>
 
 <!-- Main tool bar-->
 <div id="toolbox" class="toolbox">
-    <button mat-stroked-button color="primary" id="module" class="buttonMargin">Module</button>
-    <button mat-stroked-button color="primary" id="addAction" (click)="showModal('action')" class="buttonMargin">Action</button>
-    <button mat-stroked-button color="primary" id="addDiamondIf" (click)="showModal('if')" class="buttonMargin">If</button>
-    <button mat-stroked-button color="primary" id="addDiamondCase" (click)="showModal('case')" class="buttonMargin">Case</button>
-    <button mat-stroked-button color="primary" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
-    <button mat-stroked-button color="primary" id="addStart" (click)="addStartToGraph()" class="buttonMargin">Start</button>
-    <button mat-stroked-button color="primary" id="addEnd" (click)="addEndToGraph()" class="buttonMargin">End</button>
-    <button mat-stroked-button color="primary" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
+    <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleInputs')">Module inputs</button>
+    <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleOutputs')">Module outputs</button>
+    <button mat-stroked-button color="basic" id="addAction" (click)="showModal('action')" class="buttonMargin">Action</button>
+    <button mat-stroked-button color="basic" id="addDiamondIf" (click)="showModal('if')" class="buttonMargin">If</button>
+    <button mat-stroked-button color="basic" id="addDiamondCase" (click)="showModal('case')" class="buttonMargin">Case</button>
+    <button mat-stroked-button color="basic" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
+    <button mat-stroked-button color="basic" id="addStart" (click)="addStartToGraph()" class="buttonMargin">Start</button>
+    <button mat-stroked-button color="basic" id="addEnd" (click)="addEndToGraph()" class="buttonMargin">End</button>
+    <button mat-stroked-button color="basic" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
 
 </div>
 <br>
 <div id="toolbox2" class="toolbox">
-    <button mat-stroked-button color="primary" id="generate" class="buttonMargin">Generate code</button>
-    <button mat-stroked-button color="primary" id="save" (click)="saveDiagram()" class="buttonMargin">Save diagram</button>
-    <button mat-stroked-button color="primary" id="load" (click)="loadDiagram()" class="buttonMargin">Load diagram</button>
+    <button mat-stroked-button color="basic" id="generate" class="buttonMargin">Generate code</button>
+    <button mat-stroked-button color="basic" id="save" (click)="saveDiagram()" class="buttonMargin">Save diagram</button>
+    <button mat-stroked-button color="basic" id="load" (click)="loadDiagram()" class="buttonMargin">Load diagram</button>
     <input type="file" id="jsonUpload" value="Load Diagram">
-    <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="primary">{{toggleCaption}}</mat-slide-toggle>
+    <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
 </div>
 
 <br>
@@ -127,5 +128,77 @@
             >
             <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
         </form>
+    </div>
+</div>
+
+<div id="inputTable" class="modal">
+    <div class="modal-content">
+        <h3>Inputs</h3>
+        <mat-table [dataSource]="moduleInputs">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>Input name</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Input name..." [value]="element.name" [(ngModel)]="element.name">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="bits">
+                <mat-header-cell *matHeaderCellDef>Bit size</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Bits..." [value]="element.bits" [(ngModel)]="element.bits">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="formActions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="deleteModuleInput(element)">Delete</button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'bits', 'formActions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
+        </mat-table>
+        <input class="insertButton" type="button" value="Add new input" (click)="addInput()">
+        <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+    </div>
+</div>
+
+<div id="outputTable" class="modal">
+    <div class="modal-content">
+        <h3>Outputs</h3>
+        <mat-table [dataSource]="moduleInputs">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>Output name</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Input name..." [value]="element.name" [(ngModel)]="element.name">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="bits">
+                <mat-header-cell *matHeaderCellDef>Bit size</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Bits..." [value]="element.bits" [(ngModel)]="element.bits">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="formActions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="deleteModuleOutput(element)">Delete</button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'bits', 'formActions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
+        </mat-table>
     </div>
 </div>

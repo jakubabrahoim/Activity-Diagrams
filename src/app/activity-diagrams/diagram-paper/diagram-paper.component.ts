@@ -1,11 +1,13 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as joint from 'jointjs';
 import { Paper } from '../other-classes/paper';
+import { DataSource } from '../other-classes/dataSource';
 
 import { ActionElement } from '../other-classes/action';
 import { DiamondElement } from '../other-classes/diamond';
 import { StartElement } from '../other-classes/start-element';
 import { EndElement } from '../other-classes/end-element';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-diagram-paper',
@@ -39,11 +41,13 @@ export class DiagramPaperComponent implements OnInit {
   loops: any[] = [];
   module: Object = {};
 
-  elementIds: Array<number> = [1000];
-
   // Mode toggle variables
   drawingMode: boolean = false;
   toggleCaption: string;
+
+  // Table variables
+  moduleInputs: MatTableDataSource<DataSource> = new MatTableDataSource;
+  moduleOutputs: MatTableDataSource<DataSource> = new MatTableDataSource;
 
   constructor(paper: Paper) {
     // Helper variables
@@ -79,8 +83,6 @@ export class DiagramPaperComponent implements OnInit {
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
     this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
     this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool]});
-
-    this.elementIds.fill(0);
 
     this.toggleCaption = 'Moving mode';
   }
@@ -121,15 +123,15 @@ export class DiagramPaperComponent implements OnInit {
       let elementContextMenu: HTMLElement;
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
-      if(clickedELementType == 'start' || clickedELementType == 'end') {
+      if(clickedELementType == 'start' || clickedELementType == 'end' || clickedELementType == 'join') {
         elementContextMenu = document.getElementById('delete-context-menu')!;
       } else {
         elementContextMenu = document.getElementById('element-context-menu')!;
       }
 
       this.activePaperElement = elementView.model;
-      elementContextMenu.style.left = (x + 70).toString() + 'px';
-      elementContextMenu.style.top = (y + 75).toString() + 'px';
+      elementContextMenu.style.left = (x + 15).toString() + 'px';
+      elementContextMenu.style.top = (y + 20).toString() + 'px';
       elementContextMenu.style.display = 'block';
       
       linkContextMenu.style.display = 'none';
@@ -208,8 +210,6 @@ export class DiagramPaperComponent implements OnInit {
 
   /** Deletes element from paper */
   onDeleteElementClicked(){
-    let id: number = this.activePaperElement.id; // .uniqueid
-    this.elementIds[id] = 0;
     this.activePaperElement.remove();
     this.activePaperElement = null;
 
@@ -475,6 +475,14 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('modalLoop')!;
         modal.style.display = 'block';
         break;
+      case 'moduleInputs':
+        modal = document.getElementById('inputTable')!;
+        modal.style.display = 'block';
+        break;
+      case 'moduleOutputs':
+        modal = document.getElementById('outputTable')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
@@ -489,6 +497,7 @@ export class DiagramPaperComponent implements OnInit {
     let ifLinkModal: HTMLElement = document.getElementById('modalIfLink')!;
     let caseLinkModal: HTMLElement = document.getElementById('modalCaseLink')!;
     let loopModal: HTMLElement = document.getElementById('modalLoop')!;
+    let inputModal: HTMLElement = document.getElementById('inputTable')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
@@ -496,6 +505,7 @@ export class DiagramPaperComponent implements OnInit {
     ifLinkModal.style.display = 'none';
     caseLinkModal.style.display = 'none';
     loopModal.style.display = 'none';
+    inputModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -514,5 +524,30 @@ export class DiagramPaperComponent implements OnInit {
     ifForm.reset();
     caseForm.reset();
     loopForm.reset();
+  }
+
+  // Functions for module table
+
+  addInput(): void {
+    this.moduleInputs.data.push({name: 'test', bits: '1'});
+    this.moduleInputs._updateChangeSubscription();
+  }
+
+  addOutput(): void {
+
+  }
+
+  /** Deletes module input from table */
+  deleteModuleInput(element: any) {
+    let index: number = this.moduleInputs.data.indexOf(element);
+    this.moduleInputs.data.splice(index, 1);
+    this.moduleInputs._updateChangeSubscription();
+  }
+
+  /** Deletes module ouput from table */
+  deleteModuleOutput(element: any) {
+    let index: number = this.moduleOutputs.data.indexOf(element);
+    this.moduleOutputs.data.splice(index, 1);
+    this.moduleOutputs._updateChangeSubscription();
   }
 }
