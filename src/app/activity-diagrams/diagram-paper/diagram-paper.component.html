@@ -4,20 +4,20 @@
 <div id="toolbox" class="toolbox">
     <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleInputs')">Module inputs</button>
     <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleOutputs')">Module outputs</button>
-    <button mat-stroked-button color="basic" id="addAction" (click)="showModal('action')" class="buttonMargin">Action</button>
-    <button mat-stroked-button color="basic" id="addDiamondIf" (click)="showModal('if')" class="buttonMargin">If</button>
-    <button mat-stroked-button color="basic" id="addDiamondCase" (click)="showModal('case')" class="buttonMargin">Case</button>
+    <button mat-stroked-button color="basic" id="addAction" class="buttonMargin" (click)="showModal('action')">Action</button>
+    <button mat-stroked-button color="basic" id="addDiamondIf" class="buttonMargin" (click)="showModal('if')">If</button>
+    <button mat-stroked-button color="basic" id="addDiamondCase" class="buttonMargin" (click)="showModal('case')">Case</button>
     <button mat-stroked-button color="basic" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
-    <button mat-stroked-button color="basic" id="addStart" (click)="addStartToGraph()" class="buttonMargin">Start</button>
-    <button mat-stroked-button color="basic" id="addEnd" (click)="addEndToGraph()" class="buttonMargin">End</button>
+    <button mat-stroked-button color="basic" id="addStart" class="buttonMargin"  (click)="addStartToGraph()">Start</button>
+    <button mat-stroked-button color="basic" id="addEnd" class="buttonMargin"  (click)="addEndToGraph()">End</button>
     <button mat-stroked-button color="basic" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
 
 </div>
 <br>
 <div id="toolbox2" class="toolbox">
-    <button mat-stroked-button color="basic" id="generate" class="buttonMargin">Generate code</button>
-    <button mat-stroked-button color="basic" id="save" (click)="saveDiagram()" class="buttonMargin">Save diagram</button>
-    <button mat-stroked-button color="basic" id="load" (click)="loadDiagram()" class="buttonMargin">Load diagram</button>
+    <button mat-stroked-button color="basic" id="generate" class="buttonMargin" (click)="generateCode()">Generate code</button>
+    <button mat-stroked-button color="basic" id="save" class="buttonMargin" (click)="saveDiagram()">Save diagram</button>
+    <button mat-stroked-button color="basic" id="load" class="buttonMargin" (click)="loadDiagram()">Load diagram</button>
     <input type="file" id="jsonUpload" value="Load Diagram">
     <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
 </div>

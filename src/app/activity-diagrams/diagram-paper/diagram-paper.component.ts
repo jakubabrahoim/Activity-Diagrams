@@ -1,13 +1,15 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import * as joint from 'jointjs';
-import { Paper } from '../other-classes/paper';
-import { DataSource } from '../other-classes/dataSource';
-
-import { ActionElement } from '../other-classes/action';
-import { DiamondElement } from '../other-classes/diamond';
-import { StartElement } from '../other-classes/start-element';
-import { EndElement } from '../other-classes/end-element';
 import { MatTableDataSource } from '@angular/material/table';
+import * as joint from 'jointjs';
+
+import { Paper } from '../paper-elements/paper';
+import { DataSource } from '../paper-elements/data-source';
+import { ActionElement } from '../paper-elements/action';
+import { DiamondElement } from '../paper-elements/diamond';
+import { StartElement } from '../paper-elements/start-element';
+import { EndElement } from '../paper-elements/end-element';
+
+import { prerequisites, generateCode } from '../code-generation/generate';
 
 @Component({
   selector: 'app-diagram-paper',
@@ -235,7 +237,6 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
-  // Functions that add elements to the paper
   addActionToGraph(caption: any): void {
     let element = this.action.createActionElement();
     // this prevents highlighting element caption -> when in drawing mode it was highlighting the text
@@ -347,7 +348,7 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
-  /** Updates the equation of current selected link */
+  /** Updates the caption of current selected link */
   updateLinkCaption(newCaption: any, linkType: any): void {
     if((linkType == 'ifLink') && (newCaption != 'true') && (newCaption != 'false')) {
       alert('If link caption can only be true/false');
@@ -370,81 +371,12 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
+  /** Update the content of selected loop */
   updateLoopContent(newContent: any): void {
     this.currentLoop.loopContent = newContent;
     this.elementEditing = false;
     this.closeModal();
   }
-
-  /** Saves diagram to JSON file and downloads it */
-  saveDiagram(): void {
-    let json = this.graph.toJSON();
-    console.log(json);
-
-    let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
-    let exportFileDefaultName = 'diagram.json';
-
-    let linkElement = document.createElement('a');
-    linkElement?.setAttribute('href', jsonUri);
-    linkElement?.setAttribute('download', exportFileDefaultName);
-    linkElement?.click();
-  }
-
-  /** Load diagram from uploaded JSON file and displays it on paper */
-  loadDiagram(): void {
-    let inputFile: any = document.getElementById('jsonUpload')!;
-    let fileReader = new FileReader();
-
-    try {
-      let file: File = inputFile.files[0];
-
-      if(file == undefined || file == null) {
-        console.log('No file selected!');
-        return;
-      }
-      
-      fileReader.readAsText(file);
-    } catch (error) {
-      console.log(error);
-    }
-
-    fileReader.onload = () => {
-      let json = JSON.parse(fileReader.result as string);
-      this.graph.fromJSON(json);
-    }
-  }
-
-  /** Changes current paper mode (drawing/moving) */
-	changeDrawingMode(e : any): void {
-    if(this.drawingMode) { // disable drawing mode, activate moving mode
-      this.drawingMode = false;
-      this.modeChanged(this.drawingMode);
-      this.toggleCaption = 'Moving mode';
-      e.checked = true;
-    } else { // activate drawing mode, disable moving mode
-      this.drawingMode = true;
-      this.modeChanged(this.drawingMode);
-      this.toggleCaption = 'Drawing mode';
-      e.checked = false;
-    }
-  }
-
-  /** Adds removes magnets from all elements on the paper */
-  modeChanged(mode: boolean): void {
-    if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
-      this.graph.getElements().forEach(element => {
-        element.prop('attrs/body/magnet', true);
-      });
-      this.paper.options.interactive = false;
-    } else { // vypnem drawing mode (zapne sa moving mode) -> viem hybat elementy, neviem spajat elementy
-      this.graph.getElements().forEach(element => {
-        element.prop('attrs/body/magnet', 'passive');
-      });
-      this.paper.options.interactive = true;
-    }
-  }
-
-  // Functions for modal windows
 
   /** Shows specific modal window according to type */
   showModal(type: string) {
@@ -528,13 +460,13 @@ export class DiagramPaperComponent implements OnInit {
     loopForm.reset();
   }
 
-  // Functions for module table
-
+  /** Add new input to input table */
   addInput(): void {
     this.moduleInputs.data.push({name: 'input_name', bits: '1'});
     this.moduleInputs._updateChangeSubscription();
   }
 
+  /** Add new output to output table */
   addOutput(): void {
     this.moduleOutputs.data.push({name: 'output_name', bits: '1'});
     this.moduleOutputs._updateChangeSubscription();
@@ -552,5 +484,77 @@ export class DiagramPaperComponent implements OnInit {
     let index: number = this.moduleOutputs.data.indexOf(element);
     this.moduleOutputs.data.splice(index, 1);
     this.moduleOutputs._updateChangeSubscription();
+  }
+
+  /** Saves diagram to JSON file and downloads it */
+  saveDiagram(): void {
+    let json = this.graph.toJSON();
+    console.log(json);
+
+    let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+    let exportFileDefaultName = 'diagram.json';
+
+    let linkElement = document.createElement('a');
+    linkElement?.setAttribute('href', jsonUri);
+    linkElement?.setAttribute('download', exportFileDefaultName);
+    linkElement?.click();
+  }
+
+  /** Load diagram from uploaded JSON file and displays it on paper */
+  loadDiagram(): void {
+    let inputFile: any = document.getElementById('jsonUpload')!;
+    let fileReader = new FileReader();
+
+    try {
+      let file: File = inputFile.files[0];
+
+      if(file == undefined || file == null) {
+        console.log('No file selected!');
+        return;
+      }
+      
+      fileReader.readAsText(file);
+    } catch (error) {
+      console.log(error);
+    }
+
+    fileReader.onload = () => {
+      let json = JSON.parse(fileReader.result as string);
+      this.graph.fromJSON(json);
+    }
+  }
+
+  generateCode(): void {
+    prerequisites();
+  }
+
+  /** Changes current paper mode (drawing/moving) */
+	changeDrawingMode(e : any): void {
+    if(this.drawingMode) { // disable drawing mode, activate moving mode
+      this.drawingMode = false;
+      this.modeChanged(this.drawingMode);
+      this.toggleCaption = 'Moving mode';
+      e.checked = true;
+    } else { // activate drawing mode, disable moving mode
+      this.drawingMode = true;
+      this.modeChanged(this.drawingMode);
+      this.toggleCaption = 'Drawing mode';
+      e.checked = false;
+    }
+  }
+
+  /** Adds removes magnets from all elements on the paper */
+  modeChanged(mode: boolean): void {
+    if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
+      this.graph.getElements().forEach(element => {
+        element.prop('attrs/body/magnet', true);
+      });
+      this.paper.options.interactive = false;
+    } else { // vypnem drawing mode (zapne sa moving mode) -> viem hybat elementy, neviem spajat elementy
+      this.graph.getElements().forEach(element => {
+        element.prop('attrs/body/magnet', 'passive');
+      });
+      this.paper.options.interactive = true;
+    }
   }
 }
