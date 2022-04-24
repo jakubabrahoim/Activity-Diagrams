@@ -1,5 +1,3 @@
-<h4 class="toolbox">Activity Diagrams</h4>
-
 <!-- Main tool bar-->
 <div id="toolbox" class="toolbox">
     <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleInputs')">Module inputs</button>
@@ -47,6 +45,13 @@
 </div>
 
 <!-- Modal windows -->
+<div id="modalError" class="modal">
+    <div class="modal-content">
+        <p class="errorMessage">{{this.errorMessage}}</p>
+        <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+    </div>
+</div>
+
 <div id="modalAction" class="modal">
     <div class="modal-content">
         <form id = "actionForm">

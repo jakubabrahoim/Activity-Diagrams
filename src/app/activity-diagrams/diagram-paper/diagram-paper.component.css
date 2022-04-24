@@ -1,5 +1,6 @@
 .toolbox {
     margin-left: 6px;
+    height: 4%
 }
 
 .buttonMargin {
@@ -10,6 +11,11 @@
     margin: auto;
     width: 60%;
     padding: 10px;
+}
+
+.errorMessage {
+    font-size: larger;
+    font-weight: bold;
 }
 
 /* Context menu css */

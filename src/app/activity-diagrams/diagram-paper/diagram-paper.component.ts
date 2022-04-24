@@ -51,16 +51,20 @@ export class DiagramPaperComponent implements OnInit {
   moduleInputs: MatTableDataSource<DataSource> = new MatTableDataSource;
   moduleOutputs: MatTableDataSource<DataSource> = new MatTableDataSource;
 
+  // Error message for modal 
+  errorMessage: string = '';
+
   constructor(paper: Paper) {
     // Helper variables
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
-    const paperHeight: number = 750;
+    const paperHeight: any = '82%';
     const paperWidth: any = '99%';
 
     // Setup for HTML element that will contain the paper
     paperElement.id = 'paper';
     paperElement.style.width = '100%';
+    paperElement.style.height = '100vh'
     paperElement.style.margin = 'auto';
     paperElement.style.borderStyle = 'solid';
     paperElement.style.borderWidth = '1px';
@@ -415,6 +419,10 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('outputTable')!;
         modal.style.display = 'block';
         break;
+      case 'error':
+        modal = document.getElementById('modalError')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
@@ -431,6 +439,7 @@ export class DiagramPaperComponent implements OnInit {
     let loopModal: HTMLElement = document.getElementById('modalLoop')!;
     let inputModal: HTMLElement = document.getElementById('inputTable')!;
     let outputModal: HTMLElement = document.getElementById('outputTable')!;
+    let erroModal: HTMLElement = document.getElementById('modalError')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
@@ -440,6 +449,7 @@ export class DiagramPaperComponent implements OnInit {
     loopModal.style.display = 'none';
     inputModal.style.display = 'none';
     outputModal.style.display = 'none';
+    erroModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -447,6 +457,7 @@ export class DiagramPaperComponent implements OnInit {
     this.activePaperLinkCaption = '';
     this.currentLoop = null;
     this.elementEditing = false;
+    this.errorMessage = '';
 
     // reset values of all forms
     let actionForm: any = document.getElementById('actionForm')!;
@@ -525,7 +536,15 @@ export class DiagramPaperComponent implements OnInit {
   }
 
   generateCode(): void {
-    prerequisites();
+    let graphJSON: Array<Object> = this.graph.toJSON();
+    let checkResult = prerequisites(graphJSON, this.moduleInputs, this.moduleOutputs);
+
+    if(checkResult != '') {
+      this.errorMessage = checkResult;
+      this.showModal('error');
+
+      return;
+    }
   }
 
   /** Changes current paper mode (drawing/moving) */
