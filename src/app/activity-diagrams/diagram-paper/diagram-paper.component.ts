@@ -537,12 +537,11 @@ export class DiagramPaperComponent implements OnInit {
 
   generateCode(): void {
     let graphJSON: Array<Object> = this.graph.toJSON();
-    let checkResult = prerequisites(graphJSON, this.moduleInputs, this.moduleOutputs);
+    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs);
 
     if(checkResult != '') {
       this.errorMessage = checkResult;
       this.showModal('error');
-
       return;
     }
   }
