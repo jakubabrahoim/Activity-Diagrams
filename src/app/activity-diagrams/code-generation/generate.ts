@@ -4,7 +4,7 @@ import { DataSource } from "../paper-elements/data-source";
 export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any): string {
     console.log('Running prerequisites...');
     console.log('Serialized graph: ', serializedGraph);
-    //console.log('Graph: ', graph);
+    console.log('Graph: ', graph);
     console.log('Link labels: ', linkLabels);
 
     // Check for start element
@@ -37,7 +37,7 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
         // Check for action elements
         // (1) - If action has more than 2 links -> error
         // (2) - If action has 2 links -> check if one is in and one is out
-        // (3) - If action has 1 link -> no need to check
+        // (3) - Check if action element has caption
         if(serializedGraph.cells[i]['name'] == 'action') {
             // (1)
             if(links.length > 2) { 
@@ -58,10 +58,16 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
                     return 'Error: Action can have only 1 connection going in and only 1 connection going out.';
                 }
             }
+
+            // (3)
+            if(serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
+                return 'Error: Action elements must have a caption.';
+            }
         }
         // Check for if elements
         // (1) - If needs to have 3 links -> 1 going in and 2 going out
         // (2) - Check if all outgoing links from if have caption
+        // (3) - Check if IF element has caption
         else if (serializedGraph.cells[i]['name'] == 'if') {
             let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
             let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
@@ -80,11 +86,15 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
             // (2)
             for(let j = 0; j < outgoingLinks.length; j++) {
                 let linkCaption = linkLabels.find((label: { id: string | number; }) => label.id == outgoingLinks[j].id);
-                //console.log(linkCaption);
 
                 if(linkCaption == undefined || linkCaption.label == '') {
                     return 'Error: All outgoing links from if element must have a caption.';
                 }
+            }
+
+            // (3)
+            if(serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
+                return 'Error: If elements must have a caption.';
             }
 
         }
