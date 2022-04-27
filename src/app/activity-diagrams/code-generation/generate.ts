@@ -34,11 +34,33 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
             return 'Error: All elements must have at least one link.';
         }
         
+        // Check for start element
+        // (1) - Start element can have only 1 link which is going outwards
+        if(serializedGraph.cells[i]['name'] == 'start'){
+            // (1)
+            if(links.length > 1) {
+                return 'Error: Start element can have only 1 link.';
+            }
+            if(links[0].get('source').id != serializedGraph.cells[i].id) {
+                return 'Error: Start element can have only 1 link which is going outwards.';
+            }
+        }
+        // Check for end element
+        // (1) - End element can only have 1 link which is going inwards
+        else if (serializedGraph.cells[i]['name'] == 'end') {
+            // (1)
+            if(links.length > 1) {
+                return 'Error: End element can have only 1 link.';
+            }
+            if(links[0].get('target').id != serializedGraph.cells[i].id) {
+                return 'Error: End element can have only 1 link which is going inwards.';
+            }
+        }
         // Check for action elements
         // (1) - If action has more than 2 links -> error
         // (2) - If action has 2 links -> check if one is in and one is out
         // (3) - Check if action element has caption
-        if(serializedGraph.cells[i]['name'] == 'action') {
+        else if(serializedGraph.cells[i]['name'] == 'action') {
             // (1)
             if(links.length > 2) { 
                 return 'Error: Actions can have at most 2 links.';
