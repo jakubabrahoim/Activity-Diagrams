@@ -2,10 +2,11 @@ import { MatTableDataSource } from "@angular/material/table";
 import { any } from "lodash";
 import { DataSource } from "../paper-elements/data-source";
 
-export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): string {
+export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any): string {
     console.log('Running prerequisites...');
     console.log('Serialized graph: ', serializedGraph);
     //console.log('Graph: ', graph);
+    console.log('Link labels: ', linkLabels);
 
     // Check for start element
     let startElement = serializedGraph.cells.filter((element: { name: string; }) => element.name == 'start');
@@ -61,25 +62,33 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
         }
         // Check for if elements
         // (1) - If needs to have 3 links -> 1 going in and 2 going out
+        // (2) - Check if all outgoing links from if have caption
         else if (serializedGraph.cells[i]['name'] == 'if') {
+            let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
+            let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
+            console.log('Outgoing links: ', outgoingLinks);
+            console.log('Ingoing links: ', ingoingLinks);
+            
             // (1)
-            console.log(links);
             if(links.length != 3) {
                 return 'Error: If element must have 3 connections (1 going in and 2 going out).';
             } else {
-                let inLink = false;
-                let outLink = 0;
-                for(let j = 0; j < links.length; j++) {
-                    if(links[j].attributes['source'].id == serializedGraph.cells[i].id) {
-                        //inLink = true;
-                        outLink++;
-                    } else if (links[j].attributes['target'].id == serializedGraph.cells[i].id) {
-                        //outLink++;
-                        inLink = true;
-                    }
+                if(outgoingLinks.length != 2 && ingoingLinks.length != 1) {
+                    return 'Error: If element must have 2 outgoing connections and 1 connection going inwards.';
                 }
-
             }
+
+            // (2)
+            for(let j = 0; j < outgoingLinks.length; j++) {
+                //if(outgoingLinks[j].attributes.attrs == 0) {
+                    //return 'Error: If element must have all outgoing connections with a caption.';
+                //}
+                //console.log(outgoingLinks[j].attributes.attrs?['text/text']);
+                //this.activePaperLink.attributes.attrs.label.text;
+                let caption = outgoingLinks[j].attributes.attrs?.["text/text"]?.text;
+                console.log(caption);
+            }
+
         }
     }
 

@@ -41,7 +41,6 @@ export class DiagramPaperComponent implements OnInit {
 
   // Loop and module variables
   loops: any[] = [];
-  module: Object = {};
 
   // Mode toggle variables
   drawingMode: boolean = false;
@@ -53,6 +52,9 @@ export class DiagramPaperComponent implements OnInit {
 
   // Error message for modal 
   errorMessage: string = '';
+
+  // Link labels;
+  linkLabels: any = [];
 
   constructor(paper: Paper) {
     // Helper variables
@@ -183,7 +185,7 @@ export class DiagramPaperComponent implements OnInit {
       linkView.hideTools(this.toolsView);
     });
 
-    this.paper.on('link: connect', (linkView) => {
+    this.paper.on('link:connect', (linkView) => {
       console.log('pripojenie');
     });
   }
@@ -233,6 +235,13 @@ export class DiagramPaperComponent implements OnInit {
     let sourceElement = this.graph.getCell(this.activePaperLink.attributes.source.id);
     let sourceElementType = sourceElement.attributes['name'];
     this.elementEditing = true;
+
+    let currentLinkCaption = this.linkLabels.find((label: { id: any; }) => label.id == this.activePaperLink.id);
+    if(currentLinkCaption == undefined) {
+      this.activePaperLinkCaption = '';
+    } else {
+      this.activePaperLinkCaption = currentLinkCaption.label;
+    }
 
     if(sourceElementType == 'if') {
       this.showModal('ifLink');
@@ -366,7 +375,15 @@ export class DiagramPaperComponent implements OnInit {
     // Removes old label
     this.activePaperLink.removeLabel(0);
 
-    // Adds new label
+    // Remove old label
+    for(let i = 0; i < this.linkLabels.length; i++) {
+      if(this.linkLabels[i].id == this.activePaperLink.id) {
+        this.linkLabels.splice(i, 1);
+        break;
+      }
+    }
+
+    // Add new label
     this.activePaperLink.appendLabel({
       attrs: {
           text: {
@@ -374,6 +391,9 @@ export class DiagramPaperComponent implements OnInit {
           }
       }
     });
+
+    // Add new label;
+    this.linkLabels.push({id: this.activePaperLink.id, label: newCaption});
   
     this.elementEditing = false;
     this.closeModal();
@@ -468,11 +488,15 @@ export class DiagramPaperComponent implements OnInit {
     let ifForm: any = document.getElementById('ifForm')!;
     let caseForm: any = document.getElementById('caseForm')!;
     let loopForm: any = document.getElementById('loopForm')!;
+    let ifLinkForm: any = document.getElementById('ifLinkForm')!;
+    let caseLinkForm: any = document.getElementById('caseLinkForm')!;
 
     actionForm.reset();
     ifForm.reset();
     caseForm.reset();
     loopForm.reset();
+    ifLinkForm.reset();
+    caseLinkForm.reset();
   }
 
   /** Add new input to input table */
@@ -541,7 +565,7 @@ export class DiagramPaperComponent implements OnInit {
 
   generateCode(): void {
     let graphJSON: Array<Object> = this.graph.toJSON();
-    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs);
+    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels);
 
     if(checkResult != '') {
       this.errorMessage = checkResult;
