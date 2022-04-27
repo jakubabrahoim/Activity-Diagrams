@@ -8,7 +8,7 @@ export class ActionElement {
             position: { x: 200, y: 100 },
             size: { width: 200, height: 100 },
             name: 'action',
-            attrs: { text: { text:  'test action' }, body: {rx: 10, ry: 10} } 
+            attrs: { text: { text:  '' }, body: {rx: 10, ry: 10} } 
         });
         
         return actionElement;
