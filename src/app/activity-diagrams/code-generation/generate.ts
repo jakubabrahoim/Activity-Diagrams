@@ -31,35 +31,54 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
 
         // Check if element has at least 1 link
         if(links.length == 0) {
-            //let caption = serializedGraph.cells[i].attrs.label['text'];
-            //return 'Error: Element ' + serializedGraph.cells[i].name + ' with caption "' + caption + '" has no links';
             return 'Error: All elements must have at least one link.';
         }
         
+        // Check for action elements
+        // (1) - If action has more than 2 links -> error
+        // (2) - If action has 2 links -> check if one is in and one is out
+        // (3) - If action has 1 link -> no need to check
         if(serializedGraph.cells[i]['name'] == 'action') {
-            console.log('Action links:');
-            console.log(links);
-            
-            // (1) - If action has more than 2 links -> error
-            // (2) - If action has 2 links -> check if one is in and one is out
-            // (3) - If action has 1 link -> no need to check
-            // Current action cant have 0 links in this scope
-
-            if(links.length > 2) { // (1)
+            // (1)
+            if(links.length > 2) { 
                 return 'Error: Actions can have at most 2 links.';
-            } else if (links.length == 2) { // (2)
+            } 
+            // (2)
+            else if (links.length == 2) { 
                 let inLink = false;
                 let outLink = false;
                 for(let j = 0; j < links.length; j++) {
                     if(links[j].attributes['source'].id == serializedGraph.cells[i].id) {
-                        inLink = true;
-                    } else if (links[j].attributes['target'].id == serializedGraph.cells[i].id) {
                         outLink = true;
+                    } else if (links[j].attributes['target'].id == serializedGraph.cells[i].id) {
+                        inLink = true;
                     }
                 }
                 if(inLink == false || outLink == false) {
                     return 'Error: Action can have only 1 connection going in and only 1 connection going out.';
                 }
+            }
+        }
+        // Check for if elements
+        // (1) - If needs to have 3 links -> 1 going in and 2 going out
+        else if (serializedGraph.cells[i]['name'] == 'if') {
+            // (1)
+            console.log(links);
+            if(links.length != 3) {
+                return 'Error: If element must have 3 connections (1 going in and 2 going out).';
+            } else {
+                let inLink = false;
+                let outLink = 0;
+                for(let j = 0; j < links.length; j++) {
+                    if(links[j].attributes['source'].id == serializedGraph.cells[i].id) {
+                        //inLink = true;
+                        outLink++;
+                    } else if (links[j].attributes['target'].id == serializedGraph.cells[i].id) {
+                        //outLink++;
+                        inLink = true;
+                    }
+                }
+
             }
         }
     }

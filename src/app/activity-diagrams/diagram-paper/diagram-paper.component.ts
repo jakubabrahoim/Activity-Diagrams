@@ -293,6 +293,10 @@ export class DiagramPaperComponent implements OnInit {
 
   addDiamondJoinToGraph(): void {
     let element = this.diamond.createDiamondElement('join', 'red');
+    element.attr(
+      "label/style",
+      "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+    );
 
     this.drawingMode = true;
     this.changeDrawingMode(event);
