@@ -1,5 +1,4 @@
 import { MatTableDataSource } from "@angular/material/table";
-import { any } from "lodash";
 import { DataSource } from "../paper-elements/data-source";
 
 export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any): string {
@@ -80,13 +79,12 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
 
             // (2)
             for(let j = 0; j < outgoingLinks.length; j++) {
-                //if(outgoingLinks[j].attributes.attrs == 0) {
-                    //return 'Error: If element must have all outgoing connections with a caption.';
-                //}
-                //console.log(outgoingLinks[j].attributes.attrs?['text/text']);
-                //this.activePaperLink.attributes.attrs.label.text;
-                let caption = outgoingLinks[j].attributes.attrs?.["text/text"]?.text;
-                console.log(caption);
+                let linkCaption = linkLabels.find((label: { id: string | number; }) => label.id == outgoingLinks[j].id);
+                //console.log(linkCaption);
+
+                if(linkCaption == undefined || linkCaption.label == '') {
+                    return 'Error: All outgoing links from if element must have a caption.';
+                }
             }
 
         }
