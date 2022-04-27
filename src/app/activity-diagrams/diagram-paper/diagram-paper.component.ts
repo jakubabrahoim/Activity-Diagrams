@@ -115,17 +115,19 @@ export class DiagramPaperComponent implements OnInit {
 
   /** Function that adds event listeners to paper elements and links */
   addActionListeners(): void {
+    // Show element boundary on hover
     this.paper.on('element:mouseenter', (elementView: any) => {
       elementView.removeTools();
       elementView.addTools(this.elementToolsView);
       elementView.showTools(this.elementToolsView);
     });
 
+    // Hide element boundary on hover
     this.paper.on('element:mouseleave', (elementView: any) => {
       elementView.hideTools();
     });
     
-    // Zobrazenie context menu pre element
+    // Show context menu for elemnt
     this.paper.on('element:contextmenu', (elementView, _evt, x, y) => {
       let clickedELementType: any = elementView.model.attributes['name'];
       let elementContextMenu: HTMLElement;
@@ -145,7 +147,7 @@ export class DiagramPaperComponent implements OnInit {
       linkContextMenu.style.display = 'none';
     });
 
-    // Zobrazenie context menu pre prepojenie
+    // Show context menu for link
     this.paper.on('link:contextmenu', (linkView, _evt, x, y) => {
       
       let sourceElement = this.graph.getCell(linkView.model.attributes.source.id);
@@ -155,14 +157,14 @@ export class DiagramPaperComponent implements OnInit {
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
       this.activePaperLink = linkView.model;
-      linkContextMenu.style.left = x + 70 + 'px';
-      linkContextMenu.style.top = y + 75 + 'px';
+      linkContextMenu.style.left = (x + 15).toString() + 'px';
+      linkContextMenu.style.top = (y + 20).toString() + 'px';
       linkContextMenu.style.display = 'block';
 
       elementContextMenu.style.display = 'none';
     });
 
-    // Schovanie obidvoch context menu
+    // Hide context menus
     this.paper.on('blank:pointerclick', () => {
       let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
       let deleteContextMenu: HTMLElement = document.getElementById('delete-context-menu')!;
@@ -173,20 +175,20 @@ export class DiagramPaperComponent implements OnInit {
       linkContextMenu.style.display = 'none';
     });
 
-    // Zobrazenie nasho custom toolsView pre linky
+    // Show tools view for links
     this.paper.on('link:mouseenter', (linkView) => {
       linkView.removeTools();
       linkView.addTools(this.toolsView);
       linkView.showTools(this.toolsView);
     });
 
-    // Schovanie nasho custom toolsView pre linky
+    // Hide tools view for links
     this.paper.on('link:mouseleave', (linkView) => {
       linkView.hideTools(this.toolsView);
     });
 
     this.paper.on('link:connect', (linkView) => {
-      console.log('pripojenie');
+      //console.log('pripojenie');
     });
   }
 
