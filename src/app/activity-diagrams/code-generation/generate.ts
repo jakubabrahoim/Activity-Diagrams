@@ -217,3 +217,22 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
 export function generateCode(): void {
 
 }
+
+function checkIO(dataSource: MatTableDataSource<DataSource>): string {
+  return '';
+}
+
+function getSuccessor(serializedGraph:any, graph: joint.dia.Graph, element: any): any {
+  let links = graph.getConnectedLinks(element, { outbound: true });
+
+  if (links.length == 1) {
+    let successor = links[0].attributes['target'].id;
+    return successor;
+  } else if (links.length > 1) {
+    let successors = [];
+    for (let i = 0; i < links.length; i++) {
+      successors.push(links[i].attributes['target'].id);
+    }
+    return successors;
+  }
+}
