@@ -530,9 +530,18 @@ export class DiagramPaperComponent implements OnInit {
   /** Saves diagram to JSON file and downloads it */
   saveDiagram(): void {
     let json = this.graph.toJSON();
-    console.log(json);
 
-    let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+    let serializedDiagram = {
+      graph: json,
+      linkLabels: this.linkLabels,
+      loops: this.loops,
+      moduleInputs: this.moduleInputs.data,
+      moduleOutputs: this.moduleOutputs.data,
+    }
+
+    console.log('Serialized graph: ', serializedDiagram);
+
+    let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(serializedDiagram));
     let exportFileDefaultName = 'diagram.json';
 
     let linkElement = document.createElement('a');
@@ -561,13 +570,18 @@ export class DiagramPaperComponent implements OnInit {
 
     fileReader.onload = () => {
       let json = JSON.parse(fileReader.result as string);
-      this.graph.fromJSON(json);
+
+      this.loops = json.loops;
+      this.moduleInputs.data = json.moduleInputs;
+      this.moduleOutputs.data = json.moduleOutputs;
+      this.linkLabels = json.linkLabels;
+      this.graph.fromJSON(json.graph);
     }
   }
 
   generateCode(): void {
     let graphJSON: Array<Object> = this.graph.toJSON();
-    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels);
+    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels, this.loops);
 
     if(checkResult != '') {
       this.errorMessage = checkResult;

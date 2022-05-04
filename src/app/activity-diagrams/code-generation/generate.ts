@@ -1,13 +1,13 @@
 import { MatTableDataSource } from "@angular/material/table";
 import { DataSource } from "../paper-elements/data-source";
 
-export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any): string {
-  console.log('Running prerequisites...');
-  console.log('Serialized graph: ', serializedGraph);
-  console.log('Graph: ', graph);
-  console.log('Link labels: ', linkLabels);
+export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
+  //console.log('Running prerequisites...');
+  //console.log('Serialized graph: ', serializedGraph);
+  //console.log('Graph: ', graph);
+  //console.log('Link labels: ', linkLabels);
 
-  // Check for start element
+  // Check if start element exists
   let startElement = serializedGraph.cells.filter((element: { name: string; }) => element.name == 'start');
   if (startElement.length == 0) {
     return 'Error: No start element found.';
@@ -15,7 +15,7 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     return 'Error: More than one start element found.';
   }
 
-  // Check for end element
+  // Check is end element exists
   let endElement = serializedGraph.cells.filter((element: { name: string; }) => element.name == 'end');
   if (endElement.length == 0) {
     return 'Error: No end element found.';
@@ -148,6 +148,41 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
       if (serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
         return 'Error: Case elements must have a caption.';
       }
+    } 
+    // Check for loop elements
+    // Same conditions as for action element
+    else if (serializedGraph.cells[i]['name'] == 'loop') {
+      // (1)
+      if (links.length > 2) {
+        return 'Error: Loop can have at most 2 links.';
+      }
+      // (2)
+      else if (links.length == 2) {
+        let inLink = false;
+        let outLink = false;
+        for (let j = 0; j < links.length; j++) {
+          if (links[j].attributes['source'].id == serializedGraph.cells[i].id) {
+            outLink = true;
+          } else if (links[j].attributes['target'].id == serializedGraph.cells[i].id) {
+            inLink = true;
+          }
+        }
+        if (inLink == false || outLink == false) {
+          return 'Error: Loop can have only 1 connection going in and only 1 connection going out.';
+        }
+      }
+
+      // (3) - check if current loop has any caption from loops structure
+      /*
+      if (serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
+        return 'Error: Loop elements must have a caption.';
+      }*/
+    }
+    // Check for join element
+    // (1) - Join needs to have at least 3 links
+    // (2) - Inwards going links - at least 2
+    // (3) - Outwards going links - at least 1
+    else if (serializedGraph.cells[i]['name'] == 'join') {
     }
   }
 
