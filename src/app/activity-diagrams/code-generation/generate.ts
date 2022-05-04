@@ -124,11 +124,12 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     // (1) - Case needs to have al least 3 links
     // (2) - Check if all outgoing links from case have caption
     // (3) - Check if case element has caption
+    // (4) - Check if there is 1 incoming link
     else if (serializedGraph.cells[i]['name'] == 'case') {
       let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
       let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
-      console.log('Outgoing links: ', outgoingLinks);
-      console.log('Ingoing links: ', ingoingLinks);
+      //console.log('Outgoing links: ', outgoingLinks);
+      //console.log('Ingoing links: ', ingoingLinks);
 
       // (1)
       if (links.length < 3) {
@@ -147,6 +148,11 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
       // (3)
       if (serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
         return 'Error: Case elements must have a caption.';
+      }
+
+      // (4)
+      if (ingoingLinks.length != 1) {
+        return 'Error: There can be only 1 ingoing link to case element.';
       }
     } 
     // Check for loop elements
@@ -173,16 +179,35 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
       }
 
       // (3) - check if current loop has any caption from loops structure
-      /*
-      if (serializedGraph.cells[i].attrs.label['text'] == '' || serializedGraph.cells[i].attrs.label['text'] == undefined) {
-        return 'Error: Loop elements must have a caption.';
-      }*/
+      let currentLoop = loops.find((loop: { loopId: string | number; }) => loop.loopId == serializedGraph.cells[i].id);
+      if (currentLoop == undefined) {
+        return 'Error: Unknown loop element.';
+      } else if (currentLoop.loopContent == '') {
+        return 'Error: Loop elements must have content.';
+      }
     }
     // Check for join element
     // (1) - Join needs to have at least 3 links
     // (2) - Inwards going links - at least 2
     // (3) - Outwards going links - at least 1
     else if (serializedGraph.cells[i]['name'] == 'join') {
+      let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
+      let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
+      
+      // (1)
+      if (links.length < 3) {
+        return 'Error: Join element must have at least 3 connections (x going in and 1 going out).';
+      }
+
+      // (2)
+      if (ingoingLinks.length <= 1) {
+        return 'Error: Join element must have at least 2 connections going in.';
+      }
+
+      // (3)
+      if (outgoingLinks.length != 1) {
+        return 'Error: Join element must have exactly 1 connection going out.';
+      }
     }
   }
 
