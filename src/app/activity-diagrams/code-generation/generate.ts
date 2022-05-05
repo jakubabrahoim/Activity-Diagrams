@@ -1,4 +1,5 @@
 import { MatTableDataSource } from "@angular/material/table";
+import { dia } from "jointjs";
 import { DataSource } from "../paper-elements/data-source";
 
 /** Function called before generating the code for all possible checks on elements */
@@ -226,11 +227,13 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
 }
 
 let code = '';
+let lastVisitedJoin = '';
 
 export function generateCode(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   const INDENT_SIZE = 4;
   const INDENT = ' '.repeat(INDENT_SIZE);
   let indentLevel = 2;
+  console.log('serializedGraph: ', serializedGraph);
 
   codeForIO(INDENT, inputs, outputs);
 
@@ -249,25 +252,41 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
       let links = graph.getConnectedLinks(element, { outbound: true });
       let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
       let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
-      let trueBranch;
-      let falseBranch;
+      let trueBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
+      let falseBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
 
+      // Find the first element in true and false branch
       if(link1Info.label == 'true') {
         trueBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
-        
         falseBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
+
+        trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
+        falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
 
       } else if(link2Info.label == 'true') {
         trueBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
         falseBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
+
+        trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
+        falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
       }
 
       // True branch
       code += INDENT.repeat(2) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
-
       // call codeForBranch for true branch
+      codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops);
+      code += INDENT.repeat(2) +  'end\n';
+
+      // False branch
+      // check if false branche isnt directly connected to join -> if yes no need to call anything
+      // if not ->
+      code += INDENT.repeat(2) + 'else begin\n';
       // call codeForBranch for false branch
-      //  check if false branche isnt directly connected
+      codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
+      code += INDENT.repeat(2) + 'end\n';
+
+      element = getSuccessor(graph, lastVisitedJoin);
+      continue;
 
       console.log(element);
       console.log('Branches: ', ifBranches);
@@ -356,7 +375,31 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
   return;
 }
 
-function codeForBranch(INDENT: string): void {
+function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any): void {
+  while (element != undefined) {
+    if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
+      code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + ';\n';
+    } else if (element.attributes['name'] == 'if') {
+      break;
+    } else if (element.attributes['name'] == 'case') {
+
+    } else if (element.attributes.attrs.label.text == 'Loop') {
+      let loop = loops.find((loop: {loopId: string | number;}) => loop.loopId == element.id);
+      let parsedLoop = loop.loopContent.split('\n');
+
+      for(let i = 0; i < parsedLoop.length; i++) {
+        code += INDENT.repeat(indentLevel) + parsedLoop[i] + '\n';
+      }
+    } else if (element.attributes['name'] == 'join') {
+      lastVisitedJoin = element;
+      break;
+    } else if (element.attributes['name'] == 'end') {
+      break;
+    }
+
+    element = getSuccessor(graph, element);
+  }
+  
   return;
 }
 
