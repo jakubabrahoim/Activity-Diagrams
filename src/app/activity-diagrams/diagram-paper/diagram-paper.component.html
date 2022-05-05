@@ -136,6 +136,20 @@
     </div>
 </div>
 
+<div id="modalCode" class="modal">
+    <div class="modal-content">
+        <form id="codeForm">
+            <label for="code">Generated code:</label><br>
+            <textarea #code id="codeContent" name="codeContent" rows="40"></textarea>
+            <br>
+            <input class="saveButton" type="button" value="Save" 
+                (click)="saveCode(code.value)"
+            >
+            <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        </form>
+    </div>
+</div>
+
 <div id="inputTable" class="modal">
     <div class="modal-content">
         <h3>Inputs</h3>

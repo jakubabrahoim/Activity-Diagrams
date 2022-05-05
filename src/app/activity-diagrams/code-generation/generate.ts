@@ -225,8 +225,70 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
   return '';
 }
 
-export function generateCode(): void {
+export function generateCode(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
+  const INDENT_SIZE = 4;
+  const INDENT = ' '.repeat(INDENT_SIZE);
+  let indentLevel = 1;
+  let code = '';
 
+  code += codeForIO(INDENT, inputs, outputs);
+
+  console.log(code);
+
+  return code;
+}
+
+/** Generate code for inputs and outputs */
+function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): string {
+  let code = '';
+  code += 'module module_name (\n';
+  
+  for (let i = 0; i < inputs.data.length; i++) {
+    if(inputs.data[i].bits == '1') {
+      code += INDENT + 'input ' + inputs.data[i].name;
+
+      if((i == inputs.data.length - 1) && (outputs.data.length == 0)) {
+        code += '\n';
+      } else {
+        code += ',\n';
+      }
+    } else {
+      let bits: number = parseInt(inputs.data[i].bits);
+      code += INDENT + 'input ' + `[${bits-1}:0]` + ' ' + inputs.data[i].name;
+
+      if((i == inputs.data.length - 1) && (outputs.data.length == 0)) {
+        code += '\n';
+      } else {
+        code += ',\n';
+      }
+    }
+  }
+
+  for (let i = 0; i < outputs.data.length; i++) {
+    if(outputs.data[i].bits == '1') {
+      code += INDENT + 'output ' + outputs.data[i].name;
+
+      if((i == outputs.data.length - 1)) {
+        code += '\n';
+      } else {
+        code += ',\n';
+      }
+
+    } else {
+      let bits: number = parseInt(outputs.data[i].bits);
+      code += INDENT + 'output ' + `[${bits-1}:0]` + ' ' + outputs.data[i].name;
+
+      if((i == outputs.data.length - 1)) {
+        code += '\n';
+      } else {
+        code += ',\n';
+      }
+    }
+  }
+
+  code += ');\n';
+
+  return code;
 }
 
 /** Check Input/Output data sources, taken from state machines and modified for this use case */
@@ -259,7 +321,7 @@ function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTa
 }
 
 /** Get successor of given element. */
-function getSuccessor(serializedGraph:any, graph: joint.dia.Graph, element: any): any {
+function getSuccessor(graph: joint.dia.Graph, element: any): any {
   let links = graph.getConnectedLinks(element, { outbound: true });
 
   if (links.length == 1) {

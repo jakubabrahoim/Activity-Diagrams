@@ -99,12 +99,15 @@ export class DiagramPaperComponent implements OnInit {
     this.addActionListeners();
 
     // Add tab indent support for text areas
-    let loopTextArea = document.querySelector('textarea')!;
-    loopTextArea.addEventListener('keydown', (event: any) => {
-      if(event.keyCode == 9) {
-        event.preventDefault();
-        loopTextArea.setRangeText('\t', loopTextArea.selectionStart, loopTextArea.selectionEnd, 'end');
-      }
+    let textArea = document.querySelectorAll('textarea')!;
+
+    textArea.forEach(area => {
+      area.addEventListener('keydown', (event: any) => {
+        if (event.keyCode == 9) {
+          event.preventDefault();
+          area.setRangeText('\t', area.selectionStart, area.selectionEnd, 'end');
+        }
+      })
     });
   }
 
@@ -449,6 +452,10 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('modalError')!;
         modal.style.display = 'block';
         break;
+      case 'code':
+        modal = document.getElementById('modalCode')!;
+        modal.style.display = 'block';
+        break;
       default:
         console.log('Unknown modal type!');
         break;
@@ -465,7 +472,8 @@ export class DiagramPaperComponent implements OnInit {
     let loopModal: HTMLElement = document.getElementById('modalLoop')!;
     let inputModal: HTMLElement = document.getElementById('inputTable')!;
     let outputModal: HTMLElement = document.getElementById('outputTable')!;
-    let erroModal: HTMLElement = document.getElementById('modalError')!;
+    let errorModal: HTMLElement = document.getElementById('modalError')!;
+    let codeModal: HTMLElement = document.getElementById('modalCode')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
@@ -475,7 +483,8 @@ export class DiagramPaperComponent implements OnInit {
     loopModal.style.display = 'none';
     inputModal.style.display = 'none';
     outputModal.style.display = 'none';
-    erroModal.style.display = 'none';
+    errorModal.style.display = 'none';
+    codeModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -539,7 +548,7 @@ export class DiagramPaperComponent implements OnInit {
       moduleOutputs: this.moduleOutputs.data,
     }
 
-    console.log('Serialized graph: ', serializedDiagram);
+    //console.log('Serialized graph: ', serializedDiagram);
 
     let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(serializedDiagram));
     let exportFileDefaultName = 'diagram.json';
@@ -588,6 +597,22 @@ export class DiagramPaperComponent implements OnInit {
       this.showModal('error');
       return;
     }
+
+    let code = generateCode(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels, this.loops);
+
+    let codeTextArea: any = document.getElementById('codeContent')!;
+    codeTextArea.value = code;
+    this.showModal('code');
+  }
+
+  saveCode(code: string): void {
+    let codeURI = 'data:text/plain;charset=utf-8,' + encodeURIComponent(code);
+    let exportFileDefaultName = 'code.sv';
+
+    let linkElement = document.createElement('a');
+    linkElement?.setAttribute('href', codeURI);
+    linkElement?.setAttribute('download', exportFileDefaultName);
+    linkElement?.click();
   }
 
   /** Changes current paper mode (drawing/moving) */
