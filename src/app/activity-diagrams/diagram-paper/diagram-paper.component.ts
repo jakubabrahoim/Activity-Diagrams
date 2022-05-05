@@ -105,7 +105,7 @@ export class DiagramPaperComponent implements OnInit {
       area.addEventListener('keydown', (event: any) => {
         if (event.keyCode == 9) {
           event.preventDefault();
-          area.setRangeText('\t', area.selectionStart, area.selectionEnd, 'end');
+          area.setRangeText('    ', area.selectionStart, area.selectionEnd, 'end');
         }
       })
     });
@@ -501,6 +501,7 @@ export class DiagramPaperComponent implements OnInit {
     let loopForm: any = document.getElementById('loopForm')!;
     let ifLinkForm: any = document.getElementById('ifLinkForm')!;
     let caseLinkForm: any = document.getElementById('caseLinkForm')!;
+    let codeTextArea: any = document.getElementById('codeContent')!;
 
     actionForm.reset();
     ifForm.reset();
@@ -508,6 +509,7 @@ export class DiagramPaperComponent implements OnInit {
     loopForm.reset();
     ifLinkForm.reset();
     caseLinkForm.reset();
+    codeTextArea.value = '';
   }
 
   /** Add new input to input table */

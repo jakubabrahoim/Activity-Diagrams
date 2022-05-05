@@ -225,22 +225,87 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
   return '';
 }
 
+let code = '';
+
 export function generateCode(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   const INDENT_SIZE = 4;
   const INDENT = ' '.repeat(INDENT_SIZE);
-  let indentLevel = 1;
-  let code = '';
+  let indentLevel = 2;
 
-  code += codeForIO(INDENT, inputs, outputs);
+  codeForIO(INDENT, inputs, outputs);
 
-  console.log(code);
+  code += INDENT + 'always_comb begin\n';
 
-  return code;
+  let startElement = serializedGraph.cells.find((element: {name: string}) => element.name == 'start');
+  let element = getSuccessor(graph, startElement);
+
+  // action, if, case caption -> element.attributes.attrs.label.text
+
+  while (element != undefined) {
+    if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
+      code += INDENT.repeat(2) + element.attributes.attrs.label.text + ';\n';
+    } else if (element.attributes['name'] == 'if') {
+      let ifBranches = getSuccessor(graph, element);
+      let links = graph.getConnectedLinks(element, { outbound: true });
+      let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
+      let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
+      let trueBranch;
+      let falseBranch;
+
+      if(link1Info.label == 'true') {
+        trueBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
+        
+        falseBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
+
+      } else if(link2Info.label == 'true') {
+        trueBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
+        falseBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
+      }
+
+      // True branch
+      code += INDENT.repeat(2) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
+
+      // call codeForBranch for true branch
+      // call codeForBranch for false branch
+      //  check if false branche isnt directly connected
+
+      console.log(element);
+      console.log('Branches: ', ifBranches);
+      console.log('Links: ', links);
+      console.log('Link captions: ', link1Info, link2Info);
+      console.log('True branch: ', trueBranch);
+      console.log('False branch: ', falseBranch);
+      break;
+    } else if (element.attributes['name'] == 'case') {
+
+    } else if (element.attributes.attrs.label.text == 'Loop') {
+      let loop = loops.find((loop: {loopId: string | number;}) => loop.loopId == element.id);
+      let parsedLoop = loop.loopContent.split('\n');
+
+      for(let i = 0; i < parsedLoop.length; i++) {
+        code += INDENT.repeat(2) + parsedLoop[i] + '\n';
+      }
+    } else if (element.attributes['name'] == 'join') {
+
+    } else if (element.attributes['name'] == 'end') {
+      break;
+    }
+
+    element = getSuccessor(graph, element);
+  }
+
+  code += INDENT + 'end\n\n';
+
+  code += 'endmodule';
+
+  let finalCode: string = code;
+  code = '';
+
+  return finalCode;
 }
 
 /** Generate code for inputs and outputs */
-function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): string {
-  let code = '';
+function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): void {
   code += 'module module_name (\n';
   
   for (let i = 0; i < inputs.data.length; i++) {
@@ -286,9 +351,13 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
     }
   }
 
-  code += ');\n';
+  code += ');\n\n';
 
-  return code;
+  return;
+}
+
+function codeForBranch(INDENT: string): void {
+  return;
 }
 
 /** Check Input/Output data sources, taken from state machines and modified for this use case */
@@ -297,6 +366,9 @@ function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTa
   let containsAlphaNumeric : RegExp =  /^[a-z0-9-_]+$/i;
 
   for (let i = 0; i < dataSource1.data.length; i++) {
+    if(dataSource1.data[i].name == 'input' || dataSource1.data[i].name == 'output') {
+      return 'Error: "input" and "output" are reserved keywords.';
+    }
     if (!containsAlphabet.test(dataSource1.data[i].name[0])) {
       return 'Error: ' + type + ' name must start with a letter and contain only alphanumeric characters or underscores.';
     } else if (!containsAlphaNumeric.test(dataSource1.data[i].name)) {
@@ -326,11 +398,13 @@ function getSuccessor(graph: joint.dia.Graph, element: any): any {
 
   if (links.length == 1) {
     let successor = links[0].attributes['target'].id;
-    return successor;
+    return graph.getCells().find(element => element.id == successor);
   } else if (links.length > 1) {
     let successors = [];
     for (let i = 0; i < links.length; i++) {
-      successors.push(links[i].attributes['target'].id);
+      let successor = graph.getCells().find(element => element.id == links[i].attributes['target'].id);
+      //successors.push(links[i].attributes['target'].id);
+      successors.push(successor);
     }
     return successors;
   }
