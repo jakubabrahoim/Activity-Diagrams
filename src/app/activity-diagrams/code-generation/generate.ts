@@ -1,6 +1,7 @@
 import { MatTableDataSource } from "@angular/material/table";
 import { DataSource } from "../paper-elements/data-source";
 
+/** Function called before generating the code for all possible checks on elements */
 export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   //console.log('Running prerequisites...');
   //console.log('Serialized graph: ', serializedGraph);
@@ -93,8 +94,8 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     else if (serializedGraph.cells[i]['name'] == 'if') {
       let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
       let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
-      console.log('Outgoing links: ', outgoingLinks);
-      console.log('Ingoing links: ', ingoingLinks);
+      //console.log('Outgoing links: ', outgoingLinks);
+      //console.log('Ingoing links: ', ingoingLinks);
 
       // (1)
       if (links.length != 3) {
@@ -211,6 +212,16 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     }
   }
 
+  let checkInputs = checkIO(inputs, outputs, 'Input');
+  if(checkInputs != '') {
+    return checkInputs;
+  }
+
+  let checkOutputs = checkIO(outputs, inputs , 'Output');
+  if(checkOutputs != '') {
+    return checkOutputs;
+  }
+
   return '';
 }
 
@@ -218,10 +229,36 @@ export function generateCode(): void {
 
 }
 
-function checkIO(dataSource: MatTableDataSource<DataSource>): string {
+/** Check Input/Output data sources, taken from state machines and modified for this use case */
+function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTableDataSource<DataSource>, type: string): string {
+  let containsAlphabet : RegExp =  /[a-zA-Z]/;
+  let containsAlphaNumeric : RegExp =  /^[a-z0-9-_]+$/i;
+
+  for (let i = 0; i < dataSource1.data.length; i++) {
+    if (!containsAlphabet.test(dataSource1.data[i].name[0])) {
+      return 'Error: ' + type + ' name must start with a letter and contain only alphanumeric characters or underscores.';
+    } else if (!containsAlphaNumeric.test(dataSource1.data[i].name)) {
+      return 'Error: ' + type + ' name must start with a letter and contain only alphanumeric characters or underscores.';
+    } else if (isNaN(Number(dataSource1.data[i].bits)) || Number(dataSource1.data[i].bits) < 1) {
+      return 'Error: ' + type + ' bit size must be a positive integer.';
+    } else {
+      for (let j = i; j < dataSource1.data.length; j++) {
+        if (j !== i && dataSource1.data[i].name === dataSource1.data[j].name) {
+          return 'Error: ' + type + ' name must be unique.';
+        }
+        for (let k = 0; k < dataSource2.data.length; k++) {
+          if (dataSource1.data[j].name === dataSource2.data[k].name) {
+            return 'Error: Inputs and outputs can not have the same name.';
+          }
+        }
+      }
+    }
+  }
+  
   return '';
 }
 
+/** Get successor of given element. */
 function getSuccessor(serializedGraph:any, graph: joint.dia.Graph, element: any): any {
   let links = graph.getConnectedLinks(element, { outbound: true });
 
