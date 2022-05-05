@@ -257,44 +257,36 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
 
       // Find the first element in true and false branch
       if(link1Info.label == 'true') {
+        // (1) - Determine which link is true/false
         trueBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
         falseBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
-
+        // (2) - Get the first element in true/false branch
         trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
         falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
-
       } else if(link2Info.label == 'true') {
+        // (1) - Determine which link is true/false
         trueBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
         falseBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
-
+        // (2) - Get the first element in true/false branch
         trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
         falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
       }
 
       // True branch
       code += INDENT.repeat(2) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
-      // call codeForBranch for true branch
       codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops);
       code += INDENT.repeat(2) +  'end\n';
 
       // False branch
       // check if false branche isnt directly connected to join -> if yes no need to call anything
-      // if not ->
-      code += INDENT.repeat(2) + 'else begin\n';
-      // call codeForBranch for false branch
-      codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
-      code += INDENT.repeat(2) + 'end\n';
+      if(falseBranch?.attributes['name'] != 'join') {
+        code += INDENT.repeat(2) + 'else begin\n';
+        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
+        code += INDENT.repeat(2) + 'end\n';
+      }
 
       element = getSuccessor(graph, lastVisitedJoin);
       continue;
-
-      console.log(element);
-      console.log('Branches: ', ifBranches);
-      console.log('Links: ', links);
-      console.log('Link captions: ', link1Info, link2Info);
-      console.log('True branch: ', trueBranch);
-      console.log('False branch: ', falseBranch);
-      break;
     } else if (element.attributes['name'] == 'case') {
 
     } else if (element.attributes.attrs.label.text == 'Loop') {
@@ -305,7 +297,8 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
         code += INDENT.repeat(2) + parsedLoop[i] + '\n';
       }
     } else if (element.attributes['name'] == 'join') {
-
+      console.log('Unexpected join.');
+      break;
     } else if (element.attributes['name'] == 'end') {
       break;
     }
@@ -382,7 +375,7 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
     } else if (element.attributes['name'] == 'if') {
       break;
     } else if (element.attributes['name'] == 'case') {
-
+      break;
     } else if (element.attributes.attrs.label.text == 'Loop') {
       let loop = loops.find((loop: {loopId: string | number;}) => loop.loopId == element.id);
       let parsedLoop = loop.loopContent.split('\n');
@@ -446,7 +439,6 @@ function getSuccessor(graph: joint.dia.Graph, element: any): any {
     let successors = [];
     for (let i = 0; i < links.length; i++) {
       let successor = graph.getCells().find(element => element.id == links[i].attributes['target'].id);
-      //successors.push(links[i].attributes['target'].id);
       successors.push(successor);
     }
     return successors;
