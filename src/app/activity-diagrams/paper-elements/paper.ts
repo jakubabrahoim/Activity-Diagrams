@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import * as joint from 'jointjs';
 
 @Injectable()
-export class Paper {
-    
-  /** Creates new JointJS paper */
+export class Paper { 
+  /** 
+   * Creates new JointJS paper 
+  */
   public createNewPaper(paperElement: any, graph: any, width: number, height: number, nameSpace: any): joint.dia.Paper{
       
     // https://resources.jointjs.com/docs/jointjs/v3.5/joint.html#dia.Paper.prototype.options 
@@ -31,8 +32,7 @@ export class Paper {
         if(cellViewS === cellViewT) {
           return false; 
         }
-        //if(cellViewT.model.attributes['type'] === 'standard.Rectangle') return false;
-        //return (magnetS !== magnetT);
+    
         return true;
       }
     });

@@ -389,6 +389,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
   return;
 }
 
+//** Generate code for branches of if and case statements */
 function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any): void {
   while (element != undefined) {
     if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {

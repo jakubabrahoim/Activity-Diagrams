@@ -116,7 +116,9 @@ export class DiagramPaperComponent implements OnInit {
     this.graph.clear();
   }
 
-  /** Function that adds event listeners to paper elements and links */
+  /** 
+   * Function that adds event listeners to paper elements and links 
+  */
   addActionListeners(): void {
     // Show element boundary on hover
     this.paper.on('element:mouseenter', (elementView: any) => {
@@ -195,7 +197,9 @@ export class DiagramPaperComponent implements OnInit {
     });
   }
 
-  /** Shows element properties modal window */
+  /** 
+   * Shows element properties modal window 
+  */
   onShowElementPropertiesClicked(){
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
@@ -221,7 +225,9 @@ export class DiagramPaperComponent implements OnInit {
     this.showModal(elementType);
   }
 
-  /** Deletes element from paper */
+  /** 
+   * Deletes element from paper 
+  */
   onDeleteElementClicked(){
     this.activePaperElement.remove();
     this.activePaperElement = null;
@@ -232,7 +238,9 @@ export class DiagramPaperComponent implements OnInit {
     deleteContextMenu.style.display = 'none';
   }
 
-  /** Shows link properties modal window */
+  /** 
+   * Shows link properties modal window 
+  */
   onShowLinkPropertiesClicked() {
     let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
     linkContextMenu.style.display = 'none';
@@ -357,21 +365,23 @@ export class DiagramPaperComponent implements OnInit {
     this.changeDrawingMode(event);
 
     this.loops.push({loopId: element.id, loopContent: content});
-    console.log('Adding to graph loop', this.loops);
-
     element.addTo(this.graph);
 
     this.closeModal();
   }
 
-  /** Updates the caption of current selected element */
+  /** 
+   * Updates the caption of current selected element 
+  */
   updateElementCaption(newCaption: any): void {
     this.activePaperElement.attr('label/text', newCaption);
     this.elementEditing = false;
     this.closeModal();
   }
 
-  /** Updates the caption of current selected link */
+  /** 
+   * Updates the caption of current selected link
+  */
   updateLinkCaption(newCaption: any, linkType: any): void {
     if((linkType == 'ifLink') && (newCaption != 'true') && (newCaption != 'false')) {
       alert('If link caption can only be true/false');
@@ -405,14 +415,18 @@ export class DiagramPaperComponent implements OnInit {
     this.closeModal();
   }
 
-  /** Update the content of selected loop */
+  /** 
+   * Update the content of selected loop
+  */
   updateLoopContent(newContent: any): void {
     this.currentLoop.loopContent = newContent;
     this.elementEditing = false;
     this.closeModal();
   }
 
-  /** Shows specific modal window according to type */
+  /** 
+   * Shows specific modal window according to type 
+  */
   showModal(type: string) {
     let modal: HTMLElement;
 
@@ -463,7 +477,9 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
-  /** Closes all modal windows */
+  /** 
+   * Closes all modal windows 
+  */
   closeModal(): void {
     let actionModal: HTMLElement = document.getElementById('modalAction')!;
     let ifModal: HTMLElement = document.getElementById('modalIf')!;
@@ -513,33 +529,43 @@ export class DiagramPaperComponent implements OnInit {
     codeTextArea.value = '';
   }
 
-  /** Add new input to input table */
+  /** 
+   * Add new input to input table 
+  */
   addInput(): void {
     this.moduleInputs.data.push({name: 'input_name', bits: '1'});
     this.moduleInputs._updateChangeSubscription();
   }
 
-  /** Add new output to output table */
+  /** 
+   * Add new output to output table
+  */
   addOutput(): void {
     this.moduleOutputs.data.push({name: 'output_name', bits: '1'});
     this.moduleOutputs._updateChangeSubscription();
   }
 
-  /** Deletes module input from table */
+  /** 
+   * Deletes module input from table 
+  */
   deleteModuleInput(element: any) {
     let index: number = this.moduleInputs.data.indexOf(element);
     this.moduleInputs.data.splice(index, 1);
     this.moduleInputs._updateChangeSubscription();
   }
 
-  /** Deletes module ouput from table */
+  /** 
+   * Deletes module ouput from table 
+  */
   deleteModuleOutput(element: any) {
     let index: number = this.moduleOutputs.data.indexOf(element);
     this.moduleOutputs.data.splice(index, 1);
     this.moduleOutputs._updateChangeSubscription();
   }
 
-  /** Saves diagram to JSON file and downloads it */
+  /** 
+   * Saves diagram to JSON file and downloads it 
+  */
   saveDiagram(): void {
     let json = this.graph.toJSON();
 
@@ -562,7 +588,9 @@ export class DiagramPaperComponent implements OnInit {
     linkElement?.click();
   }
 
-  /** Load diagram from uploaded JSON file and displays it on paper */
+  /** 
+   * Load diagram from uploaded JSON file and displays it on paper 
+  */
   loadDiagram(): void {
     let inputFile: any = document.getElementById('jsonUpload')!;
     let fileReader = new FileReader();
@@ -618,7 +646,9 @@ export class DiagramPaperComponent implements OnInit {
     linkElement?.click();
   }
 
-  /** Changes current paper mode (drawing/moving) */
+  /** 
+   * Changes current paper mode (drawing/moving) 
+  */
 	changeDrawingMode(e : any): void {
     if(this.drawingMode) { // disable drawing mode, activate moving mode
       this.drawingMode = false;
@@ -633,7 +663,9 @@ export class DiagramPaperComponent implements OnInit {
     }
   }
 
-  /** Adds removes magnets from all elements on the paper */
+  /** 
+   * Adds removes magnets from all elements on the paper 
+  */
   modeChanged(mode: boolean): void {
     if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
       this.graph.getElements().forEach(element => {

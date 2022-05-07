@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as joint from 'jointjs';
 @Injectable()
 export class ActionElement {
-
     public createActionElement() : joint.shapes.standard.Rectangle {
         var actionElement = new joint.shapes.standard.Rectangle({
             position: { x: 200, y: 100 },

@@ -3,8 +3,6 @@ import * as joint from 'jointjs';
 
 @Injectable()
 export class DiamondElement {
-
-    // rectangle atributes ? ->
     public createDiamondElement(name: string, color: string) : joint.shapes.standard.Polygon {
         var diamondElement = new joint.shapes.standard.Polygon({
             position: { x: 100, y: 200 },

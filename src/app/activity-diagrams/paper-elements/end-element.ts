@@ -3,7 +3,6 @@ import * as joint from 'jointjs';
 
 @Injectable()
 export class EndElement {
-
     public createEndElement() : joint.shapes.standard.Ellipse {
         var endElement = new joint.shapes.standard.Ellipse({
             position: { x: 150, y: 100 },
