@@ -281,7 +281,7 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
       code += INDENT.repeat(2) +  'end\n';
 
       // False branch
-      // check if false branche isnt directly connected to join -> if yes no need to call anything
+      // check if false branch isn't directly connected to join -> if yes no need to call anything
       if(falseBranch?.attributes['name'] != 'join') {
         code += INDENT.repeat(2) + 'else begin\n';
         codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
@@ -291,7 +291,25 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
       element = getSuccessor(graph, lastVisitedJoin);
       continue;
     } else if (element.attributes['name'] == 'case') {
+      let links = graph.getConnectedLinks(element, { outbound: true });
 
+      code += INDENT.repeat(2) + 'case (' + element.attributes.attrs.label.text + ')\n';
+
+      for(let i = 0; i < links.length; i++) {
+        // (1) - Get the label of the link
+        let linkCaption = linkLabels.find((label: { id: string | number; }) => label.id == links[i].id);
+        // (2) - Get the target element of the link
+        let successor = graph.getCells().find(cell => cell.id == links[i].attributes['target'].id);
+        // (3) - Generate code for the branch
+        code += INDENT.repeat(3) + linkCaption.label + ' : begin\n';
+        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops);
+        code += INDENT.repeat(3) + 'end\n';
+      }
+
+      code += INDENT.repeat(2) + 'endcase\n';
+
+      element = getSuccessor(graph, lastVisitedJoin);
+      continue;
     } else if (element.attributes.attrs.label.text == 'Loop') {
       let loop = loops.find((loop: {loopId: string | number;}) => loop.loopId == element.id);
       let parsedLoop = loop.loopContent.split('\n');
@@ -374,7 +392,11 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
 function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any): void {
   while (element != undefined) {
     if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
-      code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + ';\n';
+      let actionCaption = element.attributes.attrs.label.text.replaceAll(' ', '');
+      // Check if user didn't forget semicolon
+      actionCaption[actionCaption.length - 1] == ';' ? 
+        code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + '\n' :
+        code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + ';\n';
     } else if (element.attributes['name'] == 'if') {
       break;
     } else if (element.attributes['name'] == 'case') {

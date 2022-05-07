@@ -311,6 +311,7 @@ export class DiagramPaperComponent implements OnInit {
       "label/style",
       "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
     );
+    element.attr('label/text', 'Join');
 
     this.drawingMode = true;
     this.changeDrawingMode(event);

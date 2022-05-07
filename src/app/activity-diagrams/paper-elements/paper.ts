@@ -20,12 +20,12 @@ export class Paper {
       interactive: true, // Element interaction on paper
       linkPinning: false, // Forbids link pinning on paper
       multiLinks: false,
-      defaultLink: new joint.shapes.standard.Link({router: {name: 'orthogonal'}}),
+      defaultLink: new joint.shapes.standard.Link({router: {name: 'normal'}}),
       defaultConnector: { name: 'jumpover' },
       defaultConnectionPoint: { name: 'boundary' },
       defaultAnchor: { name: 'perpendicular', args: { padding: 10 } },
       defaultLinkAnchor: { name: 'perpendicular', args: { padding: 10 } },
-      defaultRouter: { name: 'orthogonal' },
+      defaultRouter: { name: 'normal' },
       validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
         // Prevent from linking with it self
         if(cellViewS === cellViewT) {
