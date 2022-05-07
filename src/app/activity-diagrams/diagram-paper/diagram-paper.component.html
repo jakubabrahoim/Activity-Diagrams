@@ -16,11 +16,11 @@
     <button mat-stroked-button color="basic" id="generate" class="buttonMargin" (click)="generateCode()">Generate code</button>
     <button mat-stroked-button color="basic" id="save" class="buttonMargin" (click)="saveDiagram()">Save diagram</button>
     <button mat-stroked-button color="basic" id="load" class="buttonMargin" (click)="loadDiagram()">Load diagram</button>
-    <input type="file" id="jsonUpload" value="Load Diagram">
-    <mat-slide-toggle id="paper-mode" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
+    <input class="inputUpload" type="file" id="jsonUpload" value="Load Diagram">
+    <mat-slide-toggle id="paper-mode" class="toggle" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
+    <label class="buttonMargin">Zoom:</label>
     <mat-slider #sliderValue min="0" max="2" step="0.05" value="1" thumbLabel="Scale" (change)="this.paper.scale(sliderValue.value)"></mat-slider>
 </div>
-
 <br>
 
 <!-- Context menu for elements -->
