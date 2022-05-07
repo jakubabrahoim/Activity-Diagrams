@@ -77,7 +77,7 @@ export class DiagramPaperComponent implements OnInit {
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
     this.paper = paper.createNewPaper(paperElement, this.graph, paperWidth, paperHeight, namespace);
     this.paper.drawGrid();
-    this.paper.scale(0.8);
+    this.paper.scale(1);
 
     this.action = new ActionElement();
     this.diamond = new DiamondElement();

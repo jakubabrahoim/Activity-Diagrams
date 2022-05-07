@@ -8,9 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRow, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
+import {MatSliderModule} from '@angular/material/slider';
+
 @NgModule ({
     declarations: [DiagramPaperComponent],
-    imports: [CommonModule, FormsModule, MatSlideToggleModule, MatButtonModule, MatTableModule, MatFormFieldModule, MatInputModule],
+    imports: [CommonModule, FormsModule, MatSlideToggleModule, MatButtonModule, MatTableModule,
+              MatFormFieldModule, MatInputModule, MatSliderModule],
 })
 
 export class ActivityDiagramsModule { }
