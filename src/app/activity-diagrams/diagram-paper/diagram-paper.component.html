@@ -14,6 +14,7 @@
 <br>
 <div id="toolbox2" class="toolbox">
     <button mat-stroked-button color="basic" id="generate" class="buttonMargin" (click)="generateCode()">Generate code</button>
+    <button mat-stroked-button color="basic" id="clearGraph" class="buttonMargin" (click)="this.graph.clear()">Clear</button>
     <button mat-stroked-button color="basic" id="save" class="buttonMargin" (click)="saveDiagram()">Save diagram</button>
     <button mat-stroked-button color="basic" id="load" class="buttonMargin" (click)="loadDiagram()">Load diagram</button>
     <input class="inputUpload" type="file" id="jsonUpload" value="Load Diagram">

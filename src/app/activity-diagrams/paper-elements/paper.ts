@@ -27,6 +27,7 @@ export class Paper {
       defaultAnchor: { name: 'perpendicular', args: { padding: 10 } },
       defaultLinkAnchor: { name: 'perpendicular', args: { padding: 10 } },
       defaultRouter: { name: 'normal' },
+      snapLabels: true,
       validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
         // Prevent from linking with it self
         if(cellViewS === cellViewT) {

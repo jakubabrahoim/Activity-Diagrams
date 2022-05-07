@@ -94,11 +94,10 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     // (1) - If needs to have 3 links -> 1 going in and 2 going out
     // (2) - Check if all outgoing links from if have caption
     // (3) - Check if IF element has caption
+    // (4) - Check if outgoing links have different labels
     else if (serializedGraph.cells[i]['name'] == 'if') {
       let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
       let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
-      //console.log('Outgoing links: ', outgoingLinks);
-      //console.log('Ingoing links: ', ingoingLinks);
 
       // (1)
       if (links.length != 3) {
@@ -123,17 +122,25 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
         return 'Error: If elements must have a caption.';
       }
 
+      // (4)
+      let labels = [];
+      for (let j = 0; j < outgoingLinks.length; j++) {
+        labels.push(linkLabels.find((label: { id: string | number; }) => label.id == outgoingLinks[j].id).label);
+      }
+      let tmp = new Set(labels);
+      if (tmp.size != labels.length) {
+        return 'Error: Outgoing links from if element must have unique labels.';
+      }
     }
     // Check for case elements
     // (1) - Case needs to have al least 3 links
     // (2) - Check if all outgoing links from case have caption
     // (3) - Check if case element has caption
     // (4) - Check if there is 1 incoming link
+    // (5) - Check if outgoing links have different labels
     else if (serializedGraph.cells[i]['name'] == 'case') {
       let outgoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { outbound: true });
       let ingoingLinks = graph.getConnectedLinks(serializedGraph.cells[i], { inbound: true });
-      //console.log('Outgoing links: ', outgoingLinks);
-      //console.log('Ingoing links: ', ingoingLinks);
 
       // (1)
       if (links.length < 3) {
@@ -157,6 +164,16 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
       // (4)
       if (ingoingLinks.length != 1) {
         return 'Error: There can be only 1 ingoing link to case element.';
+      }
+
+      // (5)
+      let labels = [];
+      for (let j = 0; j < outgoingLinks.length; j++) {
+        labels.push(linkLabels.find((label: { id: string | number; }) => label.id == outgoingLinks[j].id).label);
+      }
+      let tmp = new Set(labels);
+      if (tmp.size != labels.length) {
+        return 'Error: Outgoing links from if element must have unique labels.';
       }
     } 
     // Check for loop elements
@@ -235,7 +252,7 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
   const INDENT_SIZE = 4;
   const INDENT = ' '.repeat(INDENT_SIZE);
   let indentLevel = 2;
-  console.log('serializedGraph: ', serializedGraph);
+  //console.log('serializedGraph: ', serializedGraph);
 
   codeForIO(INDENT, inputs, outputs);
 
