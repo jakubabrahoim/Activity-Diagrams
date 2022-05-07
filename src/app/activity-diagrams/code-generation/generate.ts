@@ -246,9 +246,12 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
 
   while (element != undefined) {
     if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
-      code += INDENT.repeat(2) + element.attributes.attrs.label.text + ';\n';
+      let actionCaption = element.attributes.attrs.label.text.replaceAll(' ', '');
+      // Check if user didn't forget semicolon
+      actionCaption[actionCaption.length - 1] == ';' ? 
+        code += INDENT.repeat(2) + element.attributes.attrs.label.text + '\n' :
+        code += INDENT.repeat(2) + element.attributes.attrs.label.text + ';\n';
     } else if (element.attributes['name'] == 'if') {
-      let ifBranches = getSuccessor(graph, element);
       let links = graph.getConnectedLinks(element, { outbound: true });
       let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
       let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
