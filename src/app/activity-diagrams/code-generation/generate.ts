@@ -2,7 +2,9 @@ import { MatTableDataSource } from "@angular/material/table";
 import { dia } from "jointjs";
 import { DataSource } from "../paper-elements/data-source";
 
-/** Function called before generating the code for all possible checks on elements */
+/** 
+ * Function called before generating the code for all possible checks on elements 
+*/
 export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   //console.log('Running prerequisites...');
   //console.log('Serialized graph: ', serializedGraph);
@@ -337,7 +339,9 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
   return finalCode;
 }
 
-/** Generate code for inputs and outputs */
+/** 
+ * Generate code for inputs and outputs 
+*/
 function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): void {
   code += 'module module_name (\n';
   
@@ -389,7 +393,9 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
   return;
 }
 
-//** Generate code for branches of if and case statements */
+/**
+ *  Generate code for branches of if and case statements 
+*/
 function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any): void {
   while (element != undefined) {
     if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
@@ -477,7 +483,9 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
   return;
 }
 
-/** Check Input/Output data sources, taken from state machines and modified for this use case */
+/** 
+ * Check Input/Output data sources, taken from state machines and modified for this use case 
+*/
 function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTableDataSource<DataSource>, type: string): string {
   let containsAlphabet : RegExp =  /[a-zA-Z]/;
   let containsAlphaNumeric : RegExp =  /^[a-z0-9-_]+$/i;
@@ -509,7 +517,9 @@ function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTa
   return '';
 }
 
-/** Get successor of given element. */
+/** 
+ * Get successor of given element
+*/
 function getSuccessor(graph: joint.dia.Graph, element: any): any {
   let links = graph.getConnectedLinks(element, { outbound: true });
 
