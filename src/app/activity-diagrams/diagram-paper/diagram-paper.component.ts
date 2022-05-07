@@ -15,7 +15,7 @@ import { prerequisites, generateCode } from '../code-generation/generate';
   selector: 'app-diagram-paper',
   templateUrl: './diagram-paper.component.html',
   styleUrls: ['./diagram-paper.component.css'],
-  providers: [Paper], // tu daval aj provider na svoj element 
+  providers: [Paper],
 })
 export class DiagramPaperComponent implements OnInit {
 
@@ -193,7 +193,6 @@ export class DiagramPaperComponent implements OnInit {
     });
 
     this.paper.on('link:connect', (linkView) => {
-      //console.log('pripojenie');
     });
   }
 
@@ -201,6 +200,7 @@ export class DiagramPaperComponent implements OnInit {
    * Shows element properties modal window 
   */
   onShowElementPropertiesClicked(){
+    // Hide context menu
     let elementContextMenu: HTMLElement = document.getElementById('element-context-menu')!;
     elementContextMenu.style.display = 'none';
 
@@ -219,6 +219,7 @@ export class DiagramPaperComponent implements OnInit {
       return;
     }
 
+    // Set needed variables and show modal window
     let elementType = this.activePaperElement.attributes['name'];
     this.activePaperElementCaption = this.activePaperElement.attributes.attrs?.label?.text;
     this.elementEditing = true;
@@ -245,6 +246,7 @@ export class DiagramPaperComponent implements OnInit {
     let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
     linkContextMenu.style.display = 'none';
 
+    // Get source element -> needed for type checking below
     let sourceElement = this.graph.getCell(this.activePaperLink.attributes.source.id);
     let sourceElementType = sourceElement.attributes['name'];
     this.elementEditing = true;
@@ -256,6 +258,7 @@ export class DiagramPaperComponent implements OnInit {
       this.activePaperLinkCaption = currentLinkCaption.label;
     }
 
+    // Only links from ifs and cases can have labels
     if(sourceElementType == 'if') {
       this.showModal('ifLink');
     } else if (sourceElementType == 'case') {
@@ -265,7 +268,7 @@ export class DiagramPaperComponent implements OnInit {
 
   addActionToGraph(caption: any): void {
     let element = this.action.createActionElement();
-    // this prevents highlighting element caption -> when in drawing mode it was highlighting the text
+    // This prevents highlighting element caption -> when in drawing mode it was highlighting the text
     // when connecting elements
     element.attr(
       "label/style",
@@ -577,8 +580,6 @@ export class DiagramPaperComponent implements OnInit {
       moduleOutputs: this.moduleOutputs.data,
     }
 
-    //console.log('Serialized graph: ', serializedDiagram);
-
     let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(serializedDiagram));
     let exportFileDefaultName = 'diagram.json';
 
@@ -599,7 +600,7 @@ export class DiagramPaperComponent implements OnInit {
       let file: File = inputFile.files[0];
 
       if(file == undefined || file == null) {
-        console.log('No file selected!');
+        alert('No file selected!');
         return;
       }
       
@@ -667,12 +668,12 @@ export class DiagramPaperComponent implements OnInit {
    * Adds removes magnets from all elements on the paper 
   */
   modeChanged(mode: boolean): void {
-    if(mode == true) { // zapne sa drawing mode -> viem spajat elementy, neviem hybat elementy
+    if(mode == true) { // Drawing mode enabled -> magnets are true and user can connect elements
       this.graph.getElements().forEach(element => {
         element.prop('attrs/body/magnet', true);
       });
       this.paper.options.interactive = false;
-    } else { // vypnem drawing mode (zapne sa moving mode) -> viem hybat elementy, neviem spajat elementy
+    } else { // Drawing mode disabled -> magnets are false and user can't connect elements, but he can move them
       this.graph.getElements().forEach(element => {
         element.prop('attrs/body/magnet', 'passive');
       });
