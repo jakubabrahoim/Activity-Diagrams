@@ -438,7 +438,25 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
       element = getSuccessor(graph, lastVisitedJoin);
       continue;
     } else if (element.attributes['name'] == 'case') {
-      break;
+      let links = graph.getConnectedLinks(element, { outbound: true });
+
+      code += INDENT.repeat(indentLevel) + 'case (' + element.attributes.attrs.label.text + ')\n';
+
+      for(let i = 0; i < links.length; i++) {
+        // (1) - Get the label of the link
+        let linkCaption = linkLabels.find((label: { id: string | number; }) => label.id == links[i].id);
+        // (2) - Get the target element of the link
+        let successor = graph.getCells().find(cell => cell.id == links[i].attributes['target'].id);
+        // (3) - Generate code for the branch
+        code += INDENT.repeat(indentLevel + 1) + linkCaption.label + ' : begin\n';
+        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops);
+        code += INDENT.repeat(indentLevel + 1) + 'end\n';
+      }
+
+      code += INDENT.repeat(indentLevel) + 'endcase\n';
+
+      element = getSuccessor(graph, lastVisitedJoin);
+      continue;
     } else if (element.attributes.attrs.label.text == 'Loop') {
       let loop = loops.find((loop: {loopId: string | number;}) => loop.loopId == element.id);
       let parsedLoop = loop.loopContent.split('\n');
