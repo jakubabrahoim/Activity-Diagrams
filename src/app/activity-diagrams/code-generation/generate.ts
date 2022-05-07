@@ -399,7 +399,44 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
         code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + '\n' :
         code += INDENT.repeat(indentLevel) + element.attributes.attrs.label.text + ';\n';
     } else if (element.attributes['name'] == 'if') {
-      break;
+      let links = graph.getConnectedLinks(element, { outbound: true });
+      let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
+      let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
+      let trueBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
+      let falseBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
+
+      // Find the first element in true and false branch
+      if(link1Info.label == 'true') {
+        // (1) - Determine which link is true/false
+        trueBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
+        falseBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
+        // (2) - Get the first element in true/false branch
+        trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
+        falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
+      } else if(link2Info.label == 'true') {
+        // (1) - Determine which link is true/false
+        trueBranch = links.find((link: { id: any; }) => link.id == link2Info.id);
+        falseBranch = links.find((link: { id: any; }) => link.id == link1Info.id);
+        // (2) - Get the first element in true/false branch
+        trueBranch = graph.getCells().find(cell => cell.id == trueBranch?.attributes['target'].id);
+        falseBranch = graph.getCells().find(cell => cell.id == falseBranch?.attributes['target'].id);
+      }
+
+      // True branch
+      code += INDENT.repeat(indentLevel) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
+      codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops);
+      code += INDENT.repeat(indentLevel) +  'end\n';
+
+      // False branch
+      // check if false branch isn't directly connected to join -> if yes no need to call anything
+      if(falseBranch?.attributes['name'] != 'join') {
+        code += INDENT.repeat(indentLevel) + 'else begin\n';
+        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
+        code += INDENT.repeat(indentLevel) + 'end\n';
+      }
+
+      element = getSuccessor(graph, lastVisitedJoin);
+      continue;
     } else if (element.attributes['name'] == 'case') {
       break;
     } else if (element.attributes.attrs.label.text == 'Loop') {
