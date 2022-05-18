@@ -274,8 +274,8 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
       let links = graph.getConnectedLinks(element, { outbound: true });
       let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
       let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
-      let trueBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
-      let falseBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
+      let trueBranch: any;
+      let falseBranch: any;
 
       // Find the first element in true and false branch
       if(link1Info.label == 'true') {
@@ -296,15 +296,20 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
 
       // True branch
       code += INDENT.repeat(2) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
-      codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops);
+      codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops, false);
       code += INDENT.repeat(2) +  'end\n';
 
       // False branch
       // check if false branch isn't directly connected to join -> if yes no need to call anything
-      if(falseBranch?.attributes['name'] != 'join') {
+      if(falseBranch?.attributes['name'] != 'join' && falseBranch?.attributes['name'] != 'if') {
         code += INDENT.repeat(2) + 'else begin\n';
-        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
+        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops, false);
         code += INDENT.repeat(2) + 'end\n';
+      } 
+      // else if
+      else if (falseBranch?.attributes['name'] == 'if') {
+        code += INDENT.repeat(2) + 'else ';
+        codeForBranch(INDENT, indentLevel, falseBranch, graph, linkLabels, loops, true);
       }
 
       element = getSuccessor(graph, lastVisitedJoin);
@@ -321,7 +326,7 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
         let successor = graph.getCells().find(cell => cell.id == links[i].attributes['target'].id);
         // (3) - Generate code for the branch
         code += INDENT.repeat(3) + linkCaption.label + ' : begin\n';
-        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops);
+        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops, false);
         code += INDENT.repeat(3) + 'end\n';
       }
 
@@ -364,7 +369,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
   
   for (let i = 0; i < inputs.data.length; i++) {
     if(inputs.data[i].bits == '1') {
-      code += INDENT + 'input ' + inputs.data[i].name;
+      code += INDENT + 'input logic ' + inputs.data[i].name;
 
       if((i == inputs.data.length - 1) && (outputs.data.length == 0)) {
         code += '\n';
@@ -373,7 +378,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
       }
     } else {
       let bits: number = parseInt(inputs.data[i].bits);
-      code += INDENT + 'input ' + `[${bits-1}:0]` + ' ' + inputs.data[i].name;
+      code += INDENT + 'input logic ' + `[${bits-1}:0]` + ' ' + inputs.data[i].name;
 
       if((i == inputs.data.length - 1) && (outputs.data.length == 0)) {
         code += '\n';
@@ -385,7 +390,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
 
   for (let i = 0; i < outputs.data.length; i++) {
     if(outputs.data[i].bits == '1') {
-      code += INDENT + 'output ' + outputs.data[i].name;
+      code += INDENT + 'output logic ' + outputs.data[i].name;
 
       if((i == outputs.data.length - 1)) {
         code += '\n';
@@ -395,7 +400,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
 
     } else {
       let bits: number = parseInt(outputs.data[i].bits);
-      code += INDENT + 'output ' + `[${bits-1}:0]` + ' ' + outputs.data[i].name;
+      code += INDENT + 'output logic ' + `[${bits-1}:0]` + ' ' + outputs.data[i].name;
 
       if((i == outputs.data.length - 1)) {
         code += '\n';
@@ -413,7 +418,7 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
 /**
  *  Generate code for branches of if and case statements 
 */
-function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any): void {
+function codeForBranch(INDENT: string, indentLevel: number, element: any, graph: joint.dia.Graph, linkLabels: any, loops: any, elseif: boolean): void {
   while (element != undefined) {
     if (element.attributes['name'] == 'action' && element.attributes.attrs.label.text != 'Loop') {
       let actionCaption = element.attributes.attrs.label.text.replaceAll(' ', '');
@@ -425,8 +430,8 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
       let links = graph.getConnectedLinks(element, { outbound: true });
       let link1Info = linkLabels.find((label: { id: string | number; }) => label.id == links[0].id);
       let link2Info = linkLabels.find((label: { id: string | number; }) => label.id == links[1].id);
-      let trueBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
-      let falseBranch: dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> | undefined;
+      let trueBranch: any;
+      let falseBranch: any;
 
       // Find the first element in true and false branch
       if(link1Info.label == 'true') {
@@ -446,16 +451,28 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
       }
 
       // True branch
-      code += INDENT.repeat(indentLevel) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
-      codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops);
-      code += INDENT.repeat(indentLevel) +  'end\n';
+      if(elseif == false) {
+        code += INDENT.repeat(indentLevel) + 'if (' + element.attributes.attrs.label.text + ') begin\n';
+        codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops, false);
+        code += INDENT.repeat(indentLevel) +  'end\n';
+      } else {
+        code += 'if (' + element.attributes.attrs.label.text + ') begin\n';
+        codeForBranch(INDENT, indentLevel + 1, trueBranch, graph, linkLabels, loops, false);
+        code += INDENT.repeat(indentLevel) +  'end\n';
+      }
+      
 
       // False branch
       // check if false branch isn't directly connected to join -> if yes no need to call anything
-      if(falseBranch?.attributes['name'] != 'join') {
+      if(falseBranch?.attributes['name'] != 'join' && falseBranch?.attributes['name'] != 'if') {
         code += INDENT.repeat(indentLevel) + 'else begin\n';
-        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops);
+        codeForBranch(INDENT, indentLevel + 1, falseBranch, graph, linkLabels, loops, false);
         code += INDENT.repeat(indentLevel) + 'end\n';
+      }
+      // else if
+      else if (falseBranch?.attributes['name'] == 'if') {
+        code += INDENT.repeat(indentLevel) + 'else ';
+        codeForBranch(INDENT, indentLevel, falseBranch, graph, linkLabels, loops, true);
       }
 
       element = getSuccessor(graph, lastVisitedJoin);
@@ -472,7 +489,7 @@ function codeForBranch(INDENT: string, indentLevel: number, element: any, graph:
         let successor = graph.getCells().find(cell => cell.id == links[i].attributes['target'].id);
         // (3) - Generate code for the branch
         code += INDENT.repeat(indentLevel + 1) + linkCaption.label + ' : begin\n';
-        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops);
+        codeForBranch(INDENT, indentLevel + 2, successor, graph, linkLabels, loops, false);
         code += INDENT.repeat(indentLevel + 1) + 'end\n';
       }
 

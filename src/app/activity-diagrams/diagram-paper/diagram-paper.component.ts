@@ -56,6 +56,8 @@ export class DiagramPaperComponent implements OnInit {
   // Link labels;
   linkLabels: any = [];
 
+  paperScale: number = 1;
+
   constructor(paper: Paper) {
     // Helper variables
     const namespace = joint.shapes;
@@ -89,7 +91,8 @@ export class DiagramPaperComponent implements OnInit {
     let verticesTool: joint.linkTools.Vertices = new joint.linkTools.Vertices();
     let boundaryTool: joint.linkTools.Boundary = new joint.linkTools.Boundary();
     let removeTool: joint.linkTools.Remove = new joint.linkTools.Remove();
-    this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool]});
+    let segments: joint.linkTools.Segments = new joint.linkTools.Segments();
+    this.toolsView = new joint.dia.ToolsView({tools: [verticesTool, boundaryTool, removeTool, segments]});
     this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool]});
 
     this.toggleCaption = 'Moving mode';
@@ -609,14 +612,27 @@ export class DiagramPaperComponent implements OnInit {
       console.log(error);
     }
 
-    fileReader.onload = () => {
-      let json = JSON.parse(fileReader.result as string);
+    this.drawingMode = true;
+    this.changeDrawingMode(event);
 
-      this.loops = json.loops;
-      this.moduleInputs.data = json.moduleInputs;
-      this.moduleOutputs.data = json.moduleOutputs;
-      this.linkLabels = json.linkLabels;
-      this.graph.fromJSON(json.graph);
+    fileReader.onload = () => {
+      let json: any;
+      try {
+        json = JSON.parse(fileReader.result as string);
+      } catch {
+        alert('Invalid JSON file!');
+        return;
+      }
+      
+      try {
+        this.loops = json.loops;
+        this.moduleInputs.data = json.moduleInputs;
+        this.moduleOutputs.data = json.moduleOutputs;
+        this.linkLabels = json.linkLabels;
+        this.graph.fromJSON(json.graph);
+      } catch {
+        alert('JSON file isn\'t in corret format!');
+      }
     }
   }
 

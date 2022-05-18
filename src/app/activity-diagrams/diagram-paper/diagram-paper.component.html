@@ -11,7 +11,6 @@
     <button mat-stroked-button color="basic" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
 
 </div>
-<br>
 <div id="toolbox2" class="toolbox">
     <button mat-stroked-button color="basic" id="generate" class="buttonMargin" (click)="generateCode()">Generate code</button>
     <button mat-stroked-button color="basic" id="clearGraph" class="buttonMargin" (click)="this.graph.clear()">Clear</button>
@@ -20,9 +19,10 @@
     <input class="inputUpload" type="file" id="jsonUpload" value="Load Diagram">
     <mat-slide-toggle id="paper-mode" class="toggle" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
     <label class="buttonMargin">Zoom:</label>
-    <mat-slider #sliderValue min="0" max="2" step="0.05" value="1" thumbLabel="Scale" (change)="this.paper.scale(sliderValue.value)"></mat-slider>
+    <mat-slider #sliderValue min="0" max="2" step="0.05" value="1" thumbLabel="Scale" (change)="this.paper.scale(sliderValue.value); this.paperScale=sliderValue.value"></mat-slider>
 </div>
 <br>
+
 
 <!-- Context menu for elements -->
 <div id="element-context-menu" class="element-context-menu">
@@ -142,7 +142,7 @@
     <div class="modal-content">
         <form id="codeForm">
             <label for="code">Generated code:</label><br>
-            <textarea #code id="codeContent" name="codeContent" rows="40"></textarea>
+            <textarea #code id="codeContent" name="codeContent" rows="20"></textarea>
             <br>
             <input class="saveButton" type="button" value="Save" 
                 (click)="saveCode(code.value)"
