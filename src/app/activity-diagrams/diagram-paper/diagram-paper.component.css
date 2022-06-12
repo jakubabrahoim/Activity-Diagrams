@@ -1,5 +1,6 @@
 .toolbox {
-    margin-left: 6px;
+    margin-left: 10px;
+    margin-top: 10px;
     height: 4%;
     align-items: center;
     display: flex;
@@ -26,6 +27,11 @@
 
 .toggle {
     margin-right: 25px;
+}
+
+.modeButtonClicked {
+    color: #5fbae9;
+    pointer-events: none;
 }
 
 /* Context menu css */

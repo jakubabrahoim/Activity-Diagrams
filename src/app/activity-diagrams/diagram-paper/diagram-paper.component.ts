@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import * as joint from 'jointjs';
 
@@ -17,6 +17,7 @@ import { prerequisites, generateCode } from '../code-generation/generate';
   styleUrls: ['./diagram-paper.component.css'],
   providers: [Paper],
 })
+
 export class DiagramPaperComponent implements OnInit {
 
   // Graph, paper and element variables
@@ -49,6 +50,7 @@ export class DiagramPaperComponent implements OnInit {
   // Table variables
   moduleInputs: MatTableDataSource<DataSource> = new MatTableDataSource;
   moduleOutputs: MatTableDataSource<DataSource> = new MatTableDataSource;
+  internalSignals: MatTableDataSource<DataSource> = new MatTableDataSource;
 
   // Error message for modal 
   errorMessage: string = '';
@@ -57,12 +59,13 @@ export class DiagramPaperComponent implements OnInit {
   linkLabels: any = [];
 
   paperScale: number = 1;
+  dragStartPosition: any;
 
   constructor(paper: Paper) {
     // Helper variables
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
-    const paperHeight: any = '82%';
+    const paperHeight: any = '94%';
     const paperWidth: any = '99%';
 
     // Setup for HTML element that will contain the paper
@@ -96,6 +99,12 @@ export class DiagramPaperComponent implements OnInit {
     this.elementToolsView = new joint.dia.ToolsView({tools: [boundaryTool]});
 
     this.toggleCaption = 'Moving mode';
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e: { offsetX: number; offsetY: number; }) {
+    if (this.dragStartPosition)
+      this.paper.translate(e.offsetX - this.dragStartPosition.x * this.paperScale, e.offsetY - this.dragStartPosition.y * this.paperScale);
   }
 
   ngOnInit(): void {
@@ -146,10 +155,10 @@ export class DiagramPaperComponent implements OnInit {
       } else {
         elementContextMenu = document.getElementById('element-context-menu')!;
       }
-
+      
       this.activePaperElement = elementView.model;
-      elementContextMenu.style.left = (x + 15).toString() + 'px';
-      elementContextMenu.style.top = (y + 20).toString() + 'px';
+      elementContextMenu.style.left = (x * this.paperScale).toString() + 'px';
+      elementContextMenu.style.top = ((y + 100) * this.paperScale).toString() + 'px';
       elementContextMenu.style.display = 'block';
       
       linkContextMenu.style.display = 'none';
@@ -165,8 +174,8 @@ export class DiagramPaperComponent implements OnInit {
       let linkContextMenu: HTMLElement = document.getElementById('link-context-menu')!;
 
       this.activePaperLink = linkView.model;
-      linkContextMenu.style.left = (x + 15).toString() + 'px';
-      linkContextMenu.style.top = (y + 20).toString() + 'px';
+      linkContextMenu.style.left = (x * this.paperScale).toString() + 'px';
+      linkContextMenu.style.top = ((y + 100) * this.paperScale).toString() + 'px';
       linkContextMenu.style.display = 'block';
 
       elementContextMenu.style.display = 'none';
@@ -195,7 +204,12 @@ export class DiagramPaperComponent implements OnInit {
       linkView.hideTools(this.toolsView);
     });
 
-    this.paper.on('link:connect', (linkView) => {
+    this.paper.on('blank:pointerdown', (event, x, y) => {
+      this.dragStartPosition = { x: x, y: y};
+    });
+
+    this.paper.on('cell:pointerup blank:pointerup', (cellView, x, y) => {
+      delete this.dragStartPosition;
     });
   }
 
@@ -469,12 +483,20 @@ export class DiagramPaperComponent implements OnInit {
         modal = document.getElementById('outputTable')!;
         modal.style.display = 'block';
         break;
+      case 'internalSignals':
+        modal = document.getElementById('signalTable')!;
+        modal.style.display = 'block';
+        break;
       case 'error':
         modal = document.getElementById('modalError')!;
         modal.style.display = 'block';
         break;
       case 'code':
         modal = document.getElementById('modalCode')!;
+        modal.style.display = 'block';
+        break;
+      case 'clearPaper':
+        modal = document.getElementById('modalClearPaper')!;
         modal.style.display = 'block';
         break;
       default:
@@ -495,8 +517,10 @@ export class DiagramPaperComponent implements OnInit {
     let loopModal: HTMLElement = document.getElementById('modalLoop')!;
     let inputModal: HTMLElement = document.getElementById('inputTable')!;
     let outputModal: HTMLElement = document.getElementById('outputTable')!;
+    let signalModal: HTMLElement = document.getElementById('signalTable')!;
     let errorModal: HTMLElement = document.getElementById('modalError')!;
     let codeModal: HTMLElement = document.getElementById('modalCode')!;
+    let clearPaperModal: HTMLElement = document.getElementById('modalClearPaper')!;
     
     actionModal.style.display = 'none';
     ifModal.style.display = 'none';
@@ -506,8 +530,10 @@ export class DiagramPaperComponent implements OnInit {
     loopModal.style.display = 'none';
     inputModal.style.display = 'none';
     outputModal.style.display = 'none';
+    signalModal.style.display = 'none';
     errorModal.style.display = 'none';
     codeModal.style.display = 'none';
+    clearPaperModal.style.display = 'none';
 
     this.activePaperElement = null;
     this.activePaperElementCaption = '';
@@ -551,6 +577,14 @@ export class DiagramPaperComponent implements OnInit {
     this.moduleOutputs._updateChangeSubscription();
   }
 
+  /**
+   * Add new internal signal to signal table
+  */
+  addSignal(): void {
+    this.internalSignals.data.push({name: 'signal_name', bits: '1'});
+    this.internalSignals._updateChangeSubscription();
+  }
+
   /** 
    * Deletes module input from table 
   */
@@ -569,6 +603,15 @@ export class DiagramPaperComponent implements OnInit {
     this.moduleOutputs._updateChangeSubscription();
   }
 
+  /**
+   * Deletes internal signal from table 
+  */
+  deleteSignal(element: any) {
+    let index: number = this.internalSignals.data.indexOf(element);
+    this.internalSignals.data.splice(index, 1);
+    this.internalSignals._updateChangeSubscription();
+  }
+
   /** 
    * Saves diagram to JSON file and downloads it 
   */
@@ -581,6 +624,7 @@ export class DiagramPaperComponent implements OnInit {
       loops: this.loops,
       moduleInputs: this.moduleInputs.data,
       moduleOutputs: this.moduleOutputs.data,
+      internalSignals: this.internalSignals.data,
     }
 
     let jsonUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(serializedDiagram));
@@ -628,17 +672,18 @@ export class DiagramPaperComponent implements OnInit {
         this.loops = json.loops;
         this.moduleInputs.data = json.moduleInputs;
         this.moduleOutputs.data = json.moduleOutputs;
+        this.internalSignals.data = json.internalSignals;
         this.linkLabels = json.linkLabels;
         this.graph.fromJSON(json.graph);
       } catch {
-        alert('JSON file isn\'t in corret format!');
+        alert('JSON file isn\'t in correct format!');
       }
     }
   }
 
   generateCode(): void {
     let graphJSON: Array<Object> = this.graph.toJSON();
-    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels, this.loops);
+    let checkResult = prerequisites(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.internalSignals, this.linkLabels, this.loops);
 
     if(checkResult != '') {
       this.errorMessage = checkResult;
@@ -646,7 +691,7 @@ export class DiagramPaperComponent implements OnInit {
       return;
     }
 
-    let code = generateCode(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.linkLabels, this.loops);
+    let code = generateCode(graphJSON, this.graph, this.moduleInputs, this.moduleOutputs, this.internalSignals, this.linkLabels, this.loops);
 
     let codeTextArea: any = document.getElementById('codeContent')!;
     codeTextArea.value = code;

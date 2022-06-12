@@ -2,27 +2,38 @@
 <div id="toolbox" class="toolbox">
     <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleInputs')">Module inputs</button>
     <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('moduleOutputs')">Module outputs</button>
-    <button mat-stroked-button color="basic" id="addAction" class="buttonMargin" (click)="showModal('action')">Action</button>
-    <button mat-stroked-button color="basic" id="addDiamondIf" class="buttonMargin" (click)="showModal('if')">If</button>
-    <button mat-stroked-button color="basic" id="addDiamondCase" class="buttonMargin" (click)="showModal('case')">Case</button>
-    <button mat-stroked-button color="basic" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
-    <button mat-stroked-button color="basic" id="addStart" class="buttonMargin"  (click)="addStartToGraph()">Start</button>
-    <button mat-stroked-button color="basic" id="addEnd" class="buttonMargin"  (click)="addEndToGraph()">End</button>
-    <button mat-stroked-button color="basic" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
+    <button mat-stroked-button color="basic" id="module" class="buttonMargin" (click)="showModal('internalSignals')">Internal signals</button>
+    <div style="border-left: 2px solid; height: 30px; margin-right: 10px;"></div>
 
-</div>
-<div id="toolbox2" class="toolbox">
-    <button mat-stroked-button color="basic" id="generate" class="buttonMargin" (click)="generateCode()">Generate code</button>
-    <button mat-stroked-button color="basic" id="clearGraph" class="buttonMargin" (click)="this.graph.clear()">Clear</button>
-    <button mat-stroked-button color="basic" id="save" class="buttonMargin" (click)="saveDiagram()">Save diagram</button>
-    <button mat-stroked-button color="basic" id="load" class="buttonMargin" (click)="loadDiagram()">Load diagram</button>
+    <mat-menu #appMenu="matMenu">
+        <button mat-menu-item color="basic" id="addAction" class="buttonMargin" (click)="showModal('action')">Action</button>
+        <button mat-menu-item color="basic" id="addDiamondIf" class="buttonMargin" (click)="showModal('if')">If</button>
+        <button mat-menu-item color="basic" id="addDiamondCase" class="buttonMargin" (click)="showModal('case')">Case</button>
+        <button mat-menu-item color="basic" id="addJoin" class="buttonMargin" (click)="addDiamondJoinToGraph()">Join</button>
+        <button mat-menu-item color="basic" id="addStart" class="buttonMargin"  (click)="addStartToGraph()">Start</button>
+        <button mat-menu-item color="basic" id="addEnd" class="buttonMargin"  (click)="addEndToGraph()">End</button>
+        <button mat-menu-item color="basic" id="addLoop" class="buttonMargin" (click)="showModal('loop')">Loop</button>
+    </mat-menu>
+    <button mat-stroked-button [matMenuTriggerFor]="appMenu">
+        Elements
+    </button>
+
+    <div style="border-left: 2px solid; height: 30px; margin-right: 10px; margin-left: 10px;"></div>
+
+
+    <button mat-stroked-button color="basic" id="generate" matTooltip="Generate code" class="buttonMargin" (click)="generateCode()"><mat-icon>code</mat-icon></button>
+    <button mat-stroked-button color="basic" id="save" matTooltip="Save diagram" class="buttonMargin" (click)="saveDiagram()"><mat-icon>save</mat-icon></button>
+    <button mat-stroked-button color="basic" id="load" matTooltip="Load diagram" class="buttonMargin" (click)="loadDiagram()"><mat-icon>upload</mat-icon></button>
     <input class="inputUpload" type="file" id="jsonUpload" value="Load Diagram">
-    <mat-slide-toggle id="paper-mode" class="toggle" #toggle (change)="changeDrawingMode($event)" color="basic">{{toggleCaption}}</mat-slide-toggle>
+    <div style="border-left: 2px solid; height: 30px; margin-right: 10px; margin-left: 10px;"></div>
+    <button mat-stroked-button color="basic" id="zoomIn" matTooltip="Moving mode" class="buttonMargin" (click)="changeDrawingMode($event)" [class.modeButtonClicked]="drawingMode == false"><mat-icon>pan_tool</mat-icon></button>
+    <button mat-stroked-button color="basic" id="zoomOut" matTooltip="Drawing mode" class="buttonMargin" (click)="changeDrawingMode($event)" [class.modeButtonClicked]="drawingMode == true"><mat-icon>mode</mat-icon></button>
+    <div style="border-left: 2px solid; height: 30px; margin-right: 10px;"></div>
+    <button mat-stroked-button color="basic" id="clearGraph" matTooltip="Clear paper" class="buttonMargin" (click)="showModal('clearPaper')"><mat-icon>delete</mat-icon></button>
     <label class="buttonMargin">Zoom:</label>
     <mat-slider #sliderValue min="0" max="2" step="0.05" value="1" thumbLabel="Scale" (change)="this.paper.scale(sliderValue.value); this.paperScale=sliderValue.value"></mat-slider>
-</div>
-<br>
 
+</div>
 
 <!-- Context menu for elements -->
 <div id="element-context-menu" class="element-context-menu">
@@ -152,6 +163,14 @@
     </div>
 </div>
 
+<div id="modalClearPaper" class="modal">
+    <div class="modal-content">
+        <p class="errorMessage">Are you sure you want to clear the paper?</p>
+        <input class="cancelButton" type="button" value="Yes, clear the paper" (click)="this.graph.clear(); closeModal()">
+        <input class="saveButton" type="button" value="No, take me back" (click)="closeModal()">
+    </div>
+</div>
+
 <div id="inputTable" class="modal">
     <div class="modal-content">
         <h3>Inputs</h3>
@@ -185,7 +204,7 @@
             <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
         </mat-table>
         <input class="insertButton" type="button" value="Add new input" (click)="addInput()">
-        <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        <input class="cancelButton" type="button" value="Close" (click)="closeModal()">
     </div>
 </div>
 
@@ -222,6 +241,43 @@
             <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
         </mat-table>
         <input class="insertButton" type="button" value="Add new output" (click)="addOutput()">
-        <input class="cancelButton" type="button" value="Cancel" (click)="closeModal()">
+        <input class="cancelButton" type="button" value="Close" (click)="closeModal()">
+    </div>
+</div>
+
+<div id="signalTable" class="modal">
+    <div class="modal-content">
+        <h3>Internal signals</h3>
+        <mat-table [dataSource]="internalSignals">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>Signal name</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Signal name..." [value]="element.name" [(ngModel)]="element.name">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="bits">
+                <mat-header-cell *matHeaderCellDef>Bit size</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                        <input matInput placeholder="Bits..." [value]="element.bits" [(ngModel)]="element.bits">
+                    </mat-form-field>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="formActions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="deleteSignal(element)">Delete</button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'bits', 'formActions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'bits', 'formActions']"></mat-row>
+        </mat-table>
+        <input class="insertButton" type="button" value="Add new internal signal" (click)="addSignal()">
+        <input class="cancelButton" type="button" value="Close" (click)="closeModal()">
     </div>
 </div>

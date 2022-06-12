@@ -4,7 +4,7 @@ import { ActivityDiagramsModule } from './activity-diagrams/activity-diagrams.mo
 import { DiagramPaperComponent } from './activity-diagrams/diagram-paper/diagram-paper.component';
 
 const routes: Routes = [
-  {path: 'activity', component: DiagramPaperComponent}
+  {path: '', component: DiagramPaperComponent}
 ];
 
 @NgModule({

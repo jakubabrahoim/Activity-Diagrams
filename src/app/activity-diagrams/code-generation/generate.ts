@@ -5,12 +5,7 @@ import { DataSource } from "../paper-elements/data-source";
 /** 
  * Function called before generating the code for all possible checks on elements 
 */
-export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
-  //console.log('Running prerequisites...');
-  //console.log('Serialized graph: ', serializedGraph);
-  //console.log('Graph: ', graph);
-  //console.log('Link labels: ', linkLabels);
-
+export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, internalSignals: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   // Check if start element exists
   let startElement = serializedGraph.cells.filter((element: { name: string; }) => element.name == 'start');
   if (startElement.length == 0) {
@@ -66,8 +61,8 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     // (3) - Check if action element has caption
     else if (serializedGraph.cells[i]['name'] == 'action') {
       // (1)
-      if (links.length > 2) {
-        return 'Error: Actions can have at most 2 links.';
+      if (links.length != 2) {
+        return 'Error: Actions must have exactly 2 links.';
       }
       // (2)
       else if (links.length == 2) {
@@ -242,19 +237,29 @@ export function prerequisites(serializedGraph: any, graph: joint.dia.Graph, inpu
     return checkOutputs;
   }
 
+  let checkInternalSignals = checkIO(internalSignals, inputs, 'Internal signal');
+  if(checkInternalSignals != '') {
+    return checkInternalSignals;
+  }
+
+  checkInternalSignals = checkIO(internalSignals, outputs, 'Internal signal');
+  if(checkInternalSignals != '') {
+    return checkInternalSignals;
+  }
+
   return '';
 }
 
 let code = '';
 let lastVisitedJoin = '';
 
-export function generateCode(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
+export function generateCode(serializedGraph: any, graph: joint.dia.Graph, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, internalSignals: MatTableDataSource<DataSource>, linkLabels: any, loops: any): string {
   const INDENT_SIZE = 4;
   const INDENT = ' '.repeat(INDENT_SIZE);
   let indentLevel = 2;
   //console.log('serializedGraph: ', serializedGraph);
 
-  codeForIO(INDENT, inputs, outputs);
+  codeForIO(INDENT, inputs, outputs, internalSignals);
 
   code += INDENT + 'always_comb begin\n';
 
@@ -364,7 +369,7 @@ export function generateCode(serializedGraph: any, graph: joint.dia.Graph, input
 /** 
  * Generate code for inputs and outputs 
 */
-function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>): void {
+function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outputs: MatTableDataSource<DataSource>, internalSignals: MatTableDataSource<DataSource>): void {
   code += 'module module_name (\n';
   
   for (let i = 0; i < inputs.data.length; i++) {
@@ -411,6 +416,17 @@ function codeForIO(INDENT: string, inputs: MatTableDataSource<DataSource>, outpu
   }
 
   code += ');\n\n';
+
+  for (let i = 0; i < internalSignals.data.length; i++) {
+    if(internalSignals.data[i].bits == '1') {
+      code += 'logic ' + internalSignals.data[i].name + ';\n';
+    } else {
+      let bits: number = parseInt(internalSignals.data[i].bits);
+      code += 'logic ' + `[${bits-1}:0]` + ' ' + internalSignals.data[i].name + ';\n';
+    }
+  }
+
+  code += '\n';
 
   return;
 }
@@ -541,7 +557,7 @@ function checkIO(dataSource1: MatTableDataSource<DataSource>, dataSource2: MatTa
         }
         for (let k = 0; k < dataSource2.data.length; k++) {
           if (dataSource1.data[j].name === dataSource2.data[k].name) {
-            return 'Error: Inputs and outputs can not have the same name.';
+            return 'Error: Inputs, outputs and internal signals can not have the same name.';
           }
         }
       }
