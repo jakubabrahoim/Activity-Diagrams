@@ -65,7 +65,7 @@ export class DiagramPaperComponent implements OnInit {
     // Helper variables
     const namespace = joint.shapes;
     const paperElement: HTMLDivElement = document.createElement('div');
-    const paperHeight: any = '94%';
+    const paperHeight: any = '93%';
     const paperWidth: any = '99%';
 
     // Setup for HTML element that will contain the paper

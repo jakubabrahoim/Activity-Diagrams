@@ -1,0 +1,2856 @@
+{
+    "graph": {
+        "cells": [
+            {
+                "type": "standard.Ellipse",
+                "position": {
+                    "x": 30,
+                    "y": 110
+                },
+                "size": {
+                    "width": 70,
+                    "height": 70
+                },
+                "angle": 0,
+                "name": "start",
+                "id": "4ffec9c1-83b3-44ae-af36-89b6547fe4ef",
+                "z": 1,
+                "attrs": {
+                    "body": {
+                        "fill": "black",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "fill": "white",
+                        "text": "Start",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 150,
+                    "y": 90
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "52fcf353-a7e9-4b10-b3c8-fced22cf1c41",
+                "z": 2,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 0",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 450,
+                    "y": 90
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "b311e6d8-d09e-4f6d-a06c-0d76bce284b2",
+                "z": 3,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "enable",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 840,
+                    "y": 10
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "0f50feb6-61d9-4b6d-ad5e-31a20770d100",
+                "z": 4,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 1",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 660,
+                    "y": 90
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "e23a46a6-7c02-413f-b4da-94e78da02bbd",
+                "z": 5,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0002",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1120,
+                    "y": 80
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "32e26713-889a-42a9-aef0-f648023906a9",
+                "z": 6,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Ellipse",
+                "position": {
+                    "x": 60,
+                    "y": 1020
+                },
+                "size": {
+                    "width": 70,
+                    "height": 70
+                },
+                "angle": 0,
+                "name": "end",
+                "id": "d4c0a4ab-4244-4008-8f7f-90912c93b06e",
+                "z": 7,
+                "attrs": {
+                    "body": {
+                        "fill": "black",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "fill": "white",
+                        "text": "End",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "4ffec9c1-83b3-44ae-af36-89b6547fe4ef",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "52fcf353-a7e9-4b10-b3c8-fced22cf1c41",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "833a3f71-8c10-4750-934c-87c853cf3afa",
+                "z": 8,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "52fcf353-a7e9-4b10-b3c8-fced22cf1c41",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "b311e6d8-d09e-4f6d-a06c-0d76bce284b2",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "b70cbf72-de60-4b11-b53a-7a2263ba77db",
+                "z": 9,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "b311e6d8-d09e-4f6d-a06c-0d76bce284b2",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "e23a46a6-7c02-413f-b4da-94e78da02bbd"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "e0e1cecf-5e13-4e41-b58c-9124dcc3ce1d",
+                "z": 10,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e23a46a6-7c02-413f-b4da-94e78da02bbd",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "0f50feb6-61d9-4b6d-ad5e-31a20770d100",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "dea0938a-7c8a-40eb-8145-104896f2615e",
+                "z": 11,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e23a46a6-7c02-413f-b4da-94e78da02bbd",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "32e26713-889a-42a9-aef0-f648023906a9",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "fb586437-2aad-40fd-a581-adacb89d3900",
+                "z": 12,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "0f50feb6-61d9-4b6d-ad5e-31a20770d100",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "32e26713-889a-42a9-aef0-f648023906a9",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "aeebf59b-4ee8-42c5-81de-32daddec08ab",
+                "z": 13,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1310,
+                    "y": 80
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "c4e27441-d749-4284-893e-76f16c54f8ac",
+                "z": 14,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h004",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 1490,
+                    "y": 10
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "d294a94a-45fd-4e40-a832-ecc55bf1ae13",
+                "z": 15,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 2",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1760,
+                    "y": 80
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "95d35715-2784-423f-a423-f6a591f979a8",
+                "z": 16,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "32e26713-889a-42a9-aef0-f648023906a9",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "c4e27441-d749-4284-893e-76f16c54f8ac"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "fdd00b67-9a52-4a11-b4b9-c8023377daad",
+                "z": 17,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "c4e27441-d749-4284-893e-76f16c54f8ac",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "d294a94a-45fd-4e40-a832-ecc55bf1ae13",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "0110845e-1437-4888-8ce4-21a0c83d2c8e",
+                "z": 18,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "c4e27441-d749-4284-893e-76f16c54f8ac",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "95d35715-2784-423f-a423-f6a591f979a8",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "afadfe9c-5597-49eb-8e5b-aabee9825ad5",
+                "z": 19,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "d294a94a-45fd-4e40-a832-ecc55bf1ae13",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "95d35715-2784-423f-a423-f6a591f979a8",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "f887bbcd-a42d-4697-ad9d-3edf5358a99d",
+                "z": 20,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 440,
+                    "y": 1000
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "83c791e6-5d14-499b-8978-6842e1a50a45",
+                "z": 21,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "b311e6d8-d09e-4f6d-a06c-0d76bce284b2",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "83c791e6-5d14-499b-8978-6842e1a50a45",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "05d13122-ddd3-4d2b-a567-bf545e56f0b7",
+                "z": 23,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "83c791e6-5d14-499b-8978-6842e1a50a45",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "d4c0a4ab-4244-4008-8f7f-90912c93b06e",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "03afa3f3-2cbd-45c0-bfc0-dd6e9c26ebcd",
+                "z": 24,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1940,
+                    "y": 80
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "007823f8-5f4b-469e-be4f-74893e4155a3",
+                "z": 25,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h008",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 2120,
+                    "y": 10
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "268d3c58-4747-4f76-8ebc-82d591a1d834",
+                "z": 26,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 3",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 2390,
+                    "y": 80
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "cb36f1e8-f387-4fdd-aa6f-a0cb9972a4cd",
+                "z": 27,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "95d35715-2784-423f-a423-f6a591f979a8",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "007823f8-5f4b-469e-be4f-74893e4155a3"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "883ddd99-904f-4caf-999e-7f7ee5eb9072",
+                "z": 28,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "007823f8-5f4b-469e-be4f-74893e4155a3",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "268d3c58-4747-4f76-8ebc-82d591a1d834",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "3dbea585-bd6b-41fd-b4dd-8c5c7248a7a5",
+                "z": 29,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "007823f8-5f4b-469e-be4f-74893e4155a3",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "cb36f1e8-f387-4fdd-aa6f-a0cb9972a4cd",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "56b035ff-bb58-4e24-bf97-d07e0fd1d622",
+                "z": 30,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "268d3c58-4747-4f76-8ebc-82d591a1d834",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "cb36f1e8-f387-4fdd-aa6f-a0cb9972a4cd",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "6ca95a7f-0481-49ab-a32a-0de8c5fc9ca2",
+                "z": 31,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 2390,
+                    "y": 280
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "ccfd1bd9-76e1-4c33-8780-9edc39283e53",
+                "z": 32,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0010",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 2130,
+                    "y": 200
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "0fab9233-e4f6-4a33-84e4-b96dc2bd6bb9",
+                "z": 33,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 4",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1950,
+                    "y": 280
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "54b63208-0c66-4d97-b887-646aca50ba3c",
+                "z": 34,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "cb36f1e8-f387-4fdd-aa6f-a0cb9972a4cd",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "ccfd1bd9-76e1-4c33-8780-9edc39283e53",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "281aa2dd-2766-4d95-b17b-8ad421cdbdb2",
+                "z": 35,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "ccfd1bd9-76e1-4c33-8780-9edc39283e53",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "0fab9233-e4f6-4a33-84e4-b96dc2bd6bb9",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "5a25942f-b70a-4675-819a-08a7cde4d3fe",
+                "z": 36,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "ccfd1bd9-76e1-4c33-8780-9edc39283e53",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "54b63208-0c66-4d97-b887-646aca50ba3c",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "1a0821af-cd5e-4b00-96f0-fc2690bc9ddd",
+                "z": 37,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "0fab9233-e4f6-4a33-84e4-b96dc2bd6bb9",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "54b63208-0c66-4d97-b887-646aca50ba3c",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "80335833-84a8-4bb3-a29d-9aa5695988bf",
+                "z": 38,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1770,
+                    "y": 280
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "34009661-6435-4c7f-b373-ca17e7e0a313",
+                "z": 39,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0020",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 1500,
+                    "y": 200
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "99677bc1-84a7-4c20-96cd-348a140c1f7e",
+                "z": 40,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 20",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1310,
+                    "y": 290
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "3c740bf3-d255-46e9-af20-24aa09d36f01",
+                "z": 41,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "34009661-6435-4c7f-b373-ca17e7e0a313",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "99677bc1-84a7-4c20-96cd-348a140c1f7e",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "7248d3a4-99c1-4a19-9d56-b8cfbf7f8067",
+                "z": 42,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "34009661-6435-4c7f-b373-ca17e7e0a313",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "3c740bf3-d255-46e9-af20-24aa09d36f01",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "bc166592-2d0f-41a7-bae5-8874b4c57157",
+                "z": 43,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "54b63208-0c66-4d97-b887-646aca50ba3c",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "34009661-6435-4c7f-b373-ca17e7e0a313"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "d901c81f-1e6b-47cd-a627-8e80955366c9",
+                "z": 44,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "99677bc1-84a7-4c20-96cd-348a140c1f7e",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "3c740bf3-d255-46e9-af20-24aa09d36f01",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "00d666f7-c9e0-4f2d-a85d-ffb25d3a7028",
+                "z": 45,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1120,
+                    "y": 290
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "365be728-2095-4330-8f2c-167c9735c924",
+                "z": 46,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0040",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 860,
+                    "y": 220
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "871e8bba-a6d2-4616-9e19-579608fb44ba",
+                "z": 47,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 6",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 660,
+                    "y": 300
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "cd260663-e9ea-4aeb-a8a8-24f4c490fc48",
+                "z": 48,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "3c740bf3-d255-46e9-af20-24aa09d36f01",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "365be728-2095-4330-8f2c-167c9735c924"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "d298c7bb-bac2-41c7-b64d-42217fcdd95c",
+                "z": 49,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "365be728-2095-4330-8f2c-167c9735c924",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "871e8bba-a6d2-4616-9e19-579608fb44ba",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "58e58ba0-cba5-4b19-a7ea-6b0fd7c6945f",
+                "z": 50,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "365be728-2095-4330-8f2c-167c9735c924",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "cd260663-e9ea-4aeb-a8a8-24f4c490fc48",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "625f5723-4cce-4099-a339-083879355b48",
+                "z": 51,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "871e8bba-a6d2-4616-9e19-579608fb44ba",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "cd260663-e9ea-4aeb-a8a8-24f4c490fc48",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "3c287abf-aeb8-494d-905b-c75fe7a393c8",
+                "z": 52,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 660,
+                    "y": 490
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "428929d6-0582-474e-a4d0-739a3a8f7dd1",
+                "z": 53,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0080",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 850,
+                    "y": 410
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "eac45695-e872-423f-ba0a-d4c8b9b77d6c",
+                "z": 54,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 7",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1120,
+                    "y": 500
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "94f69214-efaf-4ba7-a176-84b14c10852b",
+                "z": 55,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "cd260663-e9ea-4aeb-a8a8-24f4c490fc48",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "428929d6-0582-474e-a4d0-739a3a8f7dd1",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "d316c8b1-0406-49c2-8c41-9df47138e957",
+                "z": 56,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "428929d6-0582-474e-a4d0-739a3a8f7dd1",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "eac45695-e872-423f-ba0a-d4c8b9b77d6c",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "9cadcf2e-c3fb-4c46-a77c-d6ff35606615",
+                "z": 57,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "428929d6-0582-474e-a4d0-739a3a8f7dd1",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "94f69214-efaf-4ba7-a176-84b14c10852b",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "b9a91ab1-3942-4bef-9ca0-a7a595918d93",
+                "z": 58,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "eac45695-e872-423f-ba0a-d4c8b9b77d6c",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "94f69214-efaf-4ba7-a176-84b14c10852b",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "4c60b7a3-95f3-48b8-b111-4fe8c7cade77",
+                "z": 59,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1310,
+                    "y": 500
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "11eb38dc-676c-42ac-8891-d876bc8b592d",
+                "z": 60,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0100",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 1500,
+                    "y": 410
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "3701e576-3cd1-4494-a68d-d1a8b6a6262d",
+                "z": 61,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 8",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1770,
+                    "y": 490
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "a23dfb07-cdff-4241-93bb-bb828b303975",
+                "z": 62,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "94f69214-efaf-4ba7-a176-84b14c10852b",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "11eb38dc-676c-42ac-8891-d876bc8b592d"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "d6cf2f10-3edc-421a-bf52-5b4b25858d66",
+                "z": 63,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "11eb38dc-676c-42ac-8891-d876bc8b592d",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "3701e576-3cd1-4494-a68d-d1a8b6a6262d",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "1211ff89-0761-4a04-b9fe-8275fafe6024",
+                "z": 64,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "11eb38dc-676c-42ac-8891-d876bc8b592d",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "a23dfb07-cdff-4241-93bb-bb828b303975",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "38b7bc6b-c853-42ce-b713-1b36bafe158c",
+                "z": 65,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "3701e576-3cd1-4494-a68d-d1a8b6a6262d",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "a23dfb07-cdff-4241-93bb-bb828b303975",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "5dacb22b-9ba0-4a51-9ac1-4b11b940ae5a",
+                "z": 66,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1950,
+                    "y": 490
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "72fadfa6-f5e3-4951-9f73-fb178ab9837a",
+                "z": 67,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0200",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 2130,
+                    "y": 400
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "92318ba0-0018-49b6-b497-5e1d032f3034",
+                "z": 68,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 9",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 2400,
+                    "y": 500
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "43b2a0fb-fbee-49a7-8285-55bf9c4bf6fc",
+                "z": 69,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "72fadfa6-f5e3-4951-9f73-fb178ab9837a",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "92318ba0-0018-49b6-b497-5e1d032f3034",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "59de0089-566b-46bd-ab20-2c417737acc9",
+                "z": 70,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "72fadfa6-f5e3-4951-9f73-fb178ab9837a",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "43b2a0fb-fbee-49a7-8285-55bf9c4bf6fc",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "5138db53-6e01-4b04-b936-39ac23c0b78b",
+                "z": 71,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "a23dfb07-cdff-4241-93bb-bb828b303975",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "72fadfa6-f5e3-4951-9f73-fb178ab9837a"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "7161cc70-fb6a-4c04-bc08-3a92180ef343",
+                "z": 72,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "92318ba0-0018-49b6-b497-5e1d032f3034",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "43b2a0fb-fbee-49a7-8285-55bf9c4bf6fc",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "f4bb45b5-fe4a-48f1-9f54-da7d4fdb5382",
+                "z": 73,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 2400,
+                    "y": 690
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "a00f8d94-fdef-4336-825b-892f296da471",
+                "z": 74,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0400",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 2120,
+                    "y": 590
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "73a69ce8-bb5a-4dc6-a8fb-f7c0ff705467",
+                "z": 75,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 10",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1950,
+                    "y": 690
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "b329645c-5123-40ec-8c37-4fead38ce2d7",
+                "z": 76,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "a00f8d94-fdef-4336-825b-892f296da471",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "73a69ce8-bb5a-4dc6-a8fb-f7c0ff705467"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "5a50b0b9-24a4-47a3-b444-c0995210bb1f",
+                "z": 77,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "a00f8d94-fdef-4336-825b-892f296da471",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "b329645c-5123-40ec-8c37-4fead38ce2d7",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "01c73326-5fa0-4edc-9621-59f36e82bf09",
+                "z": 78,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "43b2a0fb-fbee-49a7-8285-55bf9c4bf6fc",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "a00f8d94-fdef-4336-825b-892f296da471",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "6d8c582f-012e-48e2-8c20-1ec398866946",
+                "z": 79,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "73a69ce8-bb5a-4dc6-a8fb-f7c0ff705467",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "b329645c-5123-40ec-8c37-4fead38ce2d7",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "4613e951-967c-47cd-8786-4bdb18ca916c",
+                "z": 80,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1770,
+                    "y": 690
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "fea6b2ae-8e73-4c5b-8c5a-8224966bc0d4",
+                "z": 81,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h0800",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 1500,
+                    "y": 600
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "87535483-c54a-4774-bc58-183ecf63c508",
+                "z": 82,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 11",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1310,
+                    "y": 690
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "34500023-b0bb-4ca2-a014-86aa373d0ebf",
+                "z": 83,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "b329645c-5123-40ec-8c37-4fead38ce2d7",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "fea6b2ae-8e73-4c5b-8c5a-8224966bc0d4",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "2be752da-16b8-422c-a65a-d209e33745e6",
+                "z": 84,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "fea6b2ae-8e73-4c5b-8c5a-8224966bc0d4",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "87535483-c54a-4774-bc58-183ecf63c508",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "7c21c0d2-e1ec-4cab-8a6d-3f2a703e845e",
+                "z": 85,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "fea6b2ae-8e73-4c5b-8c5a-8224966bc0d4",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "34500023-b0bb-4ca2-a014-86aa373d0ebf",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "e6c0c61e-2145-49aa-9680-54f637eaed97",
+                "z": 86,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "87535483-c54a-4774-bc58-183ecf63c508",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "34500023-b0bb-4ca2-a014-86aa373d0ebf",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "ab999d18-d11e-4fee-b6d5-14f3ba2c818d",
+                "z": 87,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1120,
+                    "y": 690
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "ed868eb5-ba06-4013-8945-2491458ee08f",
+                "z": 88,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h1000",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 840,
+                    "y": 600
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "7eb43efc-0602-41b2-a424-2c58938cf5d4",
+                "z": 89,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 12",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 660,
+                    "y": 700
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "40bff888-0022-49bc-b01b-fa2aecca1fd1",
+                "z": 90,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "34500023-b0bb-4ca2-a014-86aa373d0ebf",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "ed868eb5-ba06-4013-8945-2491458ee08f"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "3ca6f868-61e8-47dc-8022-fcdd2db58e26",
+                "z": 91,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "ed868eb5-ba06-4013-8945-2491458ee08f",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "7eb43efc-0602-41b2-a424-2c58938cf5d4",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "3e10fb6a-100b-4c2f-a8be-5b9a6ae1778c",
+                "z": 92,
+                "vertices": [
+                    {
+                        "x": 1070,
+                        "y": 700
+                    }
+                ],
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "ed868eb5-ba06-4013-8945-2491458ee08f",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "40bff888-0022-49bc-b01b-fa2aecca1fd1",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "41da0460-8731-4ba2-b17e-512193cc05af",
+                "z": 93,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "7eb43efc-0602-41b2-a424-2c58938cf5d4",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "40bff888-0022-49bc-b01b-fa2aecca1fd1",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "e6dd4867-76c4-46a2-9115-201901dd67f5",
+                "z": 94,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 650,
+                    "y": 910
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "e20e9370-7527-4427-aa42-d812fcb2404b",
+                "z": 95,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h2000",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 830,
+                    "y": 810
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "0297f4a3-b06c-4994-bacd-0a78580f175b",
+                "z": 96,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 13",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1120,
+                    "y": 910
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "966c4039-8de2-49ae-b448-e7a583bcdbe4",
+                "z": 97,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "40bff888-0022-49bc-b01b-fa2aecca1fd1",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "e20e9370-7527-4427-aa42-d812fcb2404b",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "f3afb1d9-191f-4304-a402-0d47278387e0",
+                "z": 98,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e20e9370-7527-4427-aa42-d812fcb2404b",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "0297f4a3-b06c-4994-bacd-0a78580f175b",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "4bc9f676-113a-480e-922f-a4e0dd722b23",
+                "z": 99,
+                "vertices": [
+                    {
+                        "x": 790,
+                        "y": 920
+                    }
+                ],
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e20e9370-7527-4427-aa42-d812fcb2404b",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "966c4039-8de2-49ae-b448-e7a583bcdbe4",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "433a337b-5a9c-4c41-8a8e-a79f488fbce0",
+                "z": 100,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "0297f4a3-b06c-4994-bacd-0a78580f175b",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "966c4039-8de2-49ae-b448-e7a583bcdbe4",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "8fca6372-9b7d-4026-8187-42ba107bcbec",
+                "z": 101,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1320,
+                    "y": 910
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "14a1621c-2297-4592-a2d4-d67b7c9b68c8",
+                "z": 102,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h4000",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 1500,
+                    "y": 800
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "a2fbc5ea-7607-4ab4-8896-905081810b94",
+                "z": 103,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 14",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1770,
+                    "y": 890
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "384aef8a-7685-4bd5-b42d-77177c019379",
+                "z": 104,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "966c4039-8de2-49ae-b448-e7a583bcdbe4",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "14a1621c-2297-4592-a2d4-d67b7c9b68c8"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "6975c383-b147-44ee-a266-d0f3cc6ec620",
+                "z": 105,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "14a1621c-2297-4592-a2d4-d67b7c9b68c8",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "a2fbc5ea-7607-4ab4-8896-905081810b94",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "ae45b51a-0a05-45df-b9a9-1396e862a8ec",
+                "z": 106,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "14a1621c-2297-4592-a2d4-d67b7c9b68c8",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "384aef8a-7685-4bd5-b42d-77177c019379",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "44f131ee-01e6-435c-8dde-e8ea86da41bc",
+                "z": 107,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "a2fbc5ea-7607-4ab4-8896-905081810b94",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "384aef8a-7685-4bd5-b42d-77177c019379",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "95c7498e-a018-43a1-a8d5-bf437fbc8fe4",
+                "z": 108,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 1960,
+                    "y": 890
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "if",
+                "id": "5e6883d0-88bb-4cb8-9ef2-713940e6bc50",
+                "z": 109,
+                "attrs": {
+                    "body": {
+                        "stroke": "black",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "encoder_in == 16'h8000",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Rectangle",
+                "position": {
+                    "x": 2120,
+                    "y": 800
+                },
+                "size": {
+                    "width": 200,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "action",
+                "id": "e95eaab9-7f4f-4bc0-b9e7-cfbd1dedc83f",
+                "z": 110,
+                "attrs": {
+                    "body": {
+                        "rx": 10,
+                        "ry": 10,
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "binary_out = 15",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Polygon",
+                "position": {
+                    "x": 2460,
+                    "y": 960
+                },
+                "size": {
+                    "width": 100,
+                    "height": 100
+                },
+                "angle": 0,
+                "name": "join",
+                "id": "e94d9f06-1cc2-4086-8ea9-d126924f94e3",
+                "z": 111,
+                "attrs": {
+                    "body": {
+                        "stroke": "red",
+                        "transform": "rotate(45, 50, 50)",
+                        "magnet": "passive"
+                    },
+                    "label": {
+                        "text": "Join",
+                        "style": "-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;"
+                    }
+                }
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "384aef8a-7685-4bd5-b42d-77177c019379",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "5e6883d0-88bb-4cb8-9ef2-713940e6bc50"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "b4f42341-446e-49b7-8002-e267f1cc695a",
+                "z": 112,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "5e6883d0-88bb-4cb8-9ef2-713940e6bc50",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "e95eaab9-7f4f-4bc0-b9e7-cfbd1dedc83f",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "c7efdfd7-0234-43fd-bd81-e1e3c8b15aa1",
+                "z": 113,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "true"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "5e6883d0-88bb-4cb8-9ef2-713940e6bc50",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "e94d9f06-1cc2-4086-8ea9-d126924f94e3",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "8958f0fd-c625-4e51-b154-d5fa60799ceb",
+                "z": 114,
+                "labels": [
+                    {
+                        "attrs": {
+                            "text": {
+                                "text": "false"
+                            }
+                        }
+                    }
+                ],
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e95eaab9-7f4f-4bc0-b9e7-cfbd1dedc83f",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "e94d9f06-1cc2-4086-8ea9-d126924f94e3",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "fb12fd74-0a3e-4fac-b37a-a8dc119d511a",
+                "z": 115,
+                "attrs": {}
+            },
+            {
+                "type": "standard.Link",
+                "source": {
+                    "id": "e94d9f06-1cc2-4086-8ea9-d126924f94e3",
+                    "magnet": "body"
+                },
+                "target": {
+                    "id": "83c791e6-5d14-499b-8978-6842e1a50a45",
+                    "magnet": "body"
+                },
+                "router": {
+                    "name": "normal"
+                },
+                "id": "90394861-e7e3-4d53-a0b6-13be310807c8",
+                "z": 116,
+                "attrs": {}
+            }
+        ]
+    },
+    "linkLabels": [
+        {
+            "id": "e0e1cecf-5e13-4e41-b58c-9124dcc3ce1d",
+            "label": "true"
+        },
+        {
+            "id": "dea0938a-7c8a-40eb-8145-104896f2615e",
+            "label": "true"
+        },
+        {
+            "id": "fb586437-2aad-40fd-a581-adacb89d3900",
+            "label": "false"
+        },
+        {
+            "id": "29ab507f-33e5-4655-b6dd-9885a0aa55d8",
+            "label": "false"
+        },
+        {
+            "id": "cf88a337-0421-437a-84f4-5bf16d7f2827",
+            "label": "false"
+        },
+        {
+            "id": "0110845e-1437-4888-8ce4-21a0c83d2c8e",
+            "label": "true"
+        },
+        {
+            "id": "afadfe9c-5597-49eb-8e5b-aabee9825ad5",
+            "label": "false"
+        },
+        {
+            "id": "05d13122-ddd3-4d2b-a567-bf545e56f0b7",
+            "label": "false"
+        },
+        {
+            "id": "3dbea585-bd6b-41fd-b4dd-8c5c7248a7a5",
+            "label": "true"
+        },
+        {
+            "id": "56b035ff-bb58-4e24-bf97-d07e0fd1d622",
+            "label": "false"
+        },
+        {
+            "id": "5a25942f-b70a-4675-819a-08a7cde4d3fe",
+            "label": "true"
+        },
+        {
+            "id": "1a0821af-cd5e-4b00-96f0-fc2690bc9ddd",
+            "label": "false"
+        },
+        {
+            "id": "7248d3a4-99c1-4a19-9d56-b8cfbf7f8067",
+            "label": "true"
+        },
+        {
+            "id": "bc166592-2d0f-41a7-bae5-8874b4c57157",
+            "label": "false"
+        },
+        {
+            "id": "58e58ba0-cba5-4b19-a7ea-6b0fd7c6945f",
+            "label": "true"
+        },
+        {
+            "id": "625f5723-4cce-4099-a339-083879355b48",
+            "label": "false"
+        },
+        {
+            "id": "9cadcf2e-c3fb-4c46-a77c-d6ff35606615",
+            "label": "true"
+        },
+        {
+            "id": "b9a91ab1-3942-4bef-9ca0-a7a595918d93",
+            "label": "false"
+        },
+        {
+            "id": "1211ff89-0761-4a04-b9fe-8275fafe6024",
+            "label": "true"
+        },
+        {
+            "id": "38b7bc6b-c853-42ce-b713-1b36bafe158c",
+            "label": "false"
+        },
+        {
+            "id": "59de0089-566b-46bd-ab20-2c417737acc9",
+            "label": "true"
+        },
+        {
+            "id": "5138db53-6e01-4b04-b936-39ac23c0b78b",
+            "label": "false"
+        },
+        {
+            "id": "5a50b0b9-24a4-47a3-b444-c0995210bb1f",
+            "label": "true"
+        },
+        {
+            "id": "01c73326-5fa0-4edc-9621-59f36e82bf09",
+            "label": "false"
+        },
+        {
+            "id": "7c21c0d2-e1ec-4cab-8a6d-3f2a703e845e",
+            "label": "true"
+        },
+        {
+            "id": "e6c0c61e-2145-49aa-9680-54f637eaed97",
+            "label": "false"
+        },
+        {
+            "id": "3e10fb6a-100b-4c2f-a8be-5b9a6ae1778c",
+            "label": "true"
+        },
+        {
+            "id": "41da0460-8731-4ba2-b17e-512193cc05af",
+            "label": "false"
+        },
+        {
+            "id": "4bc9f676-113a-480e-922f-a4e0dd722b23",
+            "label": "true"
+        },
+        {
+            "id": "433a337b-5a9c-4c41-8a8e-a79f488fbce0",
+            "label": "false"
+        },
+        {
+            "id": "ae45b51a-0a05-45df-b9a9-1396e862a8ec",
+            "label": "true"
+        },
+        {
+            "id": "44f131ee-01e6-435c-8dde-e8ea86da41bc",
+            "label": "false"
+        },
+        {
+            "id": "c7efdfd7-0234-43fd-bd81-e1e3c8b15aa1",
+            "label": "true"
+        },
+        {
+            "id": "8958f0fd-c625-4e51-b154-d5fa60799ceb",
+            "label": "false"
+        }
+    ],
+    "loops": [],
+    "moduleInputs": [
+        {
+            "name": "encoder_in",
+            "bits": "15"
+        },
+        {
+            "name": "enable",
+            "bits": "1"
+        }
+    ],
+    "moduleOutputs": [
+        {
+            "name": "binary_out",
+            "bits": "4"
+        }
+    ],
+    "internalSignals": []
+}
