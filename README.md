@@ -8,7 +8,7 @@ The app is written in Angular and uses JointJS library for diagramming.
 
 ### Links
 
-[Activity-Diagrams app](https://activity-diagrams.web.app/activity)\
+[Activity-Diagrams app](https://activity-diagrams.web.app/)\
 [JointJS tutorials](https://resources.jointjs.com/tutorial)\
 [JointJS API documentation](https://resources.jointjs.com/docs/jointjs/v3.5/joint.html)
 
